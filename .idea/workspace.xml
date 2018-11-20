@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="02333d35-cd57-4376-b657-0c0e7e806daf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/README" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sparksql/README" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="02333d35-cd57-4376-b657-0c0e7e806daf" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/sparksql/target/" />
@@ -93,8 +89,8 @@
       <file leaf-file-name="README" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="22">
+              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -161,7 +157,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/grammar/context/ContextFactory.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/util/CompilerUtils.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/grammar/context/Context.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/grammar/tree/Having.java" />
@@ -212,6 +207,7 @@
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/grammar/tree/QueryOrganization.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/grammar/tree/NumberValue.java" />
         <option value="$PROJECT_DIR$/sparksql/README" />
+        <option value="$PROJECT_DIR$/README" />
       </list>
     </option>
   </component>
@@ -1590,8 +1586,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="22">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
