@@ -31,7 +31,9 @@ public class IdentHelper {
 
     public static void ident(Context context, String...messages){
         for(String msg: messages) {
-            context.output(msg);
+            if(msg!=null) {
+                context.output(msg);
+            }
         }
     }
 

@@ -25,7 +25,7 @@ public class AND extends AST {
     @Override
     public void ident(Context context){
         IdentHelper.ident(context,left);
-        IdentHelper.ident(context,"and");
+        IdentHelper.ident(context,IdentHelper.keyword("and"));
         IdentHelper.ident(context, right);
     }
 }

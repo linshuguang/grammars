@@ -38,10 +38,10 @@ public class QueryOrganization extends AST {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, orderBy,"order","by");
-        IdentHelper.ident(context, clusterBy,"cluster","by");
-        IdentHelper.ident(context, distributeBy,"distribute","by");
-        IdentHelper.ident(context, sortBy,"sort","by");
+        IdentHelper.ident(context, orderBy,IdentHelper.keyword("order"),IdentHelper.keyword("by"));
+        IdentHelper.ident(context, clusterBy,IdentHelper.keyword("cluster"),IdentHelper.keyword("by"));
+        IdentHelper.ident(context, distributeBy,IdentHelper.keyword("distribute"),IdentHelper.keyword("by"));
+        IdentHelper.ident(context, sortBy,IdentHelper.keyword("sort"),IdentHelper.keyword("by"));
         IdentHelper.ident(context, limit);
     }
 

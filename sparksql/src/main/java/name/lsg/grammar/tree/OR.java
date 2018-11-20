@@ -25,7 +25,7 @@ public class OR extends AST {
     @Override
     public void ident(Context context){
         IdentHelper.ident(context,left);
-        IdentHelper.ident(context,"or");
+        IdentHelper.ident(context,IdentHelper.keyword("or"));
         IdentHelper.ident(context, right);
     }
 

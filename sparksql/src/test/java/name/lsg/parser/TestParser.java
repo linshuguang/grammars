@@ -42,6 +42,13 @@ public class TestParser {
         return result;
     }
 
+    private void ident(AST ast){
+        ContextParam param = ContextFactory.createParam();
+        param.setOut(System.out);
+        Context context = ContextFactory.create(param);
+        ast.ident(context);
+    }
+
     @Test
     public void TestCase(){
         assertNotNULL("selECt a from t");
@@ -49,20 +56,15 @@ public class TestParser {
     }
 
     @Test
-    public void TestWhere(){
-        assertNotNULL("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
+    public void TestIdent(){
+        AST result = assertNotNULL("select a     from        t");
+        ident(result);
     }
 
     @Test
-    public void TestIdent(){
-        //AST result = assertNotNULL("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
-        AST result = assertNotNULL("select a     from        t");
-
-        ContextParam param = ContextFactory.createParam();
-        param.setOut(System.out);
-        Context context = ContextFactory.create(param);
-        result.ident(context);
-        //System.out.println("ident sql: "+context.getConfess());
+    public void TestWhere(){
+        AST result = assertNotNULL("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
+        ident(result);
     }
 
     @Test
