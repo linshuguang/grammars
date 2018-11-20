@@ -1,0 +1,36 @@
+package name.lsg.grammar.tree.relation;
+
+import name.lsg.grammar.tree.AST;
+import name.lsg.grammar.context.Context;
+import name.lsg.util.IdentHelper;
+
+/**
+ * Created by kenya on 2018/11/13.
+ */
+public class NaturalJOINRelation extends Relation {
+
+    AST joinType;
+    AST relationPrimary;
+
+    public NaturalJOINRelation(AST joinType, AST relationPrimary){
+        this.relationPrimary = relationPrimary;
+        this.joinType = joinType;
+    }
+
+    @Override
+    public void confess(Context context){
+        runConfess(context,"NATURAL");
+        runConfess(context, joinType);
+        runConfess(context, "join");
+        runConfess(context, relationPrimary);
+    }
+
+    @Override
+    public void ident(Context context){
+        IdentHelper.ident(context,"NATURAL");
+        IdentHelper.ident(context, joinType);
+        IdentHelper.ident(context, "join");
+        IdentHelper.ident(context, relationPrimary);
+    }
+
+}
