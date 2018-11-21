@@ -11,6 +11,10 @@ public class IntegerValue extends NumberValue {
         super(minus, text);
     }
 
+    public IntegerValue(String text){
+        super(true, text);
+    }
+
 
 }
 

@@ -11,10 +11,12 @@ import org.apache.commons.lang3.StringUtils;
 @Data
 public class Identifier extends TargetAST {
 
+    boolean quoted = false;
     String ident;
     public Identifier(String ident){
         this.ident = ident;
     }
+
 
     @Override
     public void confess(Context context ){

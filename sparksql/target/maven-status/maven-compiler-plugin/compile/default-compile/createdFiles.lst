@@ -14,6 +14,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$ExistsContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$RefreshResourceContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ColTypeContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ComplexDataTypeContext.class
+name\lsg\grammar\tree\ARRAY.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$BucketSpecContext.class
 name\lsg\grammar\tree\join\FullJOIN.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$LateralViewContext.class
@@ -32,6 +33,7 @@ name\lsg\grammar\tree\TableAlias.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SampleByPercentileContext.class
 name\lsg\grammar\tree\AliasedRelation.class
 name\lsg\grammar\tree\With.class
+name\lsg\grammar\tree\ComplexDataType.class
 name\lsg\grammar\tree\DISTINCT.class
 name\lsg\grammar\tree\join\USING.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ArithmeticBinaryContext.class
@@ -61,6 +63,7 @@ name\lsg\util\CompilerUtils.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SampleContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ColPositionContext.class
 name\lsg\grammar\tree\ArithmeticUnary.class
+name\lsg\grammar\tree\CAST.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SingleDataTypeContext.class
 name\lsg\grammar\tree\relation\JOINRelation.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$AddTablePartitionContext.class
@@ -75,6 +78,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$WindowSpecContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$InsertOverwriteHiveDirContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$NamedExpressionSeqContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$RenameTablePartitionContext.class
+name\lsg\grammar\tree\PrimitiveDataType.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$RelationPrimaryContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseListener.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ChangeColumnContext.class
@@ -99,6 +103,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$PartitionSpecContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$AggregationContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$RenameTableContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$TableFileFormatContext.class
+name\lsg\grammar\tree\MAP.class
 name\lsg\grammar\tree\FunctionCall.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$FrameBoundContext.class
 name\lsg\grammar\tree\join\JOIN.class
@@ -140,6 +145,7 @@ name\lsg\grammar\tree\join\LeftSemiJOIN.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$QueryContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$MultiInsertQueryBodyContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ComplexColTypeListContext.class
+name\lsg\grammar\tree\DataType.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SimpleCaseContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$CtesContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$PartitionValContext.class
@@ -222,6 +228,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$RefreshTableContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$DecimalLiteralContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SetConfigurationContext.class
 name\lsg\grammar\tree\INTERVAL.class
+name\lsg\grammar\tree\Argument.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$BooleanValueContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SingleStatementContext.class
 name\lsg\grammar\tree\NULLS.class
@@ -231,6 +238,7 @@ name\lsg\grammar\tree\IntegerValue.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$CreateHiveTableContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SampleByBucketContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$HintExpressionContext.class
+name\lsg\grammar\tree\UnuotedIdentifier.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ComparisonContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$FunctionTableContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$HintPredicatedContext.class
@@ -249,6 +257,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$DescribeTableContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$TablePropertyKeyContext.class
 name\lsg\grammar\tree\join\ON.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$AlterViewQueryContext.class
+name\lsg\grammar\tree\STRUCT.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$PositionContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ConstantListContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SingleFunctionIdentifierContext.class

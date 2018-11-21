@@ -399,7 +399,7 @@ querySpecification returns [ Select value]
        (RECORDREADER recordReader=STRING)?
        fromClause?
        (WHERE where=booleanExpression)?)
-    | ((kind=SELECT (hints+=hint { $value.addHint($hint.value);})* (q=setQuantifier { $value.setQuantifier($q.value); })?
+    | ((kind=SELECT (hints+=hint { $value.addHint($hint.value);})* (q=setQuantifier {$value.setQuantifier($q.value); })?
         nes=namedExpressionSeq { $value.setNamedExpressionSeq($nes.value); }
         (fc=fromClause { $value.setFromClause($fc.value); })?
        | fc=fromClause { $value.setFromClause($fc.value);} (kind=SELECT (q=setQuantifier {$value.setQuantifier($q.value); })?
@@ -642,7 +642,7 @@ valueExpression returns [ AST value]
 primaryExpression returns [ AST value]
     : CASE whenClause+ (ELSE elseExpression=expression)? END                                   #searchedCase
     | CASE expr=expression whenClause+ (ELSE elseExpression=expression)? END                  #simpleCase
-    | CAST '(' expression AS dataType ')'                                                      #cast
+    | CAST '(' expr=expression AS dataType ')'   { $value = new CAST($expr.value,$dataType.value);  }                                                   #cast
     | STRUCT '(' (argument+=namedExpression (',' argument+=namedExpression)*)? ')'             #struct
     | FIRST '(' expression (IGNORE NULLS)? ')'                                                 #first
     | LAST '(' expression (IGNORE NULLS)? ')'                                                  #last
@@ -652,8 +652,8 @@ primaryExpression returns [ AST value]
     | qualifiedName '.' ASTERISK  { $value = new Star($qualifiedName.value);}                                                             #star
     | '(' namedExpression (',' namedExpression)+ ')'                                           #rowConstructor
     | '(' query ')'                                                                            #subqueryExpression
-    | qualifiedName {$value = new FunctionCall($qualifiedName.value); FunctionCall fc = (FunctionCall)$value;}
-        '(' (setQuantifier? expression { fc.addArgument($expression.value);} (',' expression { fc.addArgument($expression.value);})*)? ')'
+    | qualifiedName { AST quantifier = null; $value = new FunctionCall($qualifiedName.value); FunctionCall fc = (FunctionCall)$value;}
+        '(' ((sq=setQuantifier { quantifier = $sq.value; })? expression { fc.addArgument(new Argument(quantifier,$expression.value));} (',' expression { fc.addArgument(new Argument($expression.value));})*)? ')'
        (OVER windowSpec)?                                                                      #functionCall
     | qualifiedName '(' trimOption=(BOTH | LEADING | TRAILING) argument+=expression
       FROM argument+=expression ')'                                                            #functionCall
@@ -706,11 +706,11 @@ colPosition
     : FIRST | AFTER identifier
     ;
 
-dataType
-    : complex=ARRAY '<' dataType '>'                            #complexDataType
-    | complex=MAP '<' dataType ',' dataType '>'                 #complexDataType
+dataType returns [ DataType value ]
+    : complex=ARRAY '<' dataType '>'  { $value = new ARRAY($dataType.value);  }                          #complexDataType
+    | complex=MAP '<' k=dataType ',' v=dataType '>'   { $value = new MAP($k.value, $v.value);}               #complexDataType
     | complex=STRUCT ('<' complexColTypeList? '>' | NEQ)        #complexDataType
-    | identifier ('(' INTEGER_VALUE (',' INTEGER_VALUE)* ')')?  #primitiveDataType
+    | i=identifier { PrimitiveDataType pdt = new PrimitiveDataType($i.value); $value= pdt; } ('(' v=INTEGER_VALUE { pdt.addValue(new IntegerValue($v.text));  } (',' v=INTEGER_VALUE { pdt.addValue(new IntegerValue($v.text)); } )* ')')?  #primitiveDataType
     ;
 
 colTypeList
@@ -771,18 +771,18 @@ qualifiedName returns [ QualifiedName value]
 
 identifier returns [ AST value]
     : s=strictIdentifier { $value = $s.value;}
-    | ANTI | FULL | INNER | LEFT | SEMI | RIGHT | NATURAL | JOIN | CROSS | ON
-    | UNION | INTERSECT | EXCEPT | SETMINUS
+    | t=(ANTI | FULL | INNER | LEFT | SEMI | RIGHT | NATURAL | JOIN | CROSS | ON
+    | UNION | INTERSECT | EXCEPT | SETMINUS) { $value = new Identifier($t.text); }
     ;
 
 strictIdentifier returns [ Identifier value]
     : i=IDENTIFIER  { $value = new Identifier($i.text);}           #unquotedIdentifier
     | q=quotedIdentifier  { $value = $q.value;}     #quotedIdentifierAlternative
-    | nonReserved            #unquotedIdentifier
+    | n=nonReserved    { $value = new Identifier($n.value); }        #unquotedIdentifier
     ;
 
 quotedIdentifier returns [ Identifier value]
-    : b=BACKQUOTED_IDENTIFIER {$value = new Identifier($b.text); }
+    : b=BACKQUOTED_IDENTIFIER {$value = new Identifier($b.text); $value.setQuoted(true); }
     ;
 
 number returns [ NumberValue value]
@@ -796,8 +796,8 @@ number returns [ NumberValue value]
     | (MINUS {$value.setMinus(true);})? v=BIGDECIMAL_LITERAL  { $value = new BigDecimalValue($value.isMinus(),$v.text);}     #bigDecimalLiteral
     ;
 
-nonReserved
-    : SHOW | TABLES | COLUMNS | COLUMN | PARTITIONS | FUNCTIONS | DATABASES
+nonReserved returns [String value]
+    : t=(SHOW | TABLES | COLUMNS | COLUMN | PARTITIONS | FUNCTIONS | DATABASES
     | ADD
     | OVER | PARTITION | RANGE | ROWS | PRECEDING | FOLLOWING | CURRENT | ROW | LAST | FIRST | AFTER
     | MAP | ARRAY | STRUCT
@@ -828,7 +828,7 @@ nonReserved
     | UNBOUNDED | WHEN
     | DATABASE | SELECT | FROM | WHERE | HAVING | TO | TABLE | WITH | NOT
     | DIRECTORY
-    | BOTH | LEADING | TRAILING
+    | BOTH | LEADING | TRAILING) { $value = $t.text; }
     ;
 
 SELECT: S E L E C T;

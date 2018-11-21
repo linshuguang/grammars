@@ -29,13 +29,17 @@ public class Context {
     Map<String,String> tableMap;
 
 
-    public void output(String str){
-        String lines  = str + TAB;
+    public void outputRaw(String str){
+        String lines  = str;
         try {
             out.write(lines.getBytes());
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    public void output(String str){
+        outputRaw(str+TAB);
     }
 
     public void confess(String line){

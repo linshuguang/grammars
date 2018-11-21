@@ -138,7 +138,8 @@ public class AST {
     }
 
     public AST eval(Context context){
-        return this;
+        throw new RuntimeException("ident not implement");
+        //return this;
     }
 
     public AST steam(Context context){

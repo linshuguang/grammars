@@ -49,6 +49,12 @@ public class TestParser {
         ast.ident(context);
     }
 
+    private AST procedure(String sql){
+        AST result = assertNotNULL(sql);
+        ident(result);
+        return result;
+    }
+
     @Test
     public void TestCase(){
         assertNotNULL("selECt a from t");
@@ -66,6 +72,18 @@ public class TestParser {
         AST result = assertNotNULL("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
         ident(result);
     }
+
+    @Test
+    public void TestDistict(){
+        procedure("select distinct a from d.t");
+    }
+
+    @Test
+    public void TestFunction(){
+        procedure("select sum(prin)*0.01 from contract where from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\")<=20151231");
+        //procedure("select sum(prin)*0.01 from contract where from_unixtime(cast(effectivetime/1000 ),\"yyyyMMdd\")<=20151231");
+    }
+
 
     @Test
     public void TestCook(){

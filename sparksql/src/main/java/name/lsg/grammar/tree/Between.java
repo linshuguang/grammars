@@ -25,9 +25,9 @@ public class Between extends Predicate {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "between");
+        IdentHelper.ident(context, IdentHelper.keyword("between"));
         IdentHelper.ident(context, lower);
-        IdentHelper.ident(context, "and");
+        IdentHelper.ident(context, IdentHelper.keyword("and"));
         IdentHelper.ident(context, upper);
     }
 }
