@@ -126,11 +126,11 @@ public class TestParser {
                 " when b.ovd_days between 61 and 90 then \"M3\"\n" +
                 " when b.ovd_days >= 91 then \"M4+\" else \"M0\" end as ovd,\n" +
                 " b.unpaid_prin*0.01 as balance\n" +
-                " from mt.contract b left join \n" +
-                " (select mid,max(accounttime) accounttime from mt.preservation group by mid) c \n" +
+                " from t.contract b left join \n" +
+                " (select mid,max(accounttime) accounttime from t.preservation group by mid) c \n" +
                 " on b.m_id=c.mid \n" +
-                " where b.date=20181001 and b.basic_trade_code=4 and b.basic_accrual_status = 1\n" +
-                " and b.basic_rule_id in (3,13) and b.basic_owner in (3,13)");
+                " where b.date=20181001 and b.trade=4 and b.accrual = 1\n" +
+                " and b.rule in (3,13) and b.owner in (3,13)");
     }
 
 
