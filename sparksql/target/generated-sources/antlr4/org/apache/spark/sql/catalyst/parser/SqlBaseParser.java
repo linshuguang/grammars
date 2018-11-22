@@ -4,9 +4,9 @@ package org.apache.spark.sql.catalyst.parser;
 
   import java.util.regex.Pattern;
   import java.util.*;
-  import name.lsg.grammar.tree.*;
-  import name.lsg.grammar.tree.join.*;
-  import name.lsg.grammar.tree.relation.*;
+  import name.lsg.sparksql.parser.grammar.tree.*;
+  import name.lsg.sparksql.parser.grammar.tree.join.*;
+  import name.lsg.sparksql.parser.grammar.tree.relation.*;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
