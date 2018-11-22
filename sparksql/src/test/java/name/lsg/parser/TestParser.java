@@ -81,8 +81,59 @@ public class TestParser {
     @Test
     public void TestFunction(){
         procedure("select sum(prin)*0.01 from contract where from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\")<=20151231");
+     }
+
+    @Test
+    public void TestGroupOrder(){
+        procedure("select from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\") as pay_date from loan_contract\n" +
+                "where from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\") between 20180901 and 20181031\n" +
+                "group by 1 order by 1");
         //procedure("select sum(prin)*0.01 from contract where from_unixtime(cast(effectivetime/1000 ),\"yyyyMMdd\")<=20151231");
     }
+
+    @Test
+    public void TestNotIN(){
+        procedure("select distinct termnum from  ctrl_info where productid not in (6,9,10) \n" +
+                " or groupid in (10) \n" +
+                "and from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\")>=20180801");
+    }
+
+    @Test
+    public void TestCaseWhen(){
+        procedure("select distinct b.contract_id,\n" +
+                " case when b.ovd_days between 1 and 30 then \"M1\"\n" +
+                " when b.ovd_days between 31 and 60 then \"M2\"\n" +
+                " when b.ovd_days between 61 and 90 then \"M3\"\n" +
+                " when b.ovd_days >= 91 then \"M4+\" else \"M0\" end as ovd,\n" +
+                " b.unpaid_prin*0.01 as balance\n" +
+                " from contract b");
+    }
+
+    @Test
+    public void TestComplicate(){
+        procedure(" select a.end_month,a.current_month,a.ovd,sum(a.balance) from \n" +
+                "( select * from ttt) a\n" +
+                " group by a.end_month,a.current_month,a.ovd \n" +
+                " order by a.end_month,a.current_month,a.ovd");
+    }
+
+    @Test
+    public void TestComplicate1(){
+        procedure("select distinct b.contract_id,from_unixtime(cast(if(b.int_type=5,c.accounttime,b.end_time)/1000 as bigint),\"yyyyMM\") as end_month,\n" +
+                " from_unixtime(cast(b.basic_date/1000-60*60*24 as bigint),\"yyyyMM\") as current_month,\n" +
+                " case when b.ovd_days between 1 and 30 then \"M1\"\n" +
+                " when b.ovd_days between 31 and 60 then \"M2\"\n" +
+                " when b.ovd_days between 61 and 90 then \"M3\"\n" +
+                " when b.ovd_days >= 91 then \"M4+\" else \"M0\" end as ovd,\n" +
+                " b.unpaid_prin*0.01 as balance\n" +
+                " from mt.contract b left join \n" +
+                " (select mid,max(accounttime) accounttime from mt.preservation group by mid) c \n" +
+                " on b.m_id=c.mid \n" +
+                " where b.date=20181001 and b.basic_trade_code=4 and b.basic_accrual_status = 1\n" +
+                " and b.basic_rule_id in (3,13) and b.basic_owner in (3,13)");
+    }
+
+
 
 
     @Test

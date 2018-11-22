@@ -568,7 +568,8 @@ functionTable
     ;
 
 tableAlias returns [ TableAlias value]
-    : (AS? s=strictIdentifier  { $value = new TableAlias($s.value);} (l=identifierList {$value.setIdentifierList($l.value);})?)?
+    @init { $value = new TableAlias();}
+    : ((AS { $value.setAS(true);})? s=strictIdentifier  { $value.setStrictIdentifier($s.value);} (l=identifierList {$value.setIdentifierList($l.value);})?)?
     ;
 
 rowFormat
@@ -592,7 +593,7 @@ functionIdentifier
 
 namedExpression returns [ NamedExpr value]
     : e=expression { $value = new NamedExpr($e.value);}
-    (AS? (id=identifier {$value.addAS($id.value);} | il=identifierList { $value.addAS($il.value);}))?
+    ((AS { $value.markAS();})? (id=identifier {$value.addAS($id.value);} | il=identifierList { $value.addAS($il.value);}))?
     ;
 
 namedExpressionSeq returns [ List value]
@@ -620,6 +621,7 @@ predicated returns [ Predicated value]
     ;
 
 predicate returns [ Predicate value]
+    @init { $value = new Predicate();}
     : (NOT{ $value.setNot(true);})? kind=BETWEEN lower=valueExpression AND upper=valueExpression { $value = new Between( $value.isNot(),$lower.value,$upper.value );}
     | (NOT{ $value.setNot(true);})? kind=IN { $value = new InList($value.isNot());} '(' e=expression { {InList in = (InList)$value; in.addExpr($e.value);} } (',' e=expression { {InList in = (InList)$value; in.addExpr($e.value);} })* ')'
     | (NOT{ $value.setNot(true);})? kind=IN '(' query ')' { $value = new InQuery($value.isNot(), $query.value);}
@@ -640,8 +642,8 @@ valueExpression returns [ AST value]
     ;
 
 primaryExpression returns [ AST value]
-    : CASE whenClause+ (ELSE elseExpression=expression)? END                                   #searchedCase
-    | CASE expr=expression whenClause+ (ELSE elseExpression=expression)? END                  #simpleCase
+    : CASE { CASE c = new CASE(); $value = c; } (whenClause { c.addWhen($whenClause.value);})+ (ELSE elseExpression=expression { c.setElseExpr($elseExpression.value);})? END                                   #searchedCase
+    | CASE expr=expression { CASE c = new CASE($expr.value); $value = c; } (whenClause{ c.addWhen($whenClause.value);})+ (ELSE elseExpression=expression { c.setElseExpr($elseExpression.value);})? END                  #simpleCase
     | CAST '(' expr=expression AS dataType ')'   { $value = new CAST($expr.value,$dataType.value);  }                                                   #cast
     | STRUCT '(' (argument+=namedExpression (',' argument+=namedExpression)*)? ')'             #struct
     | FIRST '(' expression (IGNORE NULLS)? ')'                                                 #first
@@ -729,8 +731,8 @@ complexColType
     : identifier ':' dataType (COMMENT STRING)?
     ;
 
-whenClause
-    : WHEN condition=expression THEN result=expression
+whenClause returns [ AST value ]
+    : WHEN condition=expression THEN result=expression { $value = new WhenClause($condition.value, $result.value); }
     ;
 
 windows

@@ -15,7 +15,9 @@ public class LeftSemiJOIN extends JOINType {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "left semi");
+        IdentHelper.ident(context, IdentHelper.keyword("left"));
+        IdentHelper.ident(context, IdentHelper.keyword("semi"));
     }
+
 
 }

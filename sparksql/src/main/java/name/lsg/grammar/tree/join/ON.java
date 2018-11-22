@@ -26,7 +26,7 @@ public class ON extends AST {
     @Override
     public void ident(Context context){
 
-        IdentHelper.ident(context, "on");
+        IdentHelper.ident(context, IdentHelper.keyword("on"));
         IdentHelper.ident(context, expr);
     }
 

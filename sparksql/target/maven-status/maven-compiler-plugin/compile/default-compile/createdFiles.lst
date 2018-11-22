@@ -70,6 +70,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$AddTablePartitionContext.clas
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SearchedCaseContext.class
 name\lsg\grammar\tree\Having.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$OrderedIdentifierContext.class
+name\lsg\grammar\tree\WhenClause.class
 name\lsg\grammar\tree\Predicated.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$InlineTableDefault1Context.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$TruncateTableContext.class
@@ -188,6 +189,7 @@ name\lsg\grammar\tree\QueryPrimary.class
 name\lsg\grammar\tree\relation\NaturalJOINRelation.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$IntervalFieldContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ShowColumnsContext.class
+name\lsg\grammar\tree\CASE.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$QuotedIdentifierContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$StatementDefaultContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ArithmeticUnaryContext.class

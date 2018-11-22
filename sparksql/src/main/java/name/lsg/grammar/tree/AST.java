@@ -96,6 +96,19 @@ public class AST {
         return context.getConfess().trim();
     }
 
+    protected String concat(List<AST> asts, String delimiter){
+        StringBuffer sb = new StringBuffer();
+        for(int i =0 ;i < asts.size(); i++) {
+            String str = getRawContent(asts.get(i));
+            sb.append(str);
+            if(i<asts.size()-1){
+                sb.append(delimiter);
+            }
+        }
+        return sb.toString();
+    }
+
+
     protected BoolValue eq(AST ast){
         if(this==ast){
             return new BoolValue(true);

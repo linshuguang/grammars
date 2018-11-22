@@ -56,17 +56,31 @@ public class IdentHelper {
         }
     }
 
-    public static void ident( Context context, List<AST> astList){
+    public static void identNoDelimeter( Context context, List<AST> astList){
+        if(astList!=null && astList.size()>0){
+            for(int i = 0; i < astList.size(); i++ ){
+                AST ast = astList.get(i);
+                ident(context, ast);
+            }
+        }
+    }
+
+    public static void identWithDelimeter( Context context, List<AST> astList,String delimeter){
         if(astList!=null && astList.size()>0){
             for(int i = 0; i < astList.size(); i++ ){
                 AST ast = astList.get(i);
                 ident(context, ast);
                 if( i < astList.size()-1){
-                    context.output(DEFAULT_DELIMETER);
+                    context.output(delimeter);
                 }
             }
         }
     }
+
+    public static void ident( Context context, List<AST> astList){
+        identWithDelimeter( context, astList,DEFAULT_DELIMETER);
+    }
+
 
     public static String keyword(String word){
         String val = null;

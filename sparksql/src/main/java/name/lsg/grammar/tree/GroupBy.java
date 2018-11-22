@@ -24,7 +24,8 @@ public class GroupBy extends AST {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "group by");
+        IdentHelper.ident(context, IdentHelper.keyword("group"));
+        IdentHelper.ident(context, IdentHelper.keyword("by"));
         IdentHelper.ident(context, groupingExpressions);
     }
 

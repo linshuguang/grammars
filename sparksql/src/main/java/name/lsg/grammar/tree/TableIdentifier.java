@@ -23,6 +23,6 @@ public class TableIdentifier extends AST{
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, identifierList);
+        IdentHelper.ident(context, concat(identifierList,"."));
     }
 }

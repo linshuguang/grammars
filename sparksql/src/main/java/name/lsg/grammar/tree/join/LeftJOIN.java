@@ -18,9 +18,10 @@ public class LeftJOIN extends JOINType {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "left");
+        IdentHelper.ident(context, IdentHelper.keyword("left"));
         if(isOuter()){
-            IdentHelper.ident(context, "outer");
+            IdentHelper.ident(context, IdentHelper.keyword("outer"));
         }
+        //super.ident(context);
     }
 }

@@ -18,9 +18,9 @@ public class RightJOIN extends JOINType {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "right");
+        IdentHelper.ident(context, IdentHelper.keyword("right"));
         if(isOuter()){
-            IdentHelper.ident(context, "outer");
+            IdentHelper.ident(context, IdentHelper.keyword("outer"));
         }
     }
 }

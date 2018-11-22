@@ -25,7 +25,7 @@ public class USING extends AST {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "using");
+        IdentHelper.ident(context, IdentHelper.keyword("using"));
         IdentHelper.ident(context, identifierList);
     }
 }

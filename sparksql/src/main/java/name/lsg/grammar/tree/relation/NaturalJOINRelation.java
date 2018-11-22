@@ -27,9 +27,9 @@ public class NaturalJOINRelation extends Relation {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context,"NATURAL");
+        IdentHelper.ident(context,IdentHelper.keyword("NATURAL"));
         IdentHelper.ident(context, joinType);
-        IdentHelper.ident(context, "join");
+        IdentHelper.ident(context, IdentHelper.keyword("join"));
         IdentHelper.ident(context, relationPrimary);
     }
 

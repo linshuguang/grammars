@@ -18,9 +18,9 @@ public class FullJOIN extends JOINType {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "full");
+        IdentHelper.ident(context, IdentHelper.keyword("full"));
         if(isOuter()){
-            IdentHelper.ident(context, "outer");
+            IdentHelper.ident(context, IdentHelper.keyword("outer"));
         }
     }
 }

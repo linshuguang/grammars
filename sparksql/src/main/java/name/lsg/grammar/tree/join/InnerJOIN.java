@@ -15,7 +15,7 @@ public class InnerJOIN extends JOINType {
 
     @Override
     public void ident(Context context){
-        IdentHelper.ident(context, "inner");
+        IdentHelper.ident(context, IdentHelper.keyword("inner"));
     }
 
 }
