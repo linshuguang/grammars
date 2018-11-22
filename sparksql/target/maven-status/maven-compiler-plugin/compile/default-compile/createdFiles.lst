@@ -236,6 +236,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$SingleStatementContext.class
 name\lsg\grammar\tree\NULLS.class
 name\lsg\grammar\tree\GroupBy.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$StructContext.class
+name\lsg\grammar\tree\ParenthesizedExpression.class
 name\lsg\grammar\tree\IntegerValue.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$CreateHiveTableContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SampleByBucketContext.class

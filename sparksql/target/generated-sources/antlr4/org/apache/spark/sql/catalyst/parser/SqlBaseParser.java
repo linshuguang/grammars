@@ -11789,7 +11789,7 @@ public class SqlBaseParser extends Parser {
 				setState(2354); match(T__7);
 				setState(2355); ((ParenthesizedExpressionContext)_localctx).expression = expression();
 				setState(2356); match(T__5);
-				 ((ParenthesizedExpressionContext)_localctx).value =  ((ParenthesizedExpressionContext)_localctx).expression.value;
+				 ((ParenthesizedExpressionContext)_localctx).value =  new ParenthesizedExpression(((ParenthesizedExpressionContext)_localctx).expression.value);
 				}
 				break;
 			}

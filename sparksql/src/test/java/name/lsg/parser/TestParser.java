@@ -133,6 +133,24 @@ public class TestParser {
                 " and b.rule in (3,13) and b.owner in (3,13)");
     }
 
+    @Test
+    public void TestBracket(){
+        procedure("select sum(prin)*0.01 from contract where  \n" +
+                "from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\")<=20251231 \n" +
+                "and  (rule in (0,2) or (ruleid in (1,2,3) and prinsecond>0))");
+    }
+
+    @Test
+    public void TestCaseAvgRate(){
+        procedure("select a.rate,count(distinct a.cid) as cnt from \n" +
+                "(select distinct cid,rate \n" +
+                " from m.contract  \n" +
+                " where date=20380101 and code=1\n" +
+                " and rid in (0,2) \n" +
+                " and o not in (1,3) \n" +
+                " and unpaid>0\n" +
+                ") a group by 1 order by 1");
+    }
 
 
 
@@ -165,28 +183,13 @@ public class TestParser {
         context.confessPredicates();
     }
 
-
-    @Test
-    public void TestGroupBy(){
-        Parser parser = new Parser();
-        String sql = "select basic_rule_id, basic_owner, sum(cur_st_total_prin) from t where basic_trade_code = 4 and t.date='2018-05-01' and t.date='2018-05-03' and t.date='2018-05-10' group  by  basic_rule_id, basic_owner";
-        System.out.println("to run : "+sql);
-        AST result = parser.parse(sql);
-        assert (result!=null);
-
-        Context context = ContextFactory.produce();
-        result.confess(context);
-        System.out.println("cooked sql: "+context.getConfess());
-        System.out.println("predicate:");
-        context.confessPredicates();
-    }
     */
 
 
     @Test
     public void TestPredicators(){
 
-        String sql = "select basic_rule_id, basic_owner, sum(cur_st_total_prin) from t where basic_trade_code = 4 and t.date='2018-05-01' and t.date='2018-05-03' and t.date='2018-05-10' group  by  basic_rule_id, basic_owner";
+        String sql = "select rid, owner, sum(prin) from t where code = 4 and t.date='2018-05-01' and t.date='2018-05-03' and t.date='2018-05-10' group  by  rid, owner";
 
         List<String> candidateDates = new ArrayList<>();
         candidateDates.add("2018-05-01");

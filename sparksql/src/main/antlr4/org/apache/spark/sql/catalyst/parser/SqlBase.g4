@@ -662,7 +662,7 @@ primaryExpression returns [ AST value]
     | pe=primaryExpression '[' index=valueExpression ']'                                    #subscript
     | identifier  { $value = $identifier.value;}                                                                              #columnReference
     | base=primaryExpression '.' fieldName=identifier   { $value = new Dereference($base.value,$fieldName.value);}                                       #dereference
-    | '(' expression ')' { $value = $expression.value;}                                                                      #parenthesizedExpression
+    | '(' expression ')' { $value = new ParenthesizedExpression($expression.value);}                                                                      #parenthesizedExpression
     ;
 
 constant returns [ AST value]
