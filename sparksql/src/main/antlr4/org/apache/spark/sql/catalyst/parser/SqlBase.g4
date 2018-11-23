@@ -495,7 +495,8 @@ joinRelation returns [ NaturalJOINRelation value]
     ;
 
 joinType returns [ JOINType value]
-    : INNER? { $value = new InnerJOIN();}
+    @init { $value = new JOINType(); }
+    : (INNER { $value = new InnerJOIN();})?
     | CROSS { $value = new CrossJOIN();}
     | LEFT { $value = new LeftJOIN();} (OUTER { $value.markAsOuter();})?
     | LEFT  SEMI { $value = new LeftSemiJOIN();}

@@ -26,10 +26,10 @@ public class TableAlias extends AST {
     @Override
     public void ident(Context context){
 
-        IdentHelper.ident(context, strictIdentifier);
         if(AS){
             IdentHelper.ident(context, IdentHelper.keyword("as"));
         }
+        IdentHelper.ident(context, strictIdentifier);
         IdentHelper.identWithDelimeter(context, identifierList," ");
     }
 

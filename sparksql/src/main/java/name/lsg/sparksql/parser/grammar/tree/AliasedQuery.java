@@ -12,6 +12,7 @@ public class AliasedQuery extends RelationPrimary {
     AST tableAlias;
 
     public AliasedQuery(AST queryNoWith, AST sample, AST tableAlias){
+        super(sample);
         this.queryNoWith = queryNoWith;
         this.tableAlias  = tableAlias;
     }
@@ -21,6 +22,7 @@ public class AliasedQuery extends RelationPrimary {
         IdentHelper.ident(context,"(");
         IdentHelper.ident(context, queryNoWith);
         IdentHelper.ident(context,")");
+        super.ident(context);
         IdentHelper.ident(context, tableAlias);
     }
 

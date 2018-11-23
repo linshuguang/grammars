@@ -1,6 +1,7 @@
 package name.lsg.sparksql.parser.grammar.tree.join;
 
 import lombok.Data;
+import name.lsg.sparksql.parser.grammar.context.Context;
 import name.lsg.sparksql.parser.grammar.tree.AST;
 
 /**
@@ -17,5 +18,10 @@ public class JOINType extends AST {
 
     public void markAsLeft(){
         this.left = true;
+    }
+
+    @Override
+    public void ident(Context context){
+
     }
 }

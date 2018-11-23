@@ -49,6 +49,8 @@ public class TestParser {
     private AST procedure(String sql){
         AST result = assertNotNULL(sql);
         ident(result);
+        System.out.println();
+        System.out.println();
         return result;
     }
 
@@ -149,7 +151,101 @@ public class TestParser {
                 ") a group by 1 order by 1");
     }
 
+    @Test
+    public void TestTableAlias(){
+        procedure("select * from t b");
+        procedure("select * from (t) b");
+        procedure("select * from (select a,b,c from t) b");
+    }
 
+    @Test
+    public void TestWeightedAvgRate(){
+        procedure("select a.month,sum(a.rate*a.cnt)/sum(a.cnt) weight_avg_rate from \n" +
+                "(select from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMM\") as month,rate,count(distinct id) as cnt \n" +
+                "from  contract\n" +
+                "where productid not in (6,9) and  from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMM\") between 203801 and 203808 group by 1,2 order by 1,2) as a  \n" +
+                "group by 1 order by 1 ");
+    }
+
+    @Test
+    public void TestComplicate2(){
+        procedure("select from_unixtime(cast(b.effectivetime/1000 as bigint),\"yyyyMM\") as p_month,\n" +
+                "from_unixtime(cast(a.accountTime/1000 as bigint),\"yyyyMM\") as c_month,\n" +
+                "sum(a.amount)/100 as f_prin \n" +
+                "from (select distinct id,conid,accountTime,rid,amount from m.detail\n" +
+                "where repaytype in (9,13,23,24,25) and from_unixtime(cast(accountTime/1000 as bigint),\"yyyyMM\") between 203801 and 203811  and productid not in (6,9)) as a\n" +
+                "join (select distinct id,prin,effectivetime from m.contract where from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMM\") between 201801 and 201811 and productid not in (6,9)) as b on a.conid=b.id\n" +
+                "group by 1,2 order by 1,2");
+    }
+
+    @Test
+    public void TestLefJoin(){
+        procedure(" select from_unixtime(cast(if(b.int_type=2,c.accounttime,b.basic_end_time)/1000 as bigint),\"yyyyMM\") as end_month,b.cid \n" +
+                " from m.contract b left join m.preservation c \n" +
+                " on b.m_id=c.mid \n" +
+                " where b.date=20380801 and b.code=4 and b.status = 1 and b.rid in (0,3) and b.owner not in (3333,16) and b.int_type=5");
+    }
+
+    @Test
+    public void TestComplicate3(){
+        procedure("select \n" +
+                "c.ovd_t,\n" +
+                "sum(if(c.ovd2=\"M1\" and c.ovd1=\"M0\",c.balance2,0)) as m01,\n" +
+                "sum(if(c.ovd2=\"M2\" and c.ovd1=\"M0\",c.balance2,0)) as m02,\n" +
+                "sum(if(c.ovd2=\"M3\" and c.ovd1=\"M0\",c.balance2,0)) as m03,\n" +
+                "sum(if(c.ovd2=\"M4+\" and c.ovd1=\"M0\",c.balance2,0)) as m04,\n" +
+                "sum(if(c.ovd2=\"M2\" and c.ovd1=\"M1\",c.balance2,0)) as m12,\n" +
+                "sum(if(c.ovd2=\"M3\" and c.ovd1=\"M1\",c.balance2,0)) as m13,\n" +
+                "sum(if(c.ovd2=\"M4+\" and c.ovd1=\"M1\",c.balance2,0)) as m14,\n" +
+                "sum(if(c.ovd2=\"M3\" and c.ovd1=\"M2\",c.balance2,0)) as m23,\n" +
+                "sum(if(c.ovd2=\"M4+\" and c.ovd1=\"M2\",c.balance2,0)) as m24,\n" +
+                "sum(if(c.ovd2=\"M4+\" and c.ovd1=\"M3\",c.balance2,0)) as m34,\n" +
+                "sum(if(c.ovd2=\"M1\" and c.ovd1=\"M2\",c.balance2,0)) as m21,\n" +
+                "sum(if(c.ovd2=\"M2\" and c.ovd1=\"M3\",c.balance2,0)) as m32,\n" +
+                "sum(if(c.ovd2=\"M1\" and c.ovd1=\"M3\",c.balance2,0)) as m31,\n" +
+                "sum(if(c.ovd2=\"M3\" and c.ovd1=\"M4+\",c.balance2,0)) as m43,\n" +
+                "sum(if(c.ovd2=\"M2\" and c.ovd1=\"M4+\",c.balance2,0)) as m42,\n" +
+                "sum(if(c.ovd2=\"M1\" and c.ovd1=\"M4+\",c.balance2,0)) as m41,\n" +
+                "sum(if(c.ovd1 is null,c.balance2,0)) as balanceadd,\n" +
+                "sum(if(c.balance2 is null,c.balance1,c.balance1-c.balance2)) as balancesub \n" +
+                "from \n" +
+                "(\n" +
+                "\tselect \n" +
+                "\t\tdistinct if(a.contract_id is null,b.contract_id,a.contract_id) as  contract_id_t,\n" +
+                "\t\tif(a.ovd2 is null,b.ovd1,a.ovd2)  as ovd_t,a.ovd2,\n" +
+                "\t\ta.balance2,\n" +
+                "\t\tb.ovd1,\n" +
+                "\t\tb.balance1 \n" +
+                "\tfrom  \n" +
+                "\t\t(select \n" +
+                "\t\t\tdistinct contract_id,\n" +
+                "\t\t\tcase when overdue_days between 1 and 30 then \"M1\"\n" +
+                "\t\t\twhen overdue_days between 31 and 60 then \"M2\"\n" +
+                "\t\t\twhen overdue_days between 61 and 90 then \"M3\"\n" +
+                "\t\t\twhen overdue_days >= 91 then \"M4+\" else \"M0\" end as ovd2,\n" +
+                "\t\t\tcur_st_total_unpaid_prin*0.01 as balance2\n" +
+                "\t\tfrom \n" +
+                "\t\t\tm.contract  \n" +
+                "\t\twhere \n" +
+                "\t\t\tdate=20380701 and code=4  and unpaid>0 and status=1 and rid in (2,3) and owner not in (1,3)\n" +
+                "\t\t)a \n" +
+                "\t\tfull join \n" +
+                "\t\t(select \n" +
+                "\t\t\tdistinct contract_id,case when overdue_days between 1 and 30 then \"M1\"\n" +
+                "\t\t\twhen overdue_days between 31 and 60 then \"M2\"\n" +
+                "\t\t\twhen overdue_days between 61 and 90 then \"M3\"\n" +
+                "\t\t\twhen overdue_days >= 91 then \"M4+\" else \"M0\" end as ovd1,\n" +
+                "\t\t\tunpaid*0.01 as balance1\n" +
+                "\t\tfrom \n" +
+                "\t\t\tm.contract  \n" +
+                "\t\twhere date=20380101 and code=4  and unpaid>0 and status=1 and rid in (2,3) and owner not in (1)\n" +
+                "\t\t)b\t\t\t\n" +
+                "\t\ton a.contract_id=b.contract_id\n" +
+                " ) c \n" +
+                " \n" +
+                " group by c.ovd_t \n" +
+                " order by c.ovd_t");
+    }
 
     /*
     @Test

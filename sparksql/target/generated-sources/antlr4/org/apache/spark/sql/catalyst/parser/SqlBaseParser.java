@@ -8502,6 +8502,7 @@ public class SqlBaseParser extends Parser {
 	public final JoinTypeContext joinType() throws RecognitionException {
 		JoinTypeContext _localctx = new JoinTypeContext(_ctx, getState());
 		enterRule(_localctx, 106, RULE_joinType);
+		 ((JoinTypeContext)_localctx).value =  new JOINType(); 
 		int _la;
 		try {
 			setState(1787);
@@ -8509,15 +8510,15 @@ public class SqlBaseParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(1754);
+				setState(1755);
 				_la = _input.LA(1);
 				if (_la==INNER) {
 					{
 					setState(1753); match(INNER);
+					 ((JoinTypeContext)_localctx).value =  new InnerJOIN();
 					}
 				}
 
-				 ((JoinTypeContext)_localctx).value =  new InnerJOIN();
 				}
 				break;
 
@@ -14996,7 +14997,7 @@ public class SqlBaseParser extends Parser {
 		"\7\63\u06b4\n\63\f\63\16\63\u06b7\13\63\5\63\u06b9\n\63\3\64\3\64\3\64"+
 		"\3\64\5\64\u06bf\n\64\3\65\3\65\3\65\3\65\3\65\7\65\u06c6\n\65\f\65\16"+
 		"\65\u06c9\13\65\3\66\3\66\3\66\3\66\3\66\3\66\3\66\5\66\u06d2\n\66\3\66"+
-		"\3\66\3\66\3\66\3\66\3\66\5\66\u06da\n\66\3\67\5\67\u06dd\n\67\3\67\3"+
+		"\3\66\3\66\3\66\3\66\3\66\5\66\u06da\n\66\3\67\3\67\5\67\u06de\n\67\3"+
 		"\67\3\67\3\67\3\67\3\67\3\67\5\67\u06e6\n\67\3\67\3\67\3\67\3\67\3\67"+
 		"\3\67\3\67\5\67\u06ef\n\67\3\67\3\67\3\67\3\67\5\67\u06f5\n\67\3\67\3"+
 		"\67\3\67\5\67\u06fa\n\67\3\67\3\67\5\67\u06fe\n\67\38\38\38\38\38\38\3"+
@@ -15629,19 +15630,19 @@ public class SqlBaseParser extends Parser {
 		"\u06d2\3\2\2\2\u06d2\u06da\3\2\2\2\u06d3\u06d4\7=\2\2\u06d4\u06d5\5l\67"+
 		"\2\u06d5\u06d6\7\65\2\2\u06d6\u06d7\5\u0080A\2\u06d7\u06d8\b\66\1\2\u06d8"+
 		"\u06da\3\2\2\2\u06d9\u06ca\3\2\2\2\u06d9\u06d3\3\2\2\2\u06dak\3\2\2\2"+
-		"\u06db\u06dd\78\2\2\u06dc\u06db\3\2\2\2\u06dc\u06dd\3\2\2\2\u06dd\u06de"+
-		"\3\2\2\2\u06de\u06fe\b\67\1\2\u06df\u06e0\7\66\2\2\u06e0\u06fe\b\67\1"+
-		"\2\u06e1\u06e2\79\2\2\u06e2\u06e5\b\67\1\2\u06e3\u06e4\7\67\2\2\u06e4"+
-		"\u06e6\b\67\1\2\u06e5\u06e3\3\2\2\2\u06e5\u06e6\3\2\2\2\u06e6\u06fe\3"+
-		"\2\2\2\u06e7\u06e8\79\2\2\u06e8\u06e9\7:\2\2\u06e9\u06fe\b\67\1\2\u06ea"+
-		"\u06eb\7;\2\2\u06eb\u06ee\b\67\1\2\u06ec\u06ed\7\67\2\2\u06ed\u06ef\b"+
-		"\67\1\2\u06ee\u06ec\3\2\2\2\u06ee\u06ef\3\2\2\2\u06ef\u06fe\3\2\2\2\u06f0"+
-		"\u06f1\7<\2\2\u06f1\u06f4\b\67\1\2\u06f2\u06f3\7\67\2\2\u06f3\u06f5\b"+
-		"\67\1\2\u06f4\u06f2\3\2\2\2\u06f4\u06f5\3\2\2\2\u06f5\u06fe\3\2\2\2\u06f6"+
-		"\u06f9\b\67\1\2\u06f7\u06f8\79\2\2\u06f8\u06fa\b\67\1\2\u06f9\u06f7\3"+
-		"\2\2\2\u06f9\u06fa\3\2\2\2\u06fa\u06fb\3\2\2\2\u06fb\u06fc\7\u00ed\2\2"+
-		"\u06fc\u06fe\b\67\1\2\u06fd\u06dc\3\2\2\2\u06fd\u06df\3\2\2\2\u06fd\u06e1"+
-		"\3\2\2\2\u06fd\u06e7\3\2\2\2\u06fd\u06ea\3\2\2\2\u06fd\u06f0\3\2\2\2\u06fd"+
+		"\u06db\u06dc\78\2\2\u06dc\u06de\b\67\1\2\u06dd\u06db\3\2\2\2\u06dd\u06de"+
+		"\3\2\2\2\u06de\u06fe\3\2\2\2\u06df\u06e0\7\66\2\2\u06e0\u06fe\b\67\1\2"+
+		"\u06e1\u06e2\79\2\2\u06e2\u06e5\b\67\1\2\u06e3\u06e4\7\67\2\2\u06e4\u06e6"+
+		"\b\67\1\2\u06e5\u06e3\3\2\2\2\u06e5\u06e6\3\2\2\2\u06e6\u06fe\3\2\2\2"+
+		"\u06e7\u06e8\79\2\2\u06e8\u06e9\7:\2\2\u06e9\u06fe\b\67\1\2\u06ea\u06eb"+
+		"\7;\2\2\u06eb\u06ee\b\67\1\2\u06ec\u06ed\7\67\2\2\u06ed\u06ef\b\67\1\2"+
+		"\u06ee\u06ec\3\2\2\2\u06ee\u06ef\3\2\2\2\u06ef\u06fe\3\2\2\2\u06f0\u06f1"+
+		"\7<\2\2\u06f1\u06f4\b\67\1\2\u06f2\u06f3\7\67\2\2\u06f3\u06f5\b\67\1\2"+
+		"\u06f4\u06f2\3\2\2\2\u06f4\u06f5\3\2\2\2\u06f5\u06fe\3\2\2\2\u06f6\u06f9"+
+		"\b\67\1\2\u06f7\u06f8\79\2\2\u06f8\u06fa\b\67\1\2\u06f9\u06f7\3\2\2\2"+
+		"\u06f9\u06fa\3\2\2\2\u06fa\u06fb\3\2\2\2\u06fb\u06fc\7\u00ed\2\2\u06fc"+
+		"\u06fe\b\67\1\2\u06fd\u06dd\3\2\2\2\u06fd\u06df\3\2\2\2\u06fd\u06e1\3"+
+		"\2\2\2\u06fd\u06e7\3\2\2\2\u06fd\u06ea\3\2\2\2\u06fd\u06f0\3\2\2\2\u06fd"+
 		"\u06f6\3\2\2\2\u06fem\3\2\2\2\u06ff\u0700\7>\2\2\u0700\u0701\5\u0094K"+
 		"\2\u0701\u0702\b8\1\2\u0702\u0714\3\2\2\2\u0703\u0704\7\u009f\2\2\u0704"+
 		"\u0705\b8\1\2\u0705\u0706\7\4\2\2\u0706\u0707\5\u00c8e\2\u0707\u070e\b"+
@@ -15960,7 +15961,7 @@ public class SqlBaseParser extends Parser {
 		"\u05b7\u05bc\u05be\u05c5\u05cc\u05d1\u05d7\u05da\u05de\u05e4\u05eb\u05f8"+
 		"\u05fe\u0609\u060b\u0610\u0613\u061b\u0624\u0629\u0631\u0639\u0645\u064d"+
 		"\u0651\u065d\u066c\u0671\u0679\u067c\u0680\u068e\u0698\u06a2\u06a5\u06ab"+
-		"\u06b5\u06b8\u06be\u06c7\u06d1\u06d9\u06dc\u06e5\u06ee\u06f4\u06f9\u06fd"+
+		"\u06b5\u06b8\u06be\u06c7\u06d1\u06d9\u06dd\u06e5\u06ee\u06f4\u06f9\u06fd"+
 		"\u070e\u0713\u0718\u071d\u072f\u0731\u0734\u0743\u074c\u0753\u075b\u0763"+
 		"\u0769\u0774\u077f\u0786\u078e\u079a\u079d\u07a4\u07ab\u07ad\u07b6\u07c2"+
 		"\u07c4\u07cb\u07d2\u07d8\u07de\u07e0\u07e6\u07ee\u07f6\u07fe\u0800\u080a"+

@@ -12,6 +12,11 @@ import name.lsg.sparksql.parser.util.IdentHelper;
 public class RelationPrimary extends AST {
     AST sample;
 
+    public RelationPrimary(){}
+
+    public RelationPrimary(AST sample){
+        this.sample = sample;
+    }
     @Override
     public void confess(Context context){
         runConfess(context, sample);
