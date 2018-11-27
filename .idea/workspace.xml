@@ -2,67 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02333d35-cd57-4376-b657-0c0e7e806daf" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DefaultIndentAST.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/context/Context.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/context/Context.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ALL.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ALL.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AND.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AND.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AST.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AliasedQuery.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AliasedQuery.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AliasedRelation.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AliasedRelation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Argument.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Argument.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticBinary.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticBinary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticUnary.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticUnary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Between.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Between.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CASE.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CASE.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CAST.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CAST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DISTINCT.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DISTINCT.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Dereference.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Dereference.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/FromClause.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/FromClause.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/FunctionCall.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/FunctionCall.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/GroupBy.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/GroupBy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Having.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Having.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Identifier.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Identifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InList.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IsNULL.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IsNULL.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Limit.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Limit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NamedExpr.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NamedExpr.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NumberValue.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NumberValue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/OR.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/OR.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ParenthesizedExpression.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ParenthesizedExpression.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Predicated.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Predicated.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/PrimitiveDataType.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/PrimitiveDataType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QualifiedName.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QualifiedName.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Query.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Query.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QueryOrganization.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QueryOrganization.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QueryPrimary.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QueryPrimary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Select.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Select.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SingleInsertQuery.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SingleInsertQuery.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SortItem.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SortItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Star.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Star.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/StringLiteral.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/StringLiteral.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SubQuery.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SubQuery.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableAlias.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableAlias.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableIdentifier.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableIdentifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableName.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableName.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/WhenClause.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/WhenClause.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Where.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Where.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/AntiJOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/AntiJOIN.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/CrossJOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/CrossJOIN.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/FullJOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/FullJOIN.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/InnerJOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/InnerJOIN.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOIN.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOINType.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOINType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftJOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftJOIN.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftSemiJOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftSemiJOIN.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/ON.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/ON.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/RightJOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/RightJOIN.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/USING.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/USING.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/JOINRelation.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/JOINRelation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/NaturalJOINRelation.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/NaturalJOINRelation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/Relation.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/Relation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/RelationPrimary.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/RelationPrimary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java" afterPath="$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IdentHelper.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IndentHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IndentHelper.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IndentHelper.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -78,28 +26,51 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="WhenClause.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/WhenClause.java">
+      <file leaf-file-name="DefaultIndentAST.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DefaultIndentAST.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="22" column="27" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+            <state relative-caret-position="264">
+              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Where.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Where.java">
+      <file leaf-file-name="TableAlias.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableAlias.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="26" column="27" lean-forward="false" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
+            <state relative-caret-position="311">
+              <caret line="32" column="70" lean-forward="true" selection-start-line="32" selection-start-column="70" selection-end-line="32" selection-end-column="70" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="With.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/With.java">
+      <file leaf-file-name="AntiJOIN.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/AntiJOIN.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="29" column="66" lean-forward="false" selection-start-line="29" selection-start-column="66" selection-end-line="29" selection-end-column="66" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CrossJOIN.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/CrossJOIN.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="16" column="67" lean-forward="false" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
+              <folding>
+                <element signature="e#401#402#0" expanded="true" />
+                <element signature="e#476#477#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ALL.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ALL.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="154">
               <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
@@ -108,74 +79,51 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MagicHolder.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/model/MagicHolder.java">
+      <file leaf-file-name="AND.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AND.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+            <state relative-caret-position="220">
+              <caret line="20" column="15" lean-forward="false" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestParser.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java">
+      <file leaf-file-name="AST.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AST.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="195" column="84" lean-forward="true" selection-start-line="195" selection-start-column="84" selection-end-line="195" selection-end-column="84" />
-              <folding>
-                <element signature="e#2162#2163#0" expanded="true" />
-                <element signature="e#2217#2218#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CompilerUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/CompilerUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+            <state relative-caret-position="171">
+              <caret line="17" column="56" lean-forward="true" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IndentHelper.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="IndentHelper.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IndentHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            <state relative-caret-position="17">
+              <caret line="80" column="65" lean-forward="true" selection-start-line="80" selection-start-column="65" selection-end-line="80" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MagicUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/MagicUtils.java">
+      <file leaf-file-name="CASE.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CASE.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            <state relative-caret-position="364">
+              <caret line="41" column="4" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Parser.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/Parser.java">
+      <file leaf-file-name="Argument.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Argument.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CaseInsensitiveStream.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/CaseInsensitiveStream.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+            <state relative-caret-position="-41">
+              <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -193,9 +141,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>valueExpression</find>
-      <find>predicated</find>
-      <find>/</find>
       <find>SLASH</find>
       <find>dataType</find>
       <find>Between</find>
@@ -222,11 +167,17 @@
       <find>JOIN</find>
       <find>joinType</find>
       <find>IsNULL</find>
+      <find>i</find>
+      <find>id</find>
       <find>ident</find>
+      <find>2018</find>
     </findStrings>
     <replaceStrings>
       <replace>indent</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>E:\project\grammars\sparksql\src\main\java</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -239,12 +190,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftJOIN.java" />
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftSemiJOIN.java" />
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/ON.java" />
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/RightJOIN.java" />
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/USING.java" />
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/JOINRelation.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/NaturalJOINRelation.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/Relation.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/relation/RelationPrimary.java" />
@@ -256,7 +201,6 @@
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticBinary.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticUnary.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Between.java" />
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CASE.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CAST.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Dereference.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DISTINCT.java" />
@@ -283,13 +227,20 @@
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SortItem.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Star.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/StringLiteral.java" />
-        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableAlias.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SubQuery.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableIdentifier.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableName.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/WhenClause.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Where.java" />
         <option value="$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/AntiJOIN.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/CrossJOIN.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOINType.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DefaultIndentAST.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AST.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CASE.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableAlias.java" />
+        <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IndentHelper.java" />
       </list>
     </option>
   </component>
@@ -1191,60 +1142,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="relation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grammars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grammars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sparksql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="name" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lsg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sparksql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parser" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grammar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tree" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="join" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -1292,10 +1189,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="grammar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="context" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1931,158 +1824,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="24" column="40" lean-forward="true" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IntegerValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/INTERVAL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IntervalField.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IsNULL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IsDISTINCT.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/LateralView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Like.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Limit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="29" column="27" lean-forward="false" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/MAP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NamedExpr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="711">
-          <caret line="48" column="27" lean-forward="false" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NamedQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NOT.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NULL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NULLS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NumberValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="41" column="27" lean-forward="false" selection-start-line="41" selection-start-column="27" selection-end-line="41" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/OR.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ParenthesizedExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="18" column="27" lean-forward="false" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Predicate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -2144,8 +1885,8 @@
         <state relative-caret-position="396">
           <caret line="24" column="27" lean-forward="false" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
           <folding>
-            <element signature="e#570#571#0" expanded="true" />
-            <element signature="e#634#635#0" expanded="true" />
+            <element signature="e#570#571#0" expanded="false" />
+            <element signature="e#634#635#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2213,14 +1954,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableAlias.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="31" column="27" lean-forward="false" selection-start-line="31" selection-start-column="27" selection-end-line="31" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SubQuery.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="396">
@@ -2239,8 +1972,8 @@
         <state relative-caret-position="374">
           <caret line="25" column="27" lean-forward="false" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
           <folding>
-            <element signature="e#605#606#0" expanded="true" />
-            <element signature="e#677#678#0" expanded="true" />
+            <element signature="e#605#606#0" expanded="false" />
+            <element signature="e#677#678#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2257,14 +1990,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
           <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TinyIntValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -2317,14 +2042,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IndentHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/MagicUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
@@ -2351,12 +2068,191 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="195" column="84" lean-forward="true" selection-start-line="195" selection-start-column="84" selection-end-line="195" selection-end-column="84" />
+        <state relative-caret-position="5918">
+          <caret line="285" column="113" lean-forward="false" selection-start-line="285" selection-start-column="109" selection-end-line="285" selection-end-column="113" />
           <folding>
             <element signature="e#2162#2163#0" expanded="true" />
             <element signature="e#2217#2218#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TinyIntValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/FullJOIN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/InnerJOIN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOIN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-41">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftJOIN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/LeftSemiJOIN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/ON.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOINType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="11" column="43" lean-forward="false" selection-start-line="11" selection-start-column="43" selection-end-line="11" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DecimalValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ComplexDataType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CAST.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="22" column="44" lean-forward="false" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Dereference.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DefaultIndentAST.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/AntiJOIN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="29" column="66" lean-forward="false" selection-start-line="29" selection-start-column="66" selection-end-line="29" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/CrossJOIN.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="16" column="67" lean-forward="false" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
+          <folding>
+            <element signature="e#401#402#0" expanded="true" />
+            <element signature="e#476#477#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ALL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Argument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-41">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AND.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="20" column="15" lean-forward="false" selection-start-line="20" selection-start-column="15" selection-end-line="20" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AST.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="17" column="56" lean-forward="true" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/CASE.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="41" column="4" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableAlias.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="32" column="70" lean-forward="true" selection-start-line="32" selection-start-column="70" selection-end-line="32" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/IndentHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="80" column="65" lean-forward="true" selection-start-line="80" selection-start-column="65" selection-end-line="80" selection-end-column="65" />
+          <folding />
         </state>
       </provider>
     </entry>

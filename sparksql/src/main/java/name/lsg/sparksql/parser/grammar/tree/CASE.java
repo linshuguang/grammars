@@ -33,7 +33,7 @@ public class CASE extends AST {
     @Override
     public void indent(Context context){
         IndentHelper.indent(context, IndentHelper.keyword("case"));
-        IndentHelper.identNoDelimeter(context, whenClause);
+        IndentHelper.indentNoDelimeter(context, whenClause);
         if(elseExpr!=null){
             IndentHelper.indent(context, IndentHelper.keyword("else"));
             IndentHelper.indent(context, elseExpr);

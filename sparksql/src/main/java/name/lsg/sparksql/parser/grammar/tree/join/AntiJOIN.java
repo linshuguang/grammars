@@ -25,8 +25,8 @@ public class AntiJOIN extends JOINType {
     public void indent(Context context){
 
         if(isLeft()){
-            IndentHelper.indent(context, "left");
+            IndentHelper.indent(context, IndentHelper.keyword("left"));
         }
-        IndentHelper.indent(context, "anti");
+        IndentHelper.indent(context, IndentHelper.keyword("anti"));
     }
 }

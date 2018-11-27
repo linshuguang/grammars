@@ -10,10 +10,10 @@ import java.util.List;
  * Created by kenya on 2018/11/19.
  */
 public class IndentHelper {
-    private final static String MAGIC_IDENT = "indent";
+    private final static String MAGIC_INDENT = "indent";
     private static final String DEFAULT_DELIMETER = ",";
 
-    public static void identKeyWord(Context context,String...messages){
+    public static void indentKeyWord(Context context,String...messages){
         for(String msg: messages) {
             context.output(IndentHelper.keyword(msg));
         }
@@ -39,7 +39,7 @@ public class IndentHelper {
 
     public static void indent( Context context, AST ast){
         if(ast!=null)
-            MagicUtils.call(ast, MAGIC_IDENT, context);
+            MagicUtils.call(ast, MAGIC_INDENT, context);
     }
 
     public static void indent( Context context, AST ast, String...alternatives){
@@ -56,7 +56,7 @@ public class IndentHelper {
         }
     }
 
-    public static void identNoDelimeter( Context context, List<AST> astList){
+    public static void indentNoDelimeter( Context context, List<AST> astList){
         if(astList!=null && astList.size()>0){
             for(int i = 0; i < astList.size(); i++ ){
                 AST ast = astList.get(i);
@@ -65,7 +65,7 @@ public class IndentHelper {
         }
     }
 
-    public static void identWithDelimeter( Context context, List<AST> astList,String delimeter){
+    public static void indentWithDelimeter( Context context, List<AST> astList,String delimeter){
         if(astList!=null && astList.size()>0){
             for(int i = 0; i < astList.size(); i++ ){
                 AST ast = astList.get(i);
@@ -78,7 +78,7 @@ public class IndentHelper {
     }
 
     public static void indent( Context context, List<AST> astList){
-        identWithDelimeter( context, astList,DEFAULT_DELIMETER);
+        indentWithDelimeter( context, astList,DEFAULT_DELIMETER);
     }
 
 

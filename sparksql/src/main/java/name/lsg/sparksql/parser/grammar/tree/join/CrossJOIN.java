@@ -14,6 +14,6 @@ public class CrossJOIN extends JOINType {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, "cross");
+        IndentHelper.indent(context, IndentHelper.keyword("cross"));
     }
 }

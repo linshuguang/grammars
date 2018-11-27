@@ -230,6 +230,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$TablePropertyContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$RefreshTableContext.class
 name\lsg\sparksql\parser\grammar\tree\Predicate.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$DecimalLiteralContext.class
+name\lsg\sparksql\parser\grammar\tree\DefaultIndentAST.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SetConfigurationContext.class
 name\lsg\sparksql\parser\grammar\tree\QualifiedName.class
 name\lsg\sparksql\parser\grammar\tree\Between.class

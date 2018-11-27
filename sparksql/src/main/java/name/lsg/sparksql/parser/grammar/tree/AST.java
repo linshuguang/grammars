@@ -15,7 +15,7 @@ public class AST {
     private static final String DEFAULT_DELIMETER = ",";
 
     private static final String MAGIC_OUTPUT = "output";
-    private static final String MAGIC_IDENT = "indent";
+    private static final String MAGIC_INDENT = "indent";
 
     public Object invokeMethod(String methodName, Object target, Object... args) {
         return MagicUtils.invokeMethod(methodName,target,args);

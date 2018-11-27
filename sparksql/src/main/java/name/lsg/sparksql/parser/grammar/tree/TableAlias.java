@@ -30,7 +30,7 @@ public class TableAlias extends AST {
             IndentHelper.indent(context, IndentHelper.keyword("as"));
         }
         IndentHelper.indent(context, strictIdentifier);
-        IndentHelper.identWithDelimeter(context, identifierList," ");
+        IndentHelper.indentWithDelimeter(context, identifierList," ");
     }
 
 }
