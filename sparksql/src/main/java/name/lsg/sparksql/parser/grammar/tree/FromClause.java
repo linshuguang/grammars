@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +33,11 @@ public class FromClause extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, IdentHelper.keyword("from"));
-        IdentHelper.ident(context, relationList);
-        IdentHelper.ident(context, lateralViewList);
-        IdentHelper.ident(context, pivotClause);
+    public void indent(Context context){
+        IndentHelper.indent(context, IndentHelper.keyword("from"));
+        IndentHelper.indent(context, relationList);
+        IndentHelper.indent(context, lateralViewList);
+        IndentHelper.indent(context, pivotClause);
     }
 
 }

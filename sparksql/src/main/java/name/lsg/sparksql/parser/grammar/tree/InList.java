@@ -1,7 +1,7 @@
 package name.lsg.sparksql.parser.grammar.tree;
 
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +22,19 @@ public class InList extends Predicate {
     }
 
     @Override
-    public void ident(Context context){
+    public void indent(Context context){
         if(not){
-            IdentHelper.ident(context,IdentHelper.keyword("not"));
+            IndentHelper.indent(context, IndentHelper.keyword("not"));
         }
-        IdentHelper.ident(context,IdentHelper.keyword("in"));
-        IdentHelper.ident(context,"(");
+        IndentHelper.indent(context, IndentHelper.keyword("in"));
+        IndentHelper.indent(context,"(");
         for(int i = 0; i < exprList.size(); i++){
-            IdentHelper.ident(context, exprList.get(i));
+            IndentHelper.indent(context, exprList.get(i));
             if(i < exprList.size() - 1){
-                IdentHelper.ident(context,",");
+                IndentHelper.indent(context,",");
             }
         }
-        IdentHelper.ident(context,")");
+        IndentHelper.indent(context,")");
 
     }
 }

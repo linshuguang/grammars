@@ -21,7 +21,7 @@ public class JOINType extends AST {
     }
 
     @Override
-    public void ident(Context context){
+    public void indent(Context context){
 
     }
 }

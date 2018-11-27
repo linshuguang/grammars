@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 /**
  * Created by kenya on 2018/11/21.
@@ -23,8 +23,8 @@ public class Argument extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context,qualifier);
-        IdentHelper.ident(context, expr);
+    public void indent(Context context){
+        IndentHelper.indent(context,qualifier);
+        IndentHelper.indent(context, expr);
     }
 }

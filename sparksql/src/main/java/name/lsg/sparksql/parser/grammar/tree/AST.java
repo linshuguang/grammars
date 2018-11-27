@@ -15,14 +15,14 @@ public class AST {
     private static final String DEFAULT_DELIMETER = ",";
 
     private static final String MAGIC_OUTPUT = "output";
-    private static final String MAGIC_IDENT = "ident";
+    private static final String MAGIC_IDENT = "indent";
 
     public Object invokeMethod(String methodName, Object target, Object... args) {
         return MagicUtils.invokeMethod(methodName,target,args);
     }
 
     public void confess( Context context){
-        throw new RuntimeException("ident not implement");
+        throw new RuntimeException("indent not implement");
     }
 
     protected void runConfess(Context context, AST ast){
@@ -73,8 +73,8 @@ public class AST {
     */
 
 
-    public void ident(Context context){
-        throw new RuntimeException("ident not implement");
+    public void indent(Context context){
+        throw new RuntimeException("indent not implement");
     }
 
 
@@ -148,7 +148,7 @@ public class AST {
     }
 
     public AST eval(Context context){
-        throw new RuntimeException("ident not implement");
+        throw new RuntimeException("indent not implement");
         //return this;
     }
 

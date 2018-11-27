@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +37,12 @@ public class QueryOrganization extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, orderBy,IdentHelper.keyword("order"),IdentHelper.keyword("by"));
-        IdentHelper.ident(context, clusterBy,IdentHelper.keyword("cluster"),IdentHelper.keyword("by"));
-        IdentHelper.ident(context, distributeBy,IdentHelper.keyword("distribute"),IdentHelper.keyword("by"));
-        IdentHelper.ident(context, sortBy,IdentHelper.keyword("sort"),IdentHelper.keyword("by"));
-        IdentHelper.ident(context, limit);
+    public void indent(Context context){
+        IndentHelper.indent(context, orderBy, IndentHelper.keyword("order"), IndentHelper.keyword("by"));
+        IndentHelper.indent(context, clusterBy, IndentHelper.keyword("cluster"), IndentHelper.keyword("by"));
+        IndentHelper.indent(context, distributeBy, IndentHelper.keyword("distribute"), IndentHelper.keyword("by"));
+        IndentHelper.indent(context, sortBy, IndentHelper.keyword("sort"), IndentHelper.keyword("by"));
+        IndentHelper.indent(context, limit);
     }
 
 

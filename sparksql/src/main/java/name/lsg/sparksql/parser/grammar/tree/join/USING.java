@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree.join;
 
 import name.lsg.sparksql.parser.grammar.tree.AST;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ public class USING extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, IdentHelper.keyword("using"));
-        IdentHelper.ident(context, identifierList);
+    public void indent(Context context){
+        IndentHelper.indent(context, IndentHelper.keyword("using"));
+        IndentHelper.indent(context, identifierList);
     }
 }

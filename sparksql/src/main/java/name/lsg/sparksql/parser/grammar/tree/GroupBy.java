@@ -1,7 +1,7 @@
 package name.lsg.sparksql.parser.grammar.tree;
 
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +23,10 @@ public class GroupBy extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, IdentHelper.keyword("group"));
-        IdentHelper.ident(context, IdentHelper.keyword("by"));
-        IdentHelper.ident(context, groupingExpressions);
+    public void indent(Context context){
+        IndentHelper.indent(context, IndentHelper.keyword("group"));
+        IndentHelper.indent(context, IndentHelper.keyword("by"));
+        IndentHelper.indent(context, groupingExpressions);
     }
 
 }

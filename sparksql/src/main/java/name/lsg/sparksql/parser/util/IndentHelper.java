@@ -9,17 +9,17 @@ import java.util.List;
 /**
  * Created by kenya on 2018/11/19.
  */
-public class IdentHelper {
-    private final static String MAGIC_IDENT = "ident";
+public class IndentHelper {
+    private final static String MAGIC_IDENT = "indent";
     private static final String DEFAULT_DELIMETER = ",";
 
     public static void identKeyWord(Context context,String...messages){
         for(String msg: messages) {
-            context.output(IdentHelper.keyword(msg));
+            context.output(IndentHelper.keyword(msg));
         }
     }
 
-    public static void ident(Context context, boolean uppper, String...messages){
+    public static void indent(Context context, boolean uppper, String...messages){
         for(String msg: messages) {
             if(uppper) {
                 context.output(msg.toUpperCase());
@@ -29,7 +29,7 @@ public class IdentHelper {
         }
     }
 
-    public static void ident(Context context, String...messages){
+    public static void indent(Context context, String...messages){
         for(String msg: messages) {
             if(msg!=null) {
                 context.output(msg);
@@ -37,22 +37,22 @@ public class IdentHelper {
         }
     }
 
-    public static void ident( Context context, AST ast){
+    public static void indent( Context context, AST ast){
         if(ast!=null)
             MagicUtils.call(ast, MAGIC_IDENT, context);
     }
 
-    public static void ident( Context context, AST ast, String...alternatives){
+    public static void indent( Context context, AST ast, String...alternatives){
         if(ast!=null) {
-            ident(context, ast);
-            ident(context, alternatives);
+            indent(context, ast);
+            indent(context, alternatives);
         }
     }
 
-    public static void ident( Context context, List<AST> astList, String...alternatives){
+    public static void indent( Context context, List<AST> astList, String...alternatives){
         if(astList!=null && astList.size()>0) {
-            ident(context, alternatives);
-            ident(context, astList);
+            indent(context, alternatives);
+            indent(context, astList);
         }
     }
 
@@ -60,7 +60,7 @@ public class IdentHelper {
         if(astList!=null && astList.size()>0){
             for(int i = 0; i < astList.size(); i++ ){
                 AST ast = astList.get(i);
-                ident(context, ast);
+                indent(context, ast);
             }
         }
     }
@@ -69,7 +69,7 @@ public class IdentHelper {
         if(astList!=null && astList.size()>0){
             for(int i = 0; i < astList.size(); i++ ){
                 AST ast = astList.get(i);
-                ident(context, ast);
+                indent(context, ast);
                 if( i < astList.size()-1){
                     context.output(delimeter);
                 }
@@ -77,7 +77,7 @@ public class IdentHelper {
         }
     }
 
-    public static void ident( Context context, List<AST> astList){
+    public static void indent( Context context, List<AST> astList){
         identWithDelimeter( context, astList,DEFAULT_DELIMETER);
     }
 

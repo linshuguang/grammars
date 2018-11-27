@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,17 +46,17 @@ public class Select extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        //IdentHelper.ident(context, "select");
-        IdentHelper.ident(context, IdentHelper.keyword("select"));
-        IdentHelper.ident(context, hints);
-        IdentHelper.ident(context, quantifier);
-        IdentHelper.ident(context, namedExpressionSeq);
-        IdentHelper.ident(context, fromClause);
-        IdentHelper.ident(context, literalViews);
-        IdentHelper.ident(context, where);
-        IdentHelper.ident(context, aggregation);
-        IdentHelper.ident(context, having);
+    public void indent(Context context){
+        //IndentHelper.indent(context, "select");
+        IndentHelper.indent(context, IndentHelper.keyword("select"));
+        IndentHelper.indent(context, hints);
+        IndentHelper.indent(context, quantifier);
+        IndentHelper.indent(context, namedExpressionSeq);
+        IndentHelper.indent(context, fromClause);
+        IndentHelper.indent(context, literalViews);
+        IndentHelper.indent(context, where);
+        IndentHelper.indent(context, aggregation);
+        IndentHelper.indent(context, having);
     }
 }
 

@@ -1,7 +1,7 @@
 package name.lsg.sparksql.parser.grammar.tree.join;
 
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 /**
  * Created by kenya on 2018/11/13.
@@ -22,11 +22,11 @@ public class AntiJOIN extends JOINType {
     }
 
     @Override
-    public void ident(Context context){
+    public void indent(Context context){
 
         if(isLeft()){
-            IdentHelper.ident(context, "left");
+            IndentHelper.indent(context, "left");
         }
-        IdentHelper.ident(context, "anti");
+        IndentHelper.indent(context, "anti");
     }
 }

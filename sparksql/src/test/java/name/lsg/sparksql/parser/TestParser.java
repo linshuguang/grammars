@@ -39,16 +39,16 @@ public class TestParser {
         return result;
     }
 
-    private void ident(AST ast){
+    private void indent(AST ast){
         ContextParam param = ContextFactory.createParam();
         param.setOut(System.out);
         Context context = ContextFactory.create(param);
-        ast.ident(context);
+        ast.indent(context);
     }
 
     private AST procedure(String sql){
         AST result = assertNotNULL(sql);
-        ident(result);
+        indent(result);
         System.out.println();
         System.out.println();
         return result;
@@ -63,13 +63,13 @@ public class TestParser {
     @Test
     public void TestIdent(){
         AST result = assertNotNULL("select a     from        t");
-        ident(result);
+        indent(result);
     }
 
     @Test
     public void TestWhere(){
         AST result = assertNotNULL("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
-        ident(result);
+        indent(result);
     }
 
     @Test
@@ -255,7 +255,7 @@ public class TestParser {
         ContextParam param = ContextFactory.createParam();
         Context context = ContextFactory.create(param);
         result.confess(context);
-        System.out.println("ident sql: "+context.getConfess());
+        System.out.println("indent sql: "+context.getConfess());
         System.out.println("predicate:");
         context.confessPredicates();
     }

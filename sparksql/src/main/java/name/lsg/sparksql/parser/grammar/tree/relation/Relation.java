@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree.relation;
 
 import name.lsg.sparksql.parser.grammar.tree.AST;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,8 @@ public class Relation extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, relationPrimary);
-        IdentHelper.ident(context, joinRelationList);
+    public void indent(Context context){
+        IndentHelper.indent(context, relationPrimary);
+        IndentHelper.indent(context, joinRelationList);
     }
 }

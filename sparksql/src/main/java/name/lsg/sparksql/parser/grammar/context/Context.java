@@ -50,7 +50,7 @@ public class Context {
         }
     }
 
-    public void ident(String line){
+    public void indent(String line){
         String lines  = line + TAB;
         try {
             out.write(lines.getBytes());

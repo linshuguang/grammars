@@ -1,7 +1,7 @@
 package name.lsg.sparksql.parser.grammar.tree;
 
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class QualifiedName extends AST {
     }
 
     @Override
-    public void ident(Context context){
+    public void indent(Context context){
         if(identifierList.size() >= 1){
             StringBuffer sBuf = new StringBuffer();
             sBuf.append(getRawContent(identifierList.get(0)));
@@ -38,7 +38,7 @@ public class QualifiedName extends AST {
                 sBuf.append(".");
                 sBuf.append(identifierList.get(i));
             }
-            IdentHelper.ident(context, sBuf.toString());
+            IndentHelper.indent(context, sBuf.toString());
         }
     }
 

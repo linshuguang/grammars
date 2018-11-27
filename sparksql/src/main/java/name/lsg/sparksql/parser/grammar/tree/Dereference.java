@@ -1,7 +1,7 @@
 package name.lsg.sparksql.parser.grammar.tree;
 
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 /**
  * Created by kenya on 2018/11/13.
@@ -29,10 +29,10 @@ public class Dereference extends TargetAST {
     }
 
     @Override
-    public void ident(Context context){
+    public void indent(Context context){
 
         String msg = getRawContent(base) + "." +getRawContent(field);
-        IdentHelper.ident(context, msg);
+        IndentHelper.indent(context, msg);
     }
 
     @Override

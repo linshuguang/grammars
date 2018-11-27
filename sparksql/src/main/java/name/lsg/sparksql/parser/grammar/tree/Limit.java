@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -25,8 +25,8 @@ public class Limit extends AST {
     }
 
     @Autowired
-    public void ident(Context context){
-        IdentHelper.ident(context,"limit");
-        IdentHelper.ident(context, expr);
+    public void indent(Context context){
+        IndentHelper.indent(context,"limit");
+        IndentHelper.indent(context, expr);
     }
 }

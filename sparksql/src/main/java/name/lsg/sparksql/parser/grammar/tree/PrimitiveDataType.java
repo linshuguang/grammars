@@ -1,7 +1,7 @@
 package name.lsg.sparksql.parser.grammar.tree;
 
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +23,17 @@ public class PrimitiveDataType extends DataType {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, identifier);
+    public void indent(Context context){
+        IndentHelper.indent(context, identifier);
         if(valueList.size()>0){
-            IdentHelper.ident(context, "(");
+            IndentHelper.indent(context, "(");
             for(int i = 0; i < valueList.size(); i++){
-                IdentHelper.ident(context,valueList.get(i));
+                IndentHelper.indent(context,valueList.get(i));
                 if(i<valueList.size()-1){
-                    IdentHelper.ident(context, ",");
+                    IndentHelper.indent(context, ",");
                 }
             }
-            IdentHelper.ident(context, ")");
+            IndentHelper.indent(context, ")");
         }
     }
 

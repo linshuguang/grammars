@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,14 @@ public class CASE extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, IdentHelper.keyword("case"));
-        IdentHelper.identNoDelimeter(context, whenClause);
+    public void indent(Context context){
+        IndentHelper.indent(context, IndentHelper.keyword("case"));
+        IndentHelper.identNoDelimeter(context, whenClause);
         if(elseExpr!=null){
-            IdentHelper.ident(context, IdentHelper.keyword("else"));
-            IdentHelper.ident(context, elseExpr);
+            IndentHelper.indent(context, IndentHelper.keyword("else"));
+            IndentHelper.indent(context, elseExpr);
         }
-        IdentHelper.ident(context, IdentHelper.keyword("end"));
+        IndentHelper.indent(context, IndentHelper.keyword("end"));
     }
 
 }

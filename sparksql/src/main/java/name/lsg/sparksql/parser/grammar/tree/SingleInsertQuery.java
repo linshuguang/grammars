@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 /**
  * Created by kenya on 2018/11/13.
@@ -29,10 +29,10 @@ public class SingleInsertQuery extends AST {
     }
 
     @Override
-    public void ident(Context context){
-        IdentHelper.ident(context, insertInto);
-        IdentHelper.ident(context, queryTerm);
-        IdentHelper.ident(context, queryOrganization);
+    public void indent(Context context){
+        IndentHelper.indent(context, insertInto);
+        IndentHelper.indent(context, queryTerm);
+        IndentHelper.indent(context, queryOrganization);
 
 
     }

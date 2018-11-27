@@ -194,7 +194,6 @@ name\lsg\sparksql\parser\grammar\tree\InList.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$QuotedIdentifierContext.class
 name\lsg\sparksql\parser\grammar\context\Context.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$StatementDefaultContext.class
-name\lsg\sparksql\parser\util\IdentHelper.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$ArithmeticUnaryContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SingleTableIdentifierContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$TableValuedFunctionContext.class
@@ -255,6 +254,7 @@ org\apache\spark\sql\catalyst\parser\SqlBaseParser$RecoverPartitionsContext.clas
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$SetOperationContext.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$JoinRelationContext.class
 name\lsg\sparksql\parser\grammar\tree\AND.class
+name\lsg\sparksql\parser\util\IndentHelper.class
 org\apache\spark\sql\catalyst\parser\SqlBaseParser$DropTablePartitionsContext.class
 name\lsg\sparksql\parser\grammar\tree\ALL.class
 org\apache\spark\sql\catalyst\parser\SqlBaseLexer.class

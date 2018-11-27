@@ -2,7 +2,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
-import name.lsg.sparksql.parser.util.IdentHelper;
+import name.lsg.sparksql.parser.util.IndentHelper;
 
 import java.util.List;
 
@@ -24,13 +24,13 @@ public class TableAlias extends AST {
     }
 
     @Override
-    public void ident(Context context){
+    public void indent(Context context){
 
         if(AS){
-            IdentHelper.ident(context, IdentHelper.keyword("as"));
+            IndentHelper.indent(context, IndentHelper.keyword("as"));
         }
-        IdentHelper.ident(context, strictIdentifier);
-        IdentHelper.identWithDelimeter(context, identifierList," ");
+        IndentHelper.indent(context, strictIdentifier);
+        IndentHelper.identWithDelimeter(context, identifierList," ");
     }
 
 }
