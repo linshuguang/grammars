@@ -53,24 +53,24 @@ options {
   }
 }
 
-singleStatement
-    : statement EOF
+singleStatement returns [ AST value]
+    : statement EOF { $value = $statement.value; }
     ;
 
-singleExpression
-    : namedExpression EOF
+singleExpression returns [ AST value]
+    : namedExpression EOF { $value = $namedExpression.value; }
     ;
 
-singleTableIdentifier
-    : tableIdentifier EOF
+singleTableIdentifier returns [ AST value]
+    : tableIdentifier EOF {  $value = $tableIdentifier.value;  }
     ;
 
 singleFunctionIdentifier
     : functionIdentifier EOF
     ;
 
-singleDataType
-    : dataType EOF
+singleDataType returns [ AST value]
+    : dataType EOF { $value = $dataType.value;}
     ;
 
 singleTableSchema
@@ -79,7 +79,7 @@ singleTableSchema
 
 statement returns [ AST value]
     : query  { $value = $query.value; }                                #statementDefault
-    | USE db=identifier                                                #use
+    | USE db=identifier   { $value = new USE($db.value);}                                             #use
     | CREATE DATABASE (IF NOT EXISTS)? identifier
         (COMMENT comment=STRING)? locationSpec?
         (WITH DBPROPERTIES tablePropertyList)?                         #createDatabase
@@ -247,8 +247,8 @@ skewSpec
       (STORED AS DIRECTORIES)?
     ;
 
-locationSpec
-    : LOCATION STRING
+locationSpec returns [ AST value ]
+    : LOCATION s=STRING { $value = new LocationSpec($s.text);}
     ;
 
 query returns [ Query value ]
@@ -256,35 +256,37 @@ query returns [ Query value ]
     : (ctes {$value.setWith($ctes.value);} )? queryNoWith { $value.setQueryNoWith($queryNoWith.value);}
     ;
 
-insertInto
-    : INSERT OVERWRITE TABLE tableIdentifier (partitionSpec (IF NOT EXISTS)?)?                              #insertOverwriteTable
-    | INSERT INTO TABLE? tableIdentifier partitionSpec?                                                     #insertIntoTable
-    | INSERT OVERWRITE LOCAL? DIRECTORY path=STRING rowFormat? createFileFormat?                            #insertOverwriteHiveDir
-    | INSERT OVERWRITE LOCAL? DIRECTORY (path=STRING)? tableProvider (OPTIONS options=tablePropertyList)?   #insertOverwriteDir
+insertInto returns [ AST value]
+    : INSERT OVERWRITE TABLE t=tableIdentifier { InsertOverwriteTable insert = new InsertOverwriteTable($t.value); $value = insert; } (partitionSpec {insert.setPartitionSpec($partitionSpec.value);} (IF NOT EXISTS { insert.setNotExists(true);})?)?                              #insertOverwriteTable
+    | INSERT INTO {InsertIntoTable insert = new InsertIntoTable(); $value = insert;} (TABLE { insert.setTable(true);})? tableIdentifier { insert.setTableIdentifier($tableIdentifier.value);} (partitionSpec {insert.setPartitionSpec($partitionSpec.value); })?                                                     #insertIntoTable
+    | INSERT OVERWRITE {InsertOverwriteHiveDir insert = new InsertOverwriteHiveDir(); $value = insert;} (LOCAL  {insert.setLocal(true);})? DIRECTORY path=STRING {insert.setPath($path.text);} (rowFormat { insert.setRowFormat($rowFormat.value);})? (createFileFormat { insert.setCreateFileFormat($createFileFormat.value);})?                            #insertOverwriteHiveDir
+    | INSERT OVERWRITE {InsertOverwriteDir insert = new InsertOverwriteDir(); $value = insert;} (LOCAL { insert.setLocal(true);})? DIRECTORY (path=STRING {insert.setPath($path.text);})? tableProvider { insert.setTableProvider($tableProvider.value);} (OPTIONS options=tablePropertyList {  insert.setTablePropertyList($tablePropertyList.value);})?   #insertOverwriteDir
     ;
 
-partitionSpecLocation
-    : partitionSpec locationSpec?
+partitionSpecLocation returns [ PartitionSpecLocation value]
+    : p=partitionSpec { $value = new PartitionSpecLocation($p.value);} (l=locationSpec { $value.setLocation($l.value);})?
     ;
 
-partitionSpec
-    : PARTITION '(' partitionVal (',' partitionVal)* ')'
+partitionSpec returns [ PartitionSpec value]
+    @init { $value = new PartitionSpec();}
+    : PARTITION '(' partitionVal { $value.addPartition($partitionVal.value);} (',' partitionVal { $value.addPartition($partitionVal.value);})* ')'
     ;
 
-partitionVal
-    : identifier (EQ constant)?
+partitionVal returns [PartitionVal value]
+    : identifier { $value = new PartitionVal($identifier.value);} (EQ constant { $value.setConstant($constant.value);})?
     ;
 
-describeFuncName
-    : qualifiedName
-    | STRING
-    | comparisonOperator
-    | arithmeticOperator
-    | predicateOperator
+describeFuncName returns [ AST value]
+    : qualifiedName { $value = $qualifiedName.value;}
+    | s=STRING { $value = new DescribeFuncName($s.text);}
+    | c=comparisonOperator { $value = new DescribeFuncName($c.text);}
+    | a=arithmeticOperator { $value = new DescribeFuncName($a.text);}
+    | p=predicateOperator { $value = new DescribeFuncName($p.text);}
     ;
 
-describeColName
-    : nameParts+=identifier ('.' nameParts+=identifier)*
+describeColName returns [ DescribeColName value]
+    @init { $value = new DescribeColName();}
+    : nameParts+=identifier { $value.addName($identifier.value);} ('.' nameParts+=identifier { $value.addName($identifier.value);})*
     ;
 
 ctes returns [ With value]
@@ -293,57 +295,62 @@ ctes returns [ With value]
     ;
 
 namedQuery returns [ AST value]
-    : name=identifier AS? '(' query ')' { $value = new NamedQuery($name.value,$query.value); }
+    @init { boolean hasAS = false;}
+    : name=identifier (AS { hasAS=true;})? '(' query ')' { $value = new NamedQuery($name.value,$query.value, hasAS); }
     ;
 
-tableProvider
-    : USING qualifiedName
+tableProvider returns [AST value]
+    : USING q=qualifiedName { $value = new TableProvider($q.value);}
     ;
 
-tablePropertyList
-    : '(' tableProperty (',' tableProperty)* ')'
+tablePropertyList returns [ TablePropertyList value]
+    @init { $value = new TablePropertyList();}
+    : '(' p=tableProperty {$value.addProperty($p.value);} (',' tableProperty {$value.addProperty($p.value);})* ')'
     ;
 
-tableProperty
-    : key=tablePropertyKey (EQ? value=tablePropertyValue)?
+tableProperty returns [TableProperty value]
+    : key=tablePropertyKey { $value =new TableProperty($key.value);}( (EQ {$value.setEq(true);})? v=tablePropertyValue {$value.setValue($v.value);})?
     ;
 
-tablePropertyKey
-    : identifier ('.' identifier)*
-    | STRING
+tablePropertyKey returns [TablePropertyKey value]
+    @init{ $value = new TablePropertyKey(); }
+    : i=identifier {$value.addKey($i.value);} ('.' identifier {$value.addKey($i.value);})*
+    | s=STRING { $value = new TablePropertyKey($s.text); }
     ;
 
-tablePropertyValue
-    : INTEGER_VALUE
-    | DECIMAL_VALUE
-    | booleanValue
-    | STRING
+tablePropertyValue returns [ AST value]
+    : i=INTEGER_VALUE { $value = new TablePropertyValue($i.text);}
+    | d=DECIMAL_VALUE{ $value = new TablePropertyValue($d.text);}
+    | b=booleanValue { $value = $b.value;}
+    | s=STRING { $value = new TablePropertyValue($s.text);}
     ;
 
-constantList
-    : '(' constant (',' constant)* ')'
+constantList returns [ ConstantList value]
+    @init{ $value = new ConstantList(); }
+    : '(' c=constant {$value.addConstant($c.value); } (',' c=constant {$value.addConstant($c.value); })* ')'
     ;
 
-nestedConstantList
-    : '(' constantList (',' constantList)* ')'
+nestedConstantList returns [ NestedConstantList value]
+    @init{ $value = new NestedConstantList(); }
+    : '(' c=constantList {$value.addConstant($c.value); } (',' c=constantList {$value.addConstant($c.value); })* ')'
     ;
 
-createFileFormat
-    : STORED AS fileFormat
-    | STORED BY storageHandler
+createFileFormat returns [AST value]
+    : STORED a=AS f=fileFormat { $value = new CreateFileFormat($a.text,$f.value);}
+    | STORED a=BY s=storageHandler { $value = new CreateFileFormat($a.text,$s.value);}
     ;
 
-fileFormat
-    : INPUTFORMAT inFmt=STRING OUTPUTFORMAT outFmt=STRING    #tableFileFormat
-    | identifier                                             #genericFileFormat
+fileFormat returns [ AST value]
+    : INPUTFORMAT inFmt=STRING OUTPUTFORMAT outFmt=STRING  { $value = new TableFileFormat($inFmt.text,$outFmt.text);}  #tableFileFormat
+    | i=identifier    { $value = new GenericFileFormat($i.value);}                                         #genericFileFormat
     ;
 
-storageHandler
+storageHandler returns [ AST value]
     : STRING (WITH SERDEPROPERTIES tablePropertyList)?
     ;
 
-resource
-    : identifier STRING
+resource returns [AST value]
+    : i=identifier s=STRING { $value = new Resource($i.value, $s.text);}
     ;
 
 queryNoWith returns [ AST value]
@@ -573,7 +580,7 @@ tableAlias returns [ TableAlias value]
     : ((AS { $value.setAS(true);})? s=strictIdentifier  { $value.setStrictIdentifier($s.value);} (l=identifierList {$value.setIdentifierList($l.value);})?)?
     ;
 
-rowFormat
+rowFormat returns [ AST value]
     : ROW FORMAT SERDE name=STRING (WITH SERDEPROPERTIES props=tablePropertyList)?  #rowFormatSerde
     | ROW FORMAT DELIMITED
       (FIELDS TERMINATED BY fieldsTerminatedBy=STRING (ESCAPED BY escapedBy=STRING)?)?
@@ -588,8 +595,9 @@ tableIdentifier returns [TableIdentifier value]
     : (db=identifier '.' { $value.addIdentifier($db.value);})? table=identifier { $value.addIdentifier($table.value);}
     ;
 
-functionIdentifier
-    : (db=identifier '.')? function=identifier
+functionIdentifier returns [ FunctionIdentifier value]
+    @init { $value = new FunctionIdentifier();}
+    : (db=identifier '.' { $value.setDb($db.value);})? function=identifier { $value.setFunction($function.value);}
     ;
 
 namedExpression returns [ NamedExpr value]
@@ -608,7 +616,7 @@ expression returns [ AST value ]
 
 booleanExpression returns [ AST value]
     : NOT b=booleanExpression   { $value = new NOT($b.value);}              #logicalNot
-    | EXISTS '(' query ')'                                         #exists
+    | EXISTS '(' query ')'   { $value = new EXISTS($query.value);}                                      #exists
     | predicated  { $value = $predicated.value;}                                                 #booleanDefault
     | left=booleanExpression operator=AND right=booleanExpression { $value = new AND($left.value, $right.value);}  #logicalBinary
     | left=booleanExpression operator=OR right=booleanExpression  { $value = new OR($left.value, $right.value);} #logicalBinary
@@ -646,21 +654,21 @@ primaryExpression returns [ AST value]
     : CASE { CASE c = new CASE(); $value = c; } (whenClause { c.addWhen($whenClause.value);})+ (ELSE elseExpression=expression { c.setElseExpr($elseExpression.value);})? END                                   #searchedCase
     | CASE expr=expression { CASE c = new CASE($expr.value); $value = c; } (whenClause{ c.addWhen($whenClause.value);})+ (ELSE elseExpression=expression { c.setElseExpr($elseExpression.value);})? END                  #simpleCase
     | CAST '(' expr=expression AS dataType ')'   { $value = new CAST($expr.value,$dataType.value);  }                                                   #cast
-    | STRUCT '(' (argument+=namedExpression (',' argument+=namedExpression)*)? ')'             #struct
-    | FIRST '(' expression (IGNORE NULLS)? ')'                                                 #first
-    | LAST '(' expression (IGNORE NULLS)? ')'                                                  #last
-    | POSITION '(' substr=valueExpression IN str=valueExpression ')'                           #position
+    | STRUCT '(' (argument+=namedExpression { STRUCT struct = new STRUCT($namedExpression.value); $value = struct;} (',' argument+=namedExpression { struct.addArgument($namedExpression.value); } )*)? ')'             #struct
+    | FIRST '(' expression { FIRST first = new FIRST($expression.value); $value = first;} (IGNORE NULLS { first.setIgnore(true);} )? ')'                                                 #first
+    | LAST '(' expression { LAST last = new LAST($expression.value); $value = last;} (IGNORE NULLS { last.setIgnore(true); })? ')'                                                  #last
+    | POSITION '(' substr=valueExpression IN str=valueExpression ')' { $value = new POSITION($substr.value,$str.value);}                          #position
     | constant  {$value = $constant.value;}                                                                               #constantDefault
     | ASTERISK  { $value = new Star();}                                                                               #star
     | qualifiedName '.' ASTERISK  { $value = new Star($qualifiedName.value);}                                                             #star
-    | '(' namedExpression (',' namedExpression)+ ')'                                           #rowConstructor
-    | '(' query ')'                                                                            #subqueryExpression
-    | qualifiedName { AST quantifier = null; $value = new FunctionCall($qualifiedName.value); FunctionCall fc = (FunctionCall)$value;}
+    | '(' namedExpression { RowConstructor rc = new RowConstructor($namedExpression.value); $value = rc;} (',' namedExpression { rc.addRow($namedExpression.value);} )+ ')'                                           #rowConstructor
+    | '(' query ')'   { $value = new SubQuery($query.value); }                                                                         #subqueryExpression
+    | qualifiedName { AST quantifier = null; FunctionCall fc = new FunctionCall($qualifiedName.value);  $value = fc;}
         '(' ((sq=setQuantifier { quantifier = $sq.value; })? expression { fc.addArgument(new Argument(quantifier,$expression.value));} (',' expression { fc.addArgument(new Argument($expression.value));})*)? ')'
-       (OVER windowSpec)?                                                                      #functionCall
-    | qualifiedName '(' trimOption=(BOTH | LEADING | TRAILING) argument+=expression
-      FROM argument+=expression ')'                                                            #functionCall
-    | pe=primaryExpression '[' index=valueExpression ']'                                    #subscript
+       (OVER w=windowSpec { fc.setWindowSpec($w.value);})?                                                                      #functionCall
+    | qualifiedName '(' trimOption=(BOTH | LEADING | TRAILING) { TrimFunctionCall fc = new TrimFunctionCall($qualifiedName.value,$trimOption.text); $value = fc;} argument+=expression {fc.addArgument($expression.value); }
+      FROM argument+=expression  {fc.addArgument($expression.value); } ')'                                                            #functionCall
+    | pe=primaryExpression '[' index=valueExpression ']'  { $value = new SubScript($pe.value,$index.value);}                                   #subscript
     | identifier  { $value = $identifier.value;}                                                                              #columnReference
     | base=primaryExpression '.' fieldName=identifier   { $value = new Dereference($base.value,$fieldName.value);}                                       #dereference
     | '(' expression ')' { $value = new ParenthesizedExpression($expression.value);}                                                                      #parenthesizedExpression
@@ -668,8 +676,8 @@ primaryExpression returns [ AST value]
 
 constant returns [ AST value]
     : NULL  { $value = new NULL();}                                                                                   #nullLiteral
-    | interval                                                                                 #intervalLiteral
-    | identifier STRING                                                                        #typeConstructor
+    | i=interval { $value = $i.value;}                                                                                #intervalLiteral
+    | i=identifier s=STRING  { $value = new TypeConstructor($i.value,$s.text);}                                                                      #typeConstructor
     | number  { $value = $number.value;}                                                                                 #numericLiteral
     | booleanValue   { $value = $booleanValue.value;}                                                                           #booleanLiteral
     |  ( s=STRING { $value = new StringLiteral($s.text);})+                                                  #stringLiteral
@@ -679,12 +687,12 @@ comparisonOperator returns [ String text]
     : c= ( EQ | NEQ | NEQJ | LT | LTE | GT | GTE | NSEQ ) { $text = $c.text;}
     ;
 
-arithmeticOperator
-    : PLUS | MINUS | ASTERISK | SLASH | PERCENT | DIV | TILDE | AMPERSAND | PIPE | CONCAT_PIPE | HAT
+arithmeticOperator returns [ String text]
+    : c=(PLUS | MINUS | ASTERISK | SLASH | PERCENT | DIV | TILDE | AMPERSAND | PIPE | CONCAT_PIPE | HAT)  { $text = $c.text;}
     ;
 
-predicateOperator
-    : OR | AND | IN | NOT
+predicateOperator returns [ String text]
+    : c=(OR | AND | IN | NOT) { $text = $c.text;}
     ;
 
 booleanValue returns [ BoolValue value]
@@ -700,71 +708,76 @@ intervalField returns [ IntervalField value]
     : iv=intervalValue unit=identifier (TO to=identifier)?
     ;
 
-intervalValue
-    : (PLUS | MINUS)? (INTEGER_VALUE | DECIMAL_VALUE)
-    | STRING
+intervalValue returns [ IntervalValue value]
+    @init{ $value = new IntervalValue(); }
+    : (s=(PLUS | MINUS) { $value.setSign($s.text);})? v=(INTEGER_VALUE | DECIMAL_VALUE) {  $value.setValue($v.text);}
+    | v=STRING {  $value.setValue($v.text);}
     ;
 
-colPosition
-    : FIRST | AFTER identifier
+colPosition returns [ AST value]
+    : f=FIRST { $value = new ColPosition($f.text);} | f=AFTER identifier { $value = new ColPosition($f.text, $identifier.value);}
     ;
 
 dataType returns [ DataType value ]
     : complex=ARRAY '<' dataType '>'  { $value = new ARRAY($dataType.value);  }                          #complexDataType
     | complex=MAP '<' k=dataType ',' v=dataType '>'   { $value = new MAP($k.value, $v.value);}               #complexDataType
-    | complex=STRUCT ('<' complexColTypeList? '>' | NEQ)        #complexDataType
+    | complex=STRUCT  { ComplexDataType struct = new ComplexDataType(); $value=struct;}('<' (c=complexColTypeList { struct.setComplexColTypeList($c.value);})?  '>' | NEQ { struct.setNeq(new NEQ());})        #complexDataType
     | i=identifier { PrimitiveDataType pdt = new PrimitiveDataType($i.value); $value= pdt; } ('(' v=INTEGER_VALUE { pdt.addValue(new IntegerValue($v.text));  } (',' v=INTEGER_VALUE { pdt.addValue(new IntegerValue($v.text)); } )* ')')?  #primitiveDataType
     ;
 
-colTypeList
-    : colType (',' colType)*
+colTypeList returns [ List value ]
+    @init{ $value = new ArrayList(); }
+    : colType { $value.add($colType.value);} (',' colType { $value.add($colType.value);})*
     ;
 
-colType
-    : identifier dataType (COMMENT STRING)?
+colType returns [ ColType value ]
+    : identifier dataType {$value = new ColType($identifier.value, $dataType.value); }(COMMENT s=STRING { $value.setComment($s.text);})?
     ;
 
-complexColTypeList
-    : complexColType (',' complexColType)*
+complexColTypeList returns [ List value ]
+    @init{ $value = new ArrayList(); }
+    : complexColType { $value.add($complexColType.value);} (',' complexColType { $value.add($complexColType.value);} )*
     ;
 
-complexColType
-    : identifier ':' dataType (COMMENT STRING)?
+complexColType returns [ ComplexColType value ]
+    : identifier ':' dataType { $value = new ComplexColType($identifier.value, $dataType.value);}  (COMMENT s=STRING { $value.setComment($s.text);})?
     ;
 
 whenClause returns [ AST value ]
     : WHEN condition=expression THEN result=expression { $value = new WhenClause($condition.value, $result.value); }
     ;
 
-windows
-    : WINDOW namedWindow (',' namedWindow)*
+windows returns [ Windows value]
+    @init { $value = new Windows();}
+    : WINDOW namedWindow { $value.addWindow($namedWindow.value);} (',' namedWindow { $value.addWindow($namedWindow.value);})*
     ;
 
-namedWindow
-    : identifier AS windowSpec
+namedWindow returns [ AST value]
+    : identifier AS windowSpec { $value = new NamedWindow($identifier.value,$windowSpec.value);}
     ;
 
-windowSpec
-    : name=identifier  #windowRef
+windowSpec returns [ WindowSpec value ]
+    @init { $value = new WindowSpec();}
+    : name=identifier {$value = new WindowSpec($name.value); }  #windowRef
     | '('
-      ( CLUSTER BY partition+=expression (',' partition+=expression)*
-      | ((PARTITION | DISTRIBUTE) BY partition+=expression (',' partition+=expression)*)?
-        ((ORDER | SORT) BY sortItem (',' sortItem)*)?)
-      windowFrame?
+      ( pname=CLUSTER { $value = new WindowSpec($pname.text); } BY partition+=expression { $value.addPartition($expression.value);} (',' partition+=expression { $value.addPartition($expression.value);})*
+      | (pname=(PARTITION | DISTRIBUTE) { $value = new WindowSpec($pname.text); } BY partition+=expression { $value.addPartition($expression.value);} (',' partition+=expression { $value.addPartition($expression.value);})*)?
+        (sname=(ORDER | SORT) { $value.setSortMethod($sname.text);} BY sortItem { $value.addSortItem($sortItem.value);} (',' sortItem { $value.addSortItem($sortItem.value);})*)?)
+      (windowFrame { $value.setWindowFrame($windowFrame.value);})?
       ')'              #windowDef
     ;
 
-windowFrame
-    : frameType=RANGE start=frameBound
-    | frameType=ROWS start=frameBound
-    | frameType=RANGE BETWEEN start=frameBound AND end=frameBound
-    | frameType=ROWS BETWEEN start=frameBound AND end=frameBound
+windowFrame returns [ WindowFrame value ]
+    : frameType=RANGE s=frameBound { $value = new WindowFrame($frameType.text,$s.value); }
+    | frameType=ROWS s=frameBound { $value = new WindowFrame($frameType.text, $s.value);}
+    | frameType=RANGE BETWEEN s=frameBound AND end=frameBound { $value = new WindowFrame($frameType.text, $s.value, $end.value);}
+    | frameType=ROWS BETWEEN s=frameBound AND end=frameBound { $value = new WindowFrame($frameType.text, $s.value, $end.value);}
     ;
 
-frameBound
-    : UNBOUNDED boundType=(PRECEDING | FOLLOWING)
-    | boundType=CURRENT ROW
-    | expression boundType=(PRECEDING | FOLLOWING)
+frameBound returns [ FrameBound value]
+    : UNBOUNDED boundType=(PRECEDING | FOLLOWING) { $value = new FrameBound($boundType.text); $value.setBoundType($UNBOUNDED.text); }
+    | boundType=CURRENT ROW { $value = new FrameBound($boundType.text); $value.setBoundType($ROW.text); }
+    | expression boundType=(PRECEDING | FOLLOWING) { $value = new FrameBound($boundType.text); $value.setExpr($expression.value); }
     ;
 
 qualifiedName returns [ QualifiedName value]

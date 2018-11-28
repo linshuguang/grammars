@@ -17,6 +17,10 @@ public class FunctionCall extends AST {
     AST setQuantifier;
     AST windowSpec;
 
+    public FunctionCall(){
+
+    }
+
     public FunctionCall(AST qualifiedName){
         this.qualifiedName = qualifiedName;
     }
@@ -39,6 +43,10 @@ public class FunctionCall extends AST {
         IndentHelper.indent(context,"(");
         IndentHelper.indent(context, arguments);
         IndentHelper.indent(context,")");
+        if(windowSpec!=null){
+            IndentHelper.indent(context, IndentHelper.keyword("OVER"));
+            IndentHelper.indent(context, windowSpec);
+        }
     }
 
     @Override

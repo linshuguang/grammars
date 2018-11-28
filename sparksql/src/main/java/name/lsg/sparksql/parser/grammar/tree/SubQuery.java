@@ -22,7 +22,9 @@ public class SubQuery extends AST {
 
     @Override
     public void indent(Context context){
+        IndentHelper.indent(context, "(");
         IndentHelper.indent(context, queryNoWith);
+        IndentHelper.indent(context, ")");
     }
 
     @Override

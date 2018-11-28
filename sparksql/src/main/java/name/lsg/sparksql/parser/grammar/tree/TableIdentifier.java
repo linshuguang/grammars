@@ -23,6 +23,6 @@ public class TableIdentifier extends AST{
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, concat(identifierList,"."));
+        IndentHelper.indent(context, concat(identifierList,'.'));
     }
 }

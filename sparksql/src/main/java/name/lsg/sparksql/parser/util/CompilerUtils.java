@@ -141,4 +141,10 @@ public class CompilerUtils {
         LOGGER.info("result:{}", result);
         return result;
     }
+
+    public static boolean identSql(String sql1, String sql2){
+        Parser parser = new Parser();
+        return parser.identSQL(sql1, sql2);
+    }
+
 }

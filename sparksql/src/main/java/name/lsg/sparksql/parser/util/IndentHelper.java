@@ -2,9 +2,13 @@ package name.lsg.sparksql.parser.util;
 
 import name.lsg.sparksql.parser.grammar.context.Context;
 import name.lsg.sparksql.parser.grammar.tree.AST;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.spark.sql.catalyst.parser.SqlBaseLexer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Created by kenya on 2018/11/19.
@@ -12,6 +16,7 @@ import java.util.List;
 public class IndentHelper {
     private final static String MAGIC_INDENT = "indent";
     private static final String DEFAULT_DELIMETER = ",";
+    private static final Logger LOGGER = LoggerFactory.getLogger(IndentHelper.class);
 
     public static void indentKeyWord(Context context,String...messages){
         for(String msg: messages) {
@@ -88,9 +93,51 @@ public class IndentHelper {
             int i = MagicUtils.findIntValue(SqlBaseLexer.class, word.toUpperCase());
             val = SqlBaseLexer.ruleNames[i-1];
         }catch (Exception e){
-            e.printStackTrace();
+            LOGGER.error("weird keyword:{}",word);
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
+            val = word;
         }
         return val;
+    }
+
+    private static String complete(String str, int len, char pad){
+        char border = '*';
+        char tab = ' ';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(border);
+        stringBuilder.append(tab);
+        stringBuilder.append(str);
+        for(int i = 0 ; i < (len - str.length()); i++){
+            stringBuilder.append(pad);
+        }
+        stringBuilder.append(tab);
+        stringBuilder.append(border);
+        return stringBuilder.toString();
+    }
+
+    private static String complete(String str, int len){
+        return complete(str, len, ' ');
+    }
+
+    private static String join(String [] split, int len){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n");
+        stringBuilder.append(complete("",len,'*'));
+        stringBuilder.append("\n");
+        for(int i=0; i < split.length; i++){
+            stringBuilder.append(complete(split[i],len));
+            stringBuilder.append("\n");
+        }
+        stringBuilder.append(complete("",len,'*'));
+        return stringBuilder.toString();
+    }
+    public static String frame(String str){
+        String []split = str.split("\n");
+        TreeSet<Integer> len = new TreeSet<>();
+        for(int i=0; i < split.length; i++){
+            len.add(split[i].length());
+        }
+        return join(split, len.last());
     }
 
 }

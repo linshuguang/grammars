@@ -3,6 +3,7 @@ package name.lsg.sparksql.parser.grammar.tree;
 import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
 import name.lsg.sparksql.parser.grammar.context.ContextFactory;
+import name.lsg.sparksql.parser.util.IndentHelper;
 import name.lsg.sparksql.parser.util.MagicUtils;
 import org.springframework.util.StringUtils;
 
@@ -93,7 +94,7 @@ public class AST {
         return context.getConfess().trim();
     }
 
-    protected String concat(List<AST> asts, String delimiter){
+    protected String concat(List<AST> asts, char delimiter){
         StringBuffer sb = new StringBuffer();
         for(int i =0 ;i < asts.size(); i++) {
             String str = getRawContent(asts.get(i));
@@ -159,5 +160,6 @@ public class AST {
     public String confessPredicator(Context context){
         return null;
     }
+
 
 }

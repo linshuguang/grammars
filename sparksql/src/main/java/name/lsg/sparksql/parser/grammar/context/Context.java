@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 @Data
 public class Context {
     private static final Logger LOGGER = LoggerFactory.getLogger(Context.class);
-    private static final String TAB = "\t";
+    private static final String TAB = " ";
 
     List<AST> predicates = new ArrayList<>();
 

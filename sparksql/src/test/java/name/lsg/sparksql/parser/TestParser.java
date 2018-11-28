@@ -5,6 +5,8 @@ import name.lsg.sparksql.parser.grammar.context.ContextFactory;
 import name.lsg.sparksql.parser.grammar.context.ContextParam;
 import name.lsg.sparksql.parser.grammar.tree.AST;
 import name.lsg.sparksql.parser.util.CompilerUtils;
+import name.lsg.sparksql.parser.util.ConsoleUtils;
+import name.lsg.sparksql.parser.util.IndentHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -12,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,29 +32,43 @@ public class TestParser {
 
     private AST run(String sql){
         Parser parser = new Parser();
-        System.out.println("to run:"+sql);
         return parser.parse(sql);
     }
 
     private AST assertNotNULL(String sql){
         AST result = run(sql);
         assert (result!=null);
-        System.out.println("yes, result is not null");
         return result;
     }
 
-    private void indent(AST ast){
+    private void indent(AST ast, OutputStream out){
         ContextParam param = ContextFactory.createParam();
-        param.setOut(System.out);
+        param.setOut(out);
         Context context = ContextFactory.create(param);
         ast.indent(context);
     }
 
     private AST procedure(String sql){
+
+        ConsoleUtils.stdout("to run:");
+        ConsoleUtils.alert(IndentHelper.frame(sql));
+        ConsoleUtils.stdout("\n");
+
         AST result = assertNotNULL(sql);
-        indent(result);
-        System.out.println();
-        System.out.println();
+        ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
+        indent(result,bOutput);
+        String sql2 = bOutput.toString()
+                ;
+        ConsoleUtils.stdout("result:");
+        ConsoleUtils.alert(IndentHelper.frame(sql2));
+        ConsoleUtils.stdout("\n");
+
+        assert (CompilerUtils.identSql(sql,sql2));
+
+        ConsoleUtils.stdout("conclude:");
+        ConsoleUtils.green("succeed");
+        ConsoleUtils.stdout("\n");
+
         return result;
     }
 
@@ -62,14 +80,12 @@ public class TestParser {
 
     @Test
     public void TestIdent(){
-        AST result = assertNotNULL("select a     from        t");
-        indent(result);
+        procedure("select a     from        t");
     }
 
     @Test
     public void TestWhere(){
-        AST result = assertNotNULL("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
-        indent(result);
+        procedure("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
     }
 
     @Test
@@ -247,6 +263,60 @@ public class TestParser {
                 " order by c.ovd_t");
     }
 
+    @Test
+    public void TestUse() {
+        procedure("use Table");
+    }
+
+
+    @Test
+    public void TestWith() {
+        procedure("WITH EXP AS (SELECT  ALIASNAME.ID+1 ID, ALIASNAME.NAME NAME FROM employee_1 ALIASNAME)\n" +
+                "     SELECT * FROM EXP");
+        procedure("WITH EXP (SELECT  ALIASNAME.ID+1 ID, ALIASNAME.NAME NAME FROM employee_1 ALIASNAME)\n" +
+                "     SELECT * FROM EXP");
+    }
+
+    @Test
+    public void TestExists() {
+        procedure("select a,b,c\n" +
+                "  from A, B, C\n" +
+                "where\n" +
+                "  A.FK_1 = B.PK and\n" +
+                "  A.FK_2 = C.PK and\n" +
+                "  exists (select A.ID )");
+        //procedure("WITH EXP (SELECT  ALIASNAME.ID+1 ID, ALIASNAME.NAME NAME FROM employee_1 ALIASNAME)\n" +
+        //        "     SELECT * FROM EXP");
+    }
+
+    @Test
+    public void TestStruct() {
+        procedure("select struct(a,1,2)");
+    }
+
+    @Test
+    public void TestFirst() {
+        procedure("select \n first( (select abc) )");
+        procedure("select first( (select abc) ignore nulls)");
+    }
+
+    @Test
+    public void TestLast() {
+        procedure("select \n last( (select abc) )");
+        procedure("select last( (select abc) ignore nulls)");
+    }
+
+    @Test
+    public void TestPosition() {
+        procedure("select position(  abc in (select abc) )");
+    }
+
+
+
+    @Test
+    public void Test() {
+        procedure("");
+    }
     /*
     @Test
     public void TestCook(){

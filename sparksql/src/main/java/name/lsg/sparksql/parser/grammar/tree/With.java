@@ -1,5 +1,8 @@
 package name.lsg.sparksql.parser.grammar.tree;
 
+import name.lsg.sparksql.parser.grammar.context.Context;
+import name.lsg.sparksql.parser.util.IndentHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,4 +16,9 @@ public class With extends AST {
         this.namedQueryList.add(value);
     }
 
+    @Override
+    public void indent(Context context){
+        IndentHelper.indent(context,IndentHelper.keyword("with"));
+        IndentHelper.indent(context, namedQueryList);
+    }
 }
