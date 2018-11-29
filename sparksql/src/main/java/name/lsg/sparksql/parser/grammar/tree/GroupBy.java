@@ -1,7 +1,9 @@
 package name.lsg.sparksql.parser.grammar.tree;
 
+import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
 import name.lsg.sparksql.parser.util.IndentHelper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +11,20 @@ import java.util.List;
 /**
  * Created by kenya on 2018/11/13.
  */
+@Data
 public class GroupBy extends AST {
     List<AST> groupingExpressions = new ArrayList<>();
 
+    String with;
+    List<AST> groupingSet = new ArrayList<>();
+
     public void addGroupingExpression(AST value){
         this.groupingExpressions.add(value);
+    }
+
+
+    public void addGroupingSet(AST set){
+        groupingSet.add(set);
     }
 
     @Override
@@ -24,9 +35,20 @@ public class GroupBy extends AST {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, IndentHelper.keyword("group"));
-        IndentHelper.indent(context, IndentHelper.keyword("by"));
+        IndentHelper.indentKeyWord(context, "group");
+        IndentHelper.indentKeyWord(context, "by");
         IndentHelper.indent(context, groupingExpressions);
+        if(!StringUtils.isBlank(with)){
+            IndentHelper.indentKeyWord(context, "with");
+            IndentHelper.indent(context, with);
+        }
+        if(groupingSet.size()>0){
+            IndentHelper.indentKeyWord(context, "GROUPING","sets");
+            IndentHelper.indent(context, "(");
+            IndentHelper.indent(context, groupingSet);
+            IndentHelper.indent(context, ")");
+        }
+
     }
 
 }

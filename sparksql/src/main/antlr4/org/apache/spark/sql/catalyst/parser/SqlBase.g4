@@ -27,6 +27,8 @@ options {
   import name.lsg.sparksql.parser.grammar.tree.*;
   import name.lsg.sparksql.parser.grammar.tree.join.*;
   import name.lsg.sparksql.parser.grammar.tree.relation.*;
+  import name.lsg.sparksql.parser.grammar.tree.ddl.*;
+  import name.lsg.sparksql.parser.grammar.tree.dml.*;
 }
 
 @members {
@@ -80,100 +82,100 @@ singleTableSchema
 statement returns [ AST value]
     : query  { $value = $query.value; }                                #statementDefault
     | USE db=identifier   { $value = new USE($db.value);}                                             #use
-    | CREATE DATABASE (IF NOT EXISTS)? identifier
+    | { boolean notExists=false;}CREATE DATABASE (IF NOT EXISTS {notExists=true;})? identifier
         (COMMENT comment=STRING)? locationSpec?
-        (WITH DBPROPERTIES tablePropertyList)?                         #createDatabase
-    | ALTER DATABASE identifier SET DBPROPERTIES tablePropertyList     #setDatabaseProperties
-    | DROP DATABASE (IF EXISTS)? identifier (RESTRICT | CASCADE)?      #dropDatabase
-    | createTableHeader ('(' colTypeList ')')? tableProvider
-        ((OPTIONS options=tablePropertyList) |
-        (PARTITIONED BY partitionColumnNames=identifierList) |
-        bucketSpec |
-        locationSpec |
-        (COMMENT comment=STRING) |
-        (TBLPROPERTIES tableProps=tablePropertyList))*
-        (AS? query)?                                                   #createTable
-    | createTableHeader ('(' columns=colTypeList ')')?
-        ((COMMENT comment=STRING) |
-        (PARTITIONED BY '(' partitionColumns=colTypeList ')') |
-        bucketSpec |
-        skewSpec |
-        rowFormat |
-        createFileFormat |
-        locationSpec |
-        (TBLPROPERTIES tableProps=tablePropertyList))*
-        (AS? query)?                                                   #createHiveTable
-    | CREATE TABLE (IF NOT EXISTS)? target=tableIdentifier
-        LIKE source=tableIdentifier locationSpec?                      #createTableLike
-    | ANALYZE TABLE tableIdentifier partitionSpec? COMPUTE STATISTICS
-        (identifier | FOR COLUMNS identifierSeq)?                      #analyze
+        (WITH DBPROPERTIES tablePropertyList)? { $value =new CreateDatabase(notExists,$identifier.value,$comment.text,$locationSpec.value,$tablePropertyList.value);}                        #createDatabase
+    | ALTER DATABASE identifier SET DBPROPERTIES tablePropertyList  {  $value = new SetDatabaseProperties($identifier.value,$tablePropertyList.value);}   #setDatabaseProperties
+    | { boolean exists = false;}DROP DATABASE (IF EXISTS {exists = true;})? identifier appendix=(RESTRICT | CASCADE)?  { $value = new DropDatabase(exists,$identifier.value,$appendix.text);}     #dropDatabase
+    | createTableHeader ('(' colTypeList ')')? tableProvider {CreateTable createTable = new CreateTable($createTableHeader.value,$colTypeList.value,$tableProvider.value); $value = createTable;}
+        ((OPTIONS options=tablePropertyList { createTable.setTablePropertyList($options.value);}) |
+        (PARTITIONED BY partitionColumnNames=identifierList {  createTable.setPartitionColumnNames($partitionColumnNames.value);}) |
+        bucketSpec { createTable.setBucketSpec($bucketSpec.value);}|
+        locationSpec { createTable.setLocationSpec($locationSpec.value);} |
+        (COMMENT comment=STRING { createTable.setComment($comment.text);}) |
+        (TBLPROPERTIES tableProps=tablePropertyList {  createTable.setTableProps($tableProps.value);}))*
+        ((AS{ createTable.markAS();})? query{ createTable.setQuery($query.value);})?                                                   #createTable
+    | createTableHeader ('(' columns=colTypeList ')')? { CreateHiveTable createTable = new CreateHiveTable($createTableHeader.value,$columns.value); $value =createTable;}
+        ((COMMENT comment=STRING { createTable.setComment($comment.text);}) |
+        (PARTITIONED BY '(' partitionColumns=colTypeList ')' { createTable.setPartitionColumns($partitionColumns.value);}) |
+        bucketSpec { createTable.setBucketSpec($bucketSpec.value);}|
+        skewSpec { createTable.setSkewSpec($skewSpec.value);} |
+        rowFormat { createTable.setRowFormat($rowFormat.value);}|
+        createFileFormat { createTable.setCreateFileFormat($createFileFormat.value);}|
+        locationSpec { createTable.setLocationSpec($locationSpec.value);}|
+        (TBLPROPERTIES tableProps=tablePropertyList { createTable.setTableProps($tableProps.value);}))*
+        ((AS {createTable.markAS();})? query{ createTable.setQuery($query.value);})?                                                   #createHiveTable
+    | {boolean not=false;}CREATE TABLE (IF NOT EXISTS { not=true;})? target=tableIdentifier
+        LIKE source=tableIdentifier locationSpec?  {  $value = new CreateTableLike(not,$target.value, $source.value,$locationSpec.value);}                     #createTableLike
+    | ANALYZE TABLE t=tableIdentifier p=partitionSpec? COMPUTE STATISTICS { Analyze analyze = new Analyze($t.value,$p.value); $value = analyze;}
+        (identifier { analyze.setIdentifier($identifier.value);} | FOR COLUMNS identifierSeq { analyze.setIdentifierSeq($identifierSeq.value);})?                      #analyze
     | ALTER TABLE tableIdentifier
-        ADD COLUMNS '(' columns=colTypeList ')'                        #addTableColumns
-    | ALTER (TABLE | VIEW) from=tableIdentifier
-        RENAME TO to=tableIdentifier                                   #renameTable
-    | ALTER (TABLE | VIEW) tableIdentifier
-        SET TBLPROPERTIES tablePropertyList                            #setTableProperties
-    | ALTER (TABLE | VIEW) tableIdentifier
-        UNSET TBLPROPERTIES (IF EXISTS)? tablePropertyList             #unsetTableProperties
-    | ALTER TABLE tableIdentifier partitionSpec?
-        CHANGE COLUMN? identifier colType colPosition?                 #changeColumn
+        ADD COLUMNS '(' columns=colTypeList ')'  { $value = new AddTableColumns($tableIdentifier.value, $columns.value);}                      #addTableColumns
+    | ALTER alter=(TABLE | VIEW) from=tableIdentifier
+        RENAME TO to=tableIdentifier   {$value = new RenameTable($alter.text, $from.value, $to.value);}                                #renameTable
+    | ALTER alter=(TABLE | VIEW) tableIdentifier
+        SET TBLPROPERTIES tablePropertyList   { $value = new SetTableProperties($alter.text, $tableIdentifier.value, $tablePropertyList.value);}                          #setTableProperties
+    | ALTER alter=(TABLE | VIEW) tableIdentifier
+        UNSET TBLPROPERTIES {boolean exists = false;} (IF EXISTS { exists =true;})? tablePropertyList { $value = new UnsetTableProperties($alter.text, $tableIdentifier.value,exists, $tablePropertyList.value); }             #unsetTableProperties
+    | ALTER TABLE tableIdentifier partitionSpec? { boolean column = false;}
+        CHANGE (COLUMN { column = true;})? identifier colType colPosition?    {  $value = new ChangeColumn($tableIdentifier.value,$partitionSpec.value, column,$identifier.value,$colType.value,$colPosition.value );}              #changeColumn
     | ALTER TABLE tableIdentifier (partitionSpec)?
-        SET SERDE STRING (WITH SERDEPROPERTIES tablePropertyList)?     #setTableSerDe
+        SET SERDE s=STRING (WITH SERDEPROPERTIES tablePropertyList)? { $value = new SetTableSerDe($tableIdentifier.value, $partitionSpec.value, $s.text, $tablePropertyList.value);}    #setTableSerDe
     | ALTER TABLE tableIdentifier (partitionSpec)?
-        SET SERDEPROPERTIES tablePropertyList                          #setTableSerDe
-    | ALTER TABLE tableIdentifier ADD (IF NOT EXISTS)?
-        partitionSpecLocation+                                         #addTablePartition
-    | ALTER VIEW tableIdentifier ADD (IF NOT EXISTS)?
-        partitionSpec+                                                 #addTablePartition
+        SET SERDEPROPERTIES tablePropertyList   { $value = new SetTableSerDe($tableIdentifier.value, $partitionSpec.value, $tablePropertyList.value);}                       #setTableSerDe
+    | {boolean notExists = false;}ALTER TABLE tableIdentifier ADD (IF NOT EXISTS { notExists = true;})? { AddTablePartition add = new AddTablePartition($tableIdentifier.value, notExists);$value= add; }
+        (partitionSpecLocation {add.addLocation($partitionSpecLocation.value);})+                                         #addTablePartition
+    | {boolean notExists = false;} ALTER VIEW tableIdentifier ADD (IF NOT EXISTS { notExists = true;})? { AddViewPartition add = new AddViewPartition($tableIdentifier.value, notExists);$value= add; }
+        (partitionSpec{add.addSpec($partitionSpec.value);})+                                                 #addTablePartition
     | ALTER TABLE tableIdentifier
-        from=partitionSpec RENAME TO to=partitionSpec                  #renameTablePartition
-    | ALTER TABLE tableIdentifier
-        DROP (IF EXISTS)? partitionSpec (',' partitionSpec)* PURGE?    #dropTablePartitions
-    | ALTER VIEW tableIdentifier
-        DROP (IF EXISTS)? partitionSpec (',' partitionSpec)*           #dropTablePartitions
-    | ALTER TABLE tableIdentifier partitionSpec? SET locationSpec      #setTableLocation
-    | ALTER TABLE tableIdentifier RECOVER PARTITIONS                   #recoverPartitions
-    | DROP TABLE (IF EXISTS)? tableIdentifier PURGE?                   #dropTable
-    | DROP VIEW (IF EXISTS)? tableIdentifier                           #dropTable
-    | CREATE (OR REPLACE)? (GLOBAL? TEMPORARY)?
-        VIEW (IF NOT EXISTS)? tableIdentifier
-        identifierCommentList? (COMMENT STRING)?
+        from=partitionSpec RENAME TO to=partitionSpec    { $value = new RenameTablePartition($tableIdentifier.value, $from.value, $to.value);}              #renameTablePartition
+    | ALTER TABLE tableIdentifier {DropTablePartitions drop = new DropTablePartitions($tableIdentifier.value); $value = drop; }
+        DROP (IF EXISTS { drop.markExists();})? partitionSpec { drop.addPartitionSpec($partitionSpec.value);} (',' partitionSpec { drop.addPartitionSpec($partitionSpec.value);})*  (PURGE { drop.markPurge();})?    #dropTablePartitions
+    | ALTER VIEW tableIdentifier {DropViewPartitions drop = new DropViewPartitions($tableIdentifier.value); $value = drop; }
+        DROP (IF EXISTS { drop.markExists();})? partitionSpec { drop.addPartitionSpec($partitionSpec.value);} (',' partitionSpec { drop.addPartitionSpec($partitionSpec.value);})*           #dropTablePartitions
+    | ALTER TABLE tableIdentifier partitionSpec? SET locationSpec { $value = new SetTableLocation($tableIdentifier.value, $partitionSpec.value, $locationSpec.value);}      #setTableLocation
+    | ALTER TABLE tableIdentifier RECOVER PARTITIONS   { $value = new RecoverPartitions($tableIdentifier.value);}                 #recoverPartitions
+    | { boolean exists = false; boolean purge = false;}DROP TABLE (IF EXISTS {exists =true;})? tableIdentifier (PURGE {purge = true;})? { $value = new DropTable(exists, $tableIdentifier.value, purge);}                   #dropTable
+    |{ boolean exists = false;} DROP VIEW (IF EXISTS {exists =true;})? tableIdentifier    { $value =new DropView(exists, $tableIdentifier.value);}                       #dropTable
+    |{ boolean replace = false; boolean global = false; boolean temporary=false; boolean notExists= false; String comment=null; } CREATE (OR REPLACE {replace =true;})? ((GLOBAL {global = true;})? TEMPORARY {temporary= true;})?
+        VIEW (IF NOT EXISTS { notExists=true;})? tableIdentifier
+        identifierCommentList? (COMMENT s=STRING {comment=$s.text;})?
         (PARTITIONED ON identifierList)?
-        (TBLPROPERTIES tablePropertyList)? AS query                    #createView
-    | CREATE (OR REPLACE)? GLOBAL? TEMPORARY VIEW
+        (TBLPROPERTIES tablePropertyList)? AS query  { $value = new CreateView(replace,global,temporary,notExists,$tableIdentifier.value,$identifierCommentList.value,comment,$identifierList.value,$tablePropertyList.value,$query.value);}                   #createView
+    | {boolean replace = false; boolean global = false;} CREATE (OR REPLACE {replace = true;})? (GLOBAL {global = true;})? TEMPORARY VIEW
         tableIdentifier ('(' colTypeList ')')? tableProvider
-        (OPTIONS tablePropertyList)?                                   #createTempViewUsing
-    | ALTER VIEW tableIdentifier AS? query                             #alterViewQuery
-    | CREATE (OR REPLACE)? TEMPORARY? FUNCTION (IF NOT EXISTS)?
-        qualifiedName AS className=STRING
-        (USING resource (',' resource)*)?                              #createFunction
-    | DROP TEMPORARY? FUNCTION (IF EXISTS)? qualifiedName              #dropFunction
-    | EXPLAIN (LOGICAL | FORMATTED | EXTENDED | CODEGEN | COST)?
-        statement                                                      #explain
-    | SHOW TABLES ((FROM | IN) db=identifier)?
-        (LIKE? pattern=STRING)?                                        #showTables
-    | SHOW TABLE EXTENDED ((FROM | IN) db=identifier)?
-        LIKE pattern=STRING partitionSpec?                             #showTable
-    | SHOW DATABASES (LIKE? pattern=STRING)?                           #showDatabases
+        (OPTIONS tablePropertyList)?  { $value = new CreateTempViewUsing(replace,global,$tableIdentifier.value,$colTypeList.value,$tableProvider.value,$tablePropertyList.value);}                             #createTempViewUsing
+    | {boolean as = false;}ALTER VIEW tableIdentifier (AS {as = true;})? query  {$value = new AlterViewQuery($tableIdentifier.value,as, $query.value); }                            #alterViewQuery
+    |{boolean replace = false; boolean temporary = false; boolean notExists = false;} CREATE (OR REPLACE {replace = true;})? (TEMPORARY{temporary=true;})? FUNCTION (IF NOT EXISTS{ notExists=true;})?
+        qualifiedName AS className=STRING { CreateFunction createFunction = new CreateFunction(replace,temporary,notExists,$qualifiedName.value,$className.text); $value = createFunction; }
+        (USING resource {createFunction.addResource($resource.value);} (',' resource {createFunction.addResource($resource.value);})*)?                               #createFunction
+    | {boolean temporary = false; boolean exists = false;}DROP TEMPORARY? FUNCTION (IF EXISTS)? qualifiedName  { $value = new DropFunction(temporary,exists,$qualifiedName.value);}            #dropFunction
+    | EXPLAIN option=(LOGICAL | FORMATTED | EXTENDED | CODEGEN | COST)?
+        statement   { $value = new Explain($option.text, $statement.value);}                                                   #explain
+    | SHOW TABLES (method=(FROM | IN) db=identifier)? {boolean like =false;}
+        ((LIKE {like =true;})? pattern=STRING)?  { $value = new ShowTables($method.text, $db.value,like, $pattern.text);}                                       #showTables
+    | SHOW TABLE EXTENDED (method=(FROM | IN) db=identifier)?
+        LIKE pattern=STRING partitionSpec?    { $value = new ShowTable($method.text, $db.value, $pattern.text, $partitionSpec.value);}                         #showTable
+    | {boolean like =false;} SHOW DATABASES ((LIKE {like = true;})? pattern=STRING)?  { $value = new ShowDatabases(like ,$pattern.text);}                          #showDatabases
     | SHOW TBLPROPERTIES table=tableIdentifier
-        ('(' key=tablePropertyKey ')')?                                #showTblProperties
-    | SHOW COLUMNS (FROM | IN) tableIdentifier
-        ((FROM | IN) db=identifier)?                                   #showColumns
-    | SHOW PARTITIONS tableIdentifier partitionSpec?                   #showPartitions
-    | SHOW identifier? FUNCTIONS
-        (LIKE? (qualifiedName | pattern=STRING))?                      #showFunctions
-    | SHOW CREATE TABLE tableIdentifier                                #showCreateTable
-    | (DESC | DESCRIBE) FUNCTION EXTENDED? describeFuncName            #describeFunction
-    | (DESC | DESCRIBE) DATABASE EXTENDED? identifier                  #describeDatabase
-    | (DESC | DESCRIBE) TABLE? option=(EXTENDED | FORMATTED)?
-        tableIdentifier partitionSpec? describeColName?                #describeTable
-    | REFRESH TABLE tableIdentifier                                    #refreshTable
-    | REFRESH (STRING | .*?)                                           #refreshResource
-    | CACHE LAZY? TABLE tableIdentifier (AS? query)?                   #cacheTable
-    | UNCACHE TABLE (IF EXISTS)? tableIdentifier                       #uncacheTable
-    | CLEAR CACHE                                                      #clearCache
-    | LOAD DATA LOCAL? INPATH path=STRING OVERWRITE? INTO TABLE
-        tableIdentifier partitionSpec?                                 #loadData
+        ('(' key=tablePropertyKey ')')?   {$value = new ShowTblProperties($table.value, $key.value);}                             #showTblProperties
+    | SHOW COLUMNS tMethod=(FROM | IN) table=tableIdentifier
+        (dMethod=(FROM | IN) db=identifier)?   { $value = new ShowColumns($tMethod.text, $table.value, $dMethod.text, $db.value); }                                 #showColumns
+    | SHOW PARTITIONS tableIdentifier partitionSpec? { $value = new ShowPartitions($tableIdentifier.value, $partitionSpec.value);}                  #showPartitions
+    | { ShowFunctions showFunctions = new ShowFunctions(); $value = showFunctions;} SHOW (identifier { showFunctions.setIdentifier($identifier.value);})? FUNCTIONS
+        ((LIKE {showFunctions.setLike(true);})? (qualifiedName{ showFunctions.setQualifiedName($qualifiedName.value);} | pattern=STRING { showFunctions.setPattern($pattern.text);}))?  { }                    #showFunctions
+    | SHOW CREATE TABLE tableIdentifier    { $value = new ShowCreateTable($tableIdentifier.value); }                            #showCreateTable
+    | { boolean extend=false;} desc=(DESC | DESCRIBE) FUNCTION (EXTENDED {extend =true;})? describeFuncName { $value = new DescribeFunction($desc.text, extend, $describeFuncName.value);}           #describeFunction
+    | { boolean extend=false;} desc=(DESC | DESCRIBE) DATABASE (EXTENDED {extend =true;})? identifier { $value = new DescribeDatabase($desc.text, extend, $identifier.value);}                 #describeDatabase
+    | { boolean table=false;} desc=(DESC | DESCRIBE) (TABLE{table = true;})? option=(EXTENDED | FORMATTED)?
+        tableIdentifier partitionSpec? describeColName?  { $value = new DescribeTable($desc.text, table, $option.text, $tableIdentifier.value,$partitionSpec.value,$describeColName.value);}              #describeTable
+    | REFRESH TABLE t=tableIdentifier    { $value = new RefreshTable($t.value);}                                #refreshTable
+    | REFRESH (s=STRING  { $value = new RefreshResource($s.text); } | (.*?  {$value = new RefreshResource();}) )                                           #refreshResource
+    | { boolean lazy =false; boolean as =false;}CACHE (LAZY {lazy=true;})? TABLE tableIdentifier ((AS {as = true;})? query)?  { $value = new CacheTable(lazy,$tableIdentifier.value,as, $query.value);}                 #cacheTable
+    | { boolean exists = false;} UNCACHE TABLE (IF EXISTS {exists =true;})? tableIdentifier    { $value = new UncacheTable(exists, $tableIdentifier.value);}                   #uncacheTable
+    | CLEAR CACHE        { $value = new ClearCache();}                                              #clearCache
+    | { boolean local =false; boolean overwrite =false;}LOAD DATA (LOCAL {local = true;})? INPATH path=STRING (OVERWRITE {overwrite =true;})? INTO TABLE
+        tableIdentifier partitionSpec? { $value = new LoadData(local,$path.text, overwrite, $tableIdentifier.value, $partitionSpec.value);}                                #loadData
     | TRUNCATE TABLE tableIdentifier partitionSpec?                    #truncateTable
     | MSCK REPAIR TABLE tableIdentifier                                #repairTable
     | op=(ADD | LIST) identifier .*?                                   #manageResource
@@ -231,20 +233,21 @@ unsupportedHiveNativeCommands
     | kw1=DELETE kw2=FROM
     ;
 
-createTableHeader
-    : CREATE TEMPORARY? EXTERNAL? TABLE (IF NOT EXISTS)? tableIdentifier
+createTableHeader returns [CreateTableHeader value]
+    @init { $value = new CreateTableHeader(); }
+    : CREATE (TEMPORARY {$value.markTemporary();})? (EXTERNAL {$value.markExternal();})? TABLE (IF NOT EXISTS {$value.markNotExists();})? tableIdentifier {  $value.setTableIdentifier($tableIdentifier.value);}
     ;
 
-bucketSpec
+bucketSpec returns [ AST value]
     : CLUSTERED BY identifierList
       (SORTED BY orderedIdentifierList)?
-      INTO INTEGER_VALUE BUCKETS
+      INTO s=INTEGER_VALUE BUCKETS {  $value = new BucketSpec($identifierList.value, $orderedIdentifierList.value,$s.text);}
     ;
 
-skewSpec
+skewSpec returns [ SkewSpec value]
     : SKEWED BY identifierList
-      ON (constantList | nestedConstantList)
-      (STORED AS DIRECTORIES)?
+      ON (constantList {  $value = new SkewSpec($identifierList.value, $constantList.value);} | nestedConstantList {  $value = new SkewSpec($identifierList.value, $nestedConstantList.value);})
+      (STORED AS DIRECTORIES { $value.markAsDir();})?
     ;
 
 locationSpec returns [ AST value ]
@@ -346,7 +349,7 @@ fileFormat returns [ AST value]
     ;
 
 storageHandler returns [ AST value]
-    : STRING (WITH SERDEPROPERTIES tablePropertyList)?
+    : s=STRING (WITH SERDEPROPERTIES t=tablePropertyList)? {  $value = new StorageHandler($s.text, $t.value);}
     ;
 
 resource returns [AST value]
@@ -355,7 +358,7 @@ resource returns [AST value]
 
 queryNoWith returns [ AST value]
     : insertInto? t=queryTerm o=queryOrganization { $value = new SingleInsertQuery($t.value,$o.value);}                                             #singleInsertQuery
-    | fromClause multiInsertQueryBody+                                                     #multiInsertQuery
+    | fromClause  {MultiInsertQuery insert = new MultiInsertQuery($fromClause.value); $value = insert;} (multiInsertQueryBody { insert.addInsert($multiInsertQueryBody.value);})+                                                     #multiInsertQuery
     ;
 
 queryOrganization returns [ QueryOrganization value]
@@ -364,14 +367,14 @@ queryOrganization returns [ QueryOrganization value]
       (CLUSTER BY clusterBy=expression { $value.addClusterItem($clusterBy.value);} (',' clusterBy=expression { $value.addClusterItem($clusterBy.value);})*)?
       (DISTRIBUTE BY distributeBy=expression { $value.addDistributeItem($distributeBy.value);} (',' distributeBy=expression { $value.addDistributeItem($distributeBy.value);})*)?
       (SORT BY sort=sortItem { $value.addSortItem($sort.value);} (',' sort=sortItem { $value.addSortItem($sort.value);})*)?
-      windows?
+      (windows {$value.setWindows($windows.value);})?
       (LIMIT (ALL {$value.setLimit(new Limit());}| limit=expression {$value.setLimit(new Limit($limit.value));}))?
     ;
 
-multiInsertQueryBody
+multiInsertQueryBody returns [AST value]
     : insertInto?
       querySpecification
-      queryOrganization
+      queryOrganization  {  $value = new MultiInsertQueryBody($insertInto.value,$querySpecification.value,$queryOrganization.value );}
     ;
 
 queryTerm returns [AST value]
@@ -401,7 +404,7 @@ querySpecification returns [ Select value]
        inRowFormat=rowFormat?
        (RECORDWRITER recordWriter=STRING)?
        USING script=STRING
-       (AS (identifierSeq | colTypeList | ('(' (identifierSeq | colTypeList) ')')))?
+       (AS (identifierSeq { $value.setAs(new ListHolderAST($identifierSeq.value));}  | colTypeList { $value.setAs(new ListHolderAST($colTypeList.value));}| ('(' (identifierSeq { $value.setAs(new ParenthesisListAST($identifierSeq.value));} | colTypeList { $value.setAs(new ParenthesisListAST($colTypeList.value));}) ')' )))?
        outRowFormat=rowFormat?
        (RECORDREADER recordReader=STRING)?
        fromClause?
@@ -409,13 +412,13 @@ querySpecification returns [ Select value]
     | ((kind=SELECT (hints+=hint { $value.addHint($hint.value);})* (q=setQuantifier {$value.setQuantifier($q.value); })?
         nes=namedExpressionSeq { $value.setNamedExpressionSeq($nes.value); }
         (fc=fromClause { $value.setFromClause($fc.value); })?
-       | fc=fromClause { $value.setFromClause($fc.value);} (kind=SELECT (q=setQuantifier {$value.setQuantifier($q.value); })?
+       |{$value.markAbnormal(); } fc=fromClause { $value.setFromClause($fc.value);} (kind=SELECT (q=setQuantifier {$value.setQuantifier($q.value); })?
          nes=namedExpressionSeq { $value.setNamedExpressionSeq($nes.value); })?)
        (lv=lateralView {$value.addLiteralView($lv.value);} )*
        (WHERE where=booleanExpression { $value.setWhere( new Where($where.value));})?
        (a=aggregation {$value.setAggregation($a.value);})?
        (HAVING having=booleanExpression { $value.setHaving(new Having($having.value));} )?
-       (windows)?) {}
+       (windows)?) { $value.setWindows($windows.value); }
     ;
 
 hint returns [ Hint value]
@@ -424,31 +427,32 @@ hint returns [ Hint value]
         (','? hintStatements+=hintStatement { $value.addStatement($hintStatement.value);})* '*/'
     ;
 
-hintStatement returns [ HintStatement value]
-    : hintName=identifier
-    | hintName=identifier '(' parameters+=primaryExpression (',' parameters+=primaryExpression)* ')'
+hintStatement returns [ AST value]
+    : hintName=identifier { $value = new HintStatement($hintName.value); }
+    | hintName=identifier  { HintStatement hs = new HintStatement($hintName.value); $value = hs;}  '(' parameters+=primaryExpression  { hs.addParam($primaryExpression.value);}(',' parameters+=primaryExpression { hs.addParam($primaryExpression.value);})* ')'
     | hintExpression
     ;
 
 hintExpression returns [ AST value]
-    : hintPredicated
-    | left=hintExpression operator=AND right=hintExpression
-    | left=hintExpression operator=OR right=hintExpression
+    : hintPredicated { $value = $hintPredicated.value; }
+    | left=hintExpression operator=AND right=hintExpression {  $value = new AND($left.value, $right.value);}
+    | left=hintExpression operator=OR right=hintExpression {  $value = new OR($left.value, $right.value);}
     ;
 
 hintPredicated returns [ AST value]
-    : v=hintValueExpression (hintPredicate)?
+    : v=hintValueExpression (hintPredicate)? {  $value = new HintPredicated($v.value, $hintPredicate.value);}
     ;
 
 hintPredicate returns [ AST value]
-    : (NOT)? kind=BETWEEN lower=hintValueExpression AND upper=hintValueExpression
-    | (NOT)? kind=IN '(' e=expression  (',' e=expression )* ')'
+    @init { boolean not = false;}
+    : (NOT { not=true;})? kind=BETWEEN lower=hintValueExpression AND upper=hintValueExpression { $value =new HintPredicateBetween(not, $lower.value,$upper.value);}
+    | (NOT { not=true;})? { HintPredicateIN in = new HintPredicateIN(not); $value = in;} kind=IN '(' e=expression { in.addExpr($e.value);} (',' e=expression { in.addExpr($e.value);})* ')'
     ;
 
 hintValueExpression returns [ AST value]
-    : STRING
-    | identifier '.' identifier
-    | left=hintValueExpression op=comparisonOperator right=hintValueExpression
+    : s=STRING { $value = new StringLiteral($s.text);}
+    | f=identifier '.' l=identifier { QualifiedName qname = new QualifiedName(); qname.addIdentifier($f.value); qname.addIdentifier($l.value); $value = qname;}
+    | left=hintValueExpression op=comparisonOperator right=hintValueExpression { $value = new ArithmeticBinary($left.value,$op.text,$right.value);}
     ;
 
 
@@ -458,24 +462,25 @@ fromClause returns [ FromClause value]
     : FROM
         r=relation {$value.addRelation($r.value);}(',' r=relation {$value.addRelation($r.value);})*
         (l=lateralView { $value.addLateralView($l.value);})*
-        pivotClause?
+        pivotClause? { $value.setPivotClause($pivotClause.value);}
     ;
 
 aggregation returns [ GroupBy value]
     @init { $value = new GroupBy();}
     : GROUP BY ge=expression { $value.addGroupingExpression($ge.value);} (',' ge=expression { $value.addGroupingExpression($ge.value);})* (
-      WITH kind=ROLLUP
-    | WITH kind=CUBE
-    | kind=GROUPING SETS '(' groupingSet (',' groupingSet)* ')')?
+      WITH kind=ROLLUP { $value.setWith($kind.text);}
+    | WITH kind=CUBE { $value.setWith($kind.text);}
+    | kind=GROUPING SETS '(' groupingSet { $value.addGroupingSet($groupingSet.value);} (',' groupingSet { $value.addGroupingSet($groupingSet.value);})* ')')?
     ;
 
-groupingSet
-    : '(' (expression (',' expression)*)? ')'
-    | expression
+groupingSet returns [ GroupingSet value]
+    @init { $value = new GroupingSet();}
+    : '(' (expression  { $value.addExpr($expression.value);} (',' expression { $value.addExpr($expression.value);})*)? ')'
+    | expression { $value = new GroupingSet($expression.value);}
     ;
 
-pivotClause
-    : PIVOT '(' aggregates=namedExpressionSeq FOR pivotColumn=identifier IN '(' pivotValues+=constant (',' pivotValues+=constant)* ')' ')'
+pivotClause returns [ PivotClause value]
+    : PIVOT '(' aggregates=namedExpressionSeq FOR pivotColumn=identifier { $value=new PivotClause($aggregates.value, $pivotColumn.value); } IN '(' pivotValues+=constant { $value.addPivot($constant.value);} (',' pivotValues+=constant { $value.addPivot($constant.value);})* ')' ')'
     ;
 
 lateralView returns [ LateralView value]
@@ -514,27 +519,27 @@ joinType returns [ JOINType value]
 
 joinCriteria returns [AST value]
     : ON b=booleanExpression { $value = new ON($b.value);}
-    |  USING  {  $value = new USING(); }
+    |  USING  {  USING u = new USING();  $value = u;}
         '('
-            i=identifier { USING u = (USING)$value; u.addIdentifier($i.value);}
+            i=identifier { u.addIdentifier($i.value);}
             (',' i=identifier {  u.addIdentifier($i.value);} )*
         ')'
     ;
 
 sample returns [AST value]
-    : TABLESAMPLE '(' sampleMethod? ')'
+    : TABLESAMPLE '(' sampleMethod? ')' { $value = new Sample($sampleMethod.value);}
     ;
 
-sampleMethod
-    : negativeSign=MINUS? percentage=(INTEGER_VALUE | DECIMAL_VALUE) PERCENTLIT   #sampleByPercentile
-    | expression ROWS                                                             #sampleByRows
-    | sampleType=BUCKET numerator=INTEGER_VALUE OUT OF denominator=INTEGER_VALUE
-        (ON (identifier | qualifiedName '(' ')'))?                                #sampleByBucket
-    | bytes=expression                                                            #sampleByBytes
+sampleMethod returns [ AST value]
+    : negativeSign=MINUS? percentage=(INTEGER_VALUE | DECIMAL_VALUE) PERCENTLIT { $value = new SampleByPercentile($negativeSign.text, $percentage.text);}  #sampleByPercentile
+    | expression ROWS { $value = new SampleByRows($expression.value); }                                                            #sampleByRows
+    | sampleType=BUCKET numerator=INTEGER_VALUE OUT OF denominator=INTEGER_VALUE { SampleByBucket sample = new SampleByBucket($numerator.text, $denominator.text); $value = sample;}
+        (ON (identifier { sample.setIdentifier($identifier.value); }| qualifiedName '(' ')' { sample.setQualifiedName($qualifiedName.value);}))?                                #sampleByBucket
+    | bytes=expression   { $value = new SampleByBytes($bytes.value);}                                                         #sampleByBytes
     ;
 
-identifierList returns [List value]
-    : '(' is=identifierSeq ')' { $value = $is.value;}
+identifierList returns [AST value]
+    : '(' is=identifierSeq ')' { $value = new IdentifierList($is.value);}
     ;
 
 identifierSeq returns [List value]
@@ -542,37 +547,39 @@ identifierSeq returns [List value]
     : id=identifier { $value.add($id.value);} (',' identifier { $value.add($id.value);})*
     ;
 
-orderedIdentifierList
-    : '(' orderedIdentifier (',' orderedIdentifier)* ')'
+orderedIdentifierList returns [ OrderedIdentifierList value]
+    @init{ $value = new OrderedIdentifierList(); }
+    : '(' orderedIdentifier {$value.addIdentifier($orderedIdentifier.value);} (',' orderedIdentifier {$value.addIdentifier($orderedIdentifier.value);})* ')'
     ;
 
-orderedIdentifier
-    : identifier ordering=(ASC | DESC)?
+orderedIdentifier returns [ AST value]
+    : identifier ordering=(ASC | DESC)? {  $value = new OrderedIdentifier($identifier.value,$ordering.text);}
     ;
 
-identifierCommentList
-    : '(' identifierComment (',' identifierComment)* ')'
+identifierCommentList returns [ IdentifierCommentList value]
+    : '(' identifierComment { $value = new IdentifierCommentList(); $value.addComment($identifierComment.value);} (',' identifierComment {$value.addComment($identifierComment.value);})* ')'
     ;
 
-identifierComment
-    : identifier (COMMENT STRING)?
+identifierComment returns [ IdentifierComment value]
+    : identifier { $value = new IdentifierComment($identifier.value);} (COMMENT s=STRING { $value.setComment($s.text);})?
     ;
 
-relationPrimary returns [ RelationPrimary value ]
-    @init { $value = new RelationPrimary();}
-    : i=tableIdentifier (sample {$value.setSample($sample.value);})? a=tableAlias  {  $value = new TableName($i.value,$value.getSample(),$a.value);}     #tableName
-    | '(' q=queryNoWith ')' (sample {$value.setSample($sample.value);})? a=tableAlias { $value = new AliasedQuery($q.value,$value.getSample(),$a.value);} #aliasedQuery
-    | '(' r=relation ')' (sample {$value.setSample($sample.value);})? a=tableAlias  { $value = new AliasedRelation($r.value,$value.getSample(),$a.value);}   #aliasedRelation
-    | inlineTable                             #inlineTableDefault2
-    | functionTable                           #tableValuedFunction
+relationPrimary returns [ AST value ]
+    @init { AST sample = null;}
+    : i=tableIdentifier (sample {sample = $sample.value;})? a=tableAlias  {  $value = new TableName($i.value,sample,$a.value);}     #tableName
+    | '(' q=queryNoWith ')' (sample {sample = $sample.value;})? a=tableAlias { $value = new AliasedQuery($q.value,sample,$a.value);} #aliasedQuery
+    | '(' r=relation ')' (sample {sample = $sample.value;})? a=tableAlias  { $value = new AliasedRelation($r.value,sample,$a.value);}   #aliasedRelation
+    | inlineTable   { $value = $inlineTable.value; }                          #inlineTableDefault2
+    | functionTable     { $value = $functionTable.value; }                      #tableValuedFunction
     ;
 
-inlineTable
-    : VALUES expression (',' expression)* tableAlias
+inlineTable returns [ InlineTable value]
+    @init { $value = new InlineTable();}
+    : VALUES expression  { $value.addExpr($expression.value);} (',' expression  { $value.addExpr($expression.value);})* tableAlias {$value.setTableAlias($tableAlias.value);}
     ;
 
-functionTable
-    : identifier '(' (expression (',' expression)*)? ')' tableAlias
+functionTable returns [ FunctionTable value]
+    : identifier { $value = new FunctionTable($identifier.value);} '(' (expression { $value.addExpr($expression.value);} (',' expression { $value.addExpr($expression.value);})*)? ')' tableAlias {$value.setTableAlias($tableAlias.value);}
     ;
 
 tableAlias returns [ TableAlias value]

@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class TableAlias extends AST {
     AST strictIdentifier;
-    List<AST> identifierList;
+    AST identifierList;
     boolean AS =false;
 
     public TableAlias(){
@@ -30,7 +30,7 @@ public class TableAlias extends AST {
             IndentHelper.indent(context, IndentHelper.keyword("as"));
         }
         IndentHelper.indent(context, strictIdentifier);
-        IndentHelper.indentWithDelimeter(context, identifierList," ");
+        IndentHelper.indent(context, identifierList);
     }
 
 }
