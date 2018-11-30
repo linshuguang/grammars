@@ -82,11 +82,11 @@ singleTableSchema returns [ AST value]
 statement returns [ AST value]
     : query  { $value = $query.value; }                                #statementDefault
     | USE db=identifier   { $value = new USE($db.value);}                                             #use
-    | { boolean notExists=false;}CREATE DATABASE (IF NOT EXISTS {notExists=true;})? identifier
-        (COMMENT comment=STRING)? locationSpec?
-        (WITH DBPROPERTIES tablePropertyList)? { $value =new CreateDatabase(notExists,$identifier.value,$comment.text,$locationSpec.value,$tablePropertyList.value);}                        #createDatabase
+    | { boolean notExists=false;} CREATE DATABASE (IF NOT EXISTS {notExists=true;})? identifier { CreateDatabase cd =new CreateDatabase(notExists,$identifier.value); $value = cd;}
+        (COMMENT comment=STRING { cd.setComment($comment.text);})? (locationSpec { cd.setLocationSpec($locationSpec.value);})?
+        (WITH DBPROPERTIES tablePropertyList { cd.setTablePropertyList($tablePropertyList.value);} )? #createDatabase
     | ALTER DATABASE identifier SET DBPROPERTIES tablePropertyList  {  $value = new SetDatabaseProperties($identifier.value,$tablePropertyList.value);}   #setDatabaseProperties
-    | { boolean exists = false;}DROP DATABASE (IF EXISTS {exists = true;})? identifier appendix=(RESTRICT | CASCADE)?  { $value = new DropDatabase(exists,$identifier.value,$appendix.text);}     #dropDatabase
+    | { boolean exists = false;} DROP DATABASE (IF EXISTS {exists = true;})? identifier  { DropDatabase dd = new DropDatabase(exists,$identifier.value); $value = dd;}  (appendix=(RESTRICT | CASCADE) {dd.setAppendix($appendix.text);})?      #dropDatabase
     | createTableHeader ('(' colTypeList ')')? tableProvider {CreateTable createTable = new CreateTable($createTableHeader.value,$colTypeList.value,$tableProvider.value); $value = createTable;}
         ((OPTIONS options=tablePropertyList { createTable.setTablePropertyList($options.value);}) |
         (PARTITIONED BY partitionColumnNames=identifierList {  createTable.setPartitionColumnNames($partitionColumnNames.value);}) |
@@ -95,7 +95,7 @@ statement returns [ AST value]
         (COMMENT comment=STRING { createTable.setComment($comment.text);}) |
         (TBLPROPERTIES tableProps=tablePropertyList {  createTable.setTableProps($tableProps.value);}))*
         ((AS{ createTable.markAS();})? query{ createTable.setQuery($query.value);})?                                                   #createTable
-    | createTableHeader ('(' columns=colTypeList ')')? { CreateHiveTable createTable = new CreateHiveTable($createTableHeader.value,$columns.value); $value =createTable;}
+    | createTableHeader  { CreateHiveTable createTable = new CreateHiveTable($createTableHeader.value); $value =createTable;}('(' columns=colTypeList ')' {createTable.setColumns($columns.value);})?
         ((COMMENT comment=STRING { createTable.setComment($comment.text);}) |
         (PARTITIONED BY '(' partitionColumns=colTypeList ')' { createTable.setPartitionColumns($partitionColumns.value);}) |
         bucketSpec { createTable.setBucketSpec($bucketSpec.value);}|
@@ -106,7 +106,7 @@ statement returns [ AST value]
         (TBLPROPERTIES tableProps=tablePropertyList { createTable.setTableProps($tableProps.value);}))*
         ((AS {createTable.markAS();})? query{ createTable.setQuery($query.value);})?                                                   #createHiveTable
     | {boolean not=false;}CREATE TABLE (IF NOT EXISTS { not=true;})? target=tableIdentifier
-        LIKE source=tableIdentifier locationSpec?  {  $value = new CreateTableLike(not,$target.value, $source.value,$locationSpec.value);}                     #createTableLike
+        LIKE source=tableIdentifier {  CreateTableLike createTableLike = new CreateTableLike(not,$target.value, $source.value); $value = createTableLike;} (locationSpec {createTableLike.setLocationSpec($locationSpec.value);})?                       #createTableLike
     | ANALYZE TABLE t=tableIdentifier p=partitionSpec? COMPUTE STATISTICS { Analyze analyze = new Analyze($t.value,$p.value); $value = analyze;}
         (identifier { analyze.setIdentifier($identifier.value);} | FOR COLUMNS identifierSeq { analyze.setIdentifierSeq($identifierSeq.value);})?                      #analyze
     | ALTER TABLE tableIdentifier
@@ -308,7 +308,7 @@ tableProvider returns [AST value]
 
 tablePropertyList returns [ TablePropertyList value]
     @init { $value = new TablePropertyList();}
-    : '(' p=tableProperty {$value.addProperty($p.value);} (',' tableProperty {$value.addProperty($p.value);})* ')'
+    : '(' p=tableProperty {$value.addProperty($p.value);} (',' p=tableProperty {$value.addProperty($p.value);})* ')'
     ;
 
 tableProperty returns [TableProperty value]
@@ -588,13 +588,13 @@ tableAlias returns [ TableAlias value]
     ;
 
 rowFormat returns [ AST value]
-    : ROW FORMAT SERDE name=STRING (WITH SERDEPROPERTIES props=tablePropertyList)?  #rowFormatSerde
-    | ROW FORMAT DELIMITED
-      (FIELDS TERMINATED BY fieldsTerminatedBy=STRING (ESCAPED BY escapedBy=STRING)?)?
-      (COLLECTION ITEMS TERMINATED BY collectionItemsTerminatedBy=STRING)?
-      (MAP KEYS TERMINATED BY keysTerminatedBy=STRING)?
-      (LINES TERMINATED BY linesSeparatedBy=STRING)?
-      (NULL DEFINED AS nullDefinedAs=STRING)?                                       #rowFormatDelimited
+    : ROW FORMAT SERDE name=STRING { RowFormatSerde rf = new RowFormatSerde($name.text); $value = rf; } (WITH SERDEPROPERTIES props=tablePropertyList { rf.setProps($props.value);})?  #rowFormatSerde
+    | ROW FORMAT DELIMITED { RowFormatDelimited rf = new RowFormatDelimited(); $value = rf;}
+      (FIELDS TERMINATED BY fieldsTerminatedBy=STRING { rf.setFieldsTerminatedBy($fieldsTerminatedBy.text);} (ESCAPED BY escapedBy=STRING { rf.setEscapedBy($escapedBy.text);})?)?
+      (COLLECTION ITEMS TERMINATED BY collectionItemsTerminatedBy=STRING { rf.setCollectionItemsTerminatedBy($collectionItemsTerminatedBy.text);})?
+      (MAP KEYS TERMINATED BY keysTerminatedBy=STRING { rf.setKeysTerminatedBy($keysTerminatedBy.text);})?
+      (LINES TERMINATED BY linesSeparatedBy=STRING { rf.setLinesSeparatedBy($linesSeparatedBy.text);})?
+      (NULL DEFINED AS nullDefinedAs=STRING { rf.setNullDefinedAs($nullDefinedAs.text);})?                                       #rowFormatDelimited
     ;
 
 tableIdentifier returns [AST value]

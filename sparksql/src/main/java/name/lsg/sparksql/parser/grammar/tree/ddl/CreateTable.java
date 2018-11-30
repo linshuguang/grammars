@@ -29,16 +29,7 @@ public class CreateTable extends AST{
         this.colTypeList = colTypeList;
         this.tableProvider = tableProvider;
     }
-    /*
-     ('(' colTypeList ')')? tableProvider
-            ((OPTIONS options=tablePropertyList) |
-            (PARTITIONED BY partitionColumnNames=identifierList) |
-    bucketSpec |
-    locationSpec |
-            (COMMENT comment=STRING) |
-            (TBLPROPERTIES tableProps=tablePropertyList))*
-            (AS? query)?
-    */
+
     public void markAS(){
         as = true;
     }

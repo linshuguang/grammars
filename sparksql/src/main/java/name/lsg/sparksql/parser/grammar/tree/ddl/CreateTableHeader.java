@@ -38,6 +38,7 @@ public class CreateTableHeader extends AST {
         if(external){
             IndentHelper.indentKeyWord(context, "EXTERNAL");
         }
+        IndentHelper.indentKeyWord(context, "TABLE");
         if(notExists){
             IndentHelper.indentKeyWord(context, "IF","NOT", "EXISTS");
         }

@@ -321,6 +321,53 @@ public class TestParser {
         procedure("select position(  bcd in (*) )");
     }
 
+    @Test
+    public void TestCreateDatabase() {
+        procedure("CREATE DATABASE IF not EXIStS mysparkdb comment \"hello world\" LOCATION '/home/prashant/mysparkdb/' WITH DBPROPERTIES(key1=1, key2='hi')");
+    }
+
+    @Test
+    public void TestAlterDatabase() {
+        procedure("alter DATABASE mysparkdb set DBPROPERTIES(key1=2, key2='ha',key3=0000000)");
+    }
+
+    @Test
+    public void TestDropDatabase() {
+        procedure("drop DATABASE IF EXISTS mysparkdb ");
+        procedure("drop DATABASE IF EXISTS mysparkdb CASCADE");
+    }
+
+    @Test
+    public void TestCreateTable() {
+        procedure(" CREATE TABLE IF NOT EXISTS mysparkdb.hive_surveys(\n" +
+                "        TIME_STAMP TIMESTAMP, \n" +
+                "        AGE LONG, \n" +
+                "        GENDER STRING, \n" +
+                "        TECH_COMPANY STRING, \n" +
+                "        COMMENTS STRING)\n" +
+                "    ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' \n" +
+                "    STORED AS TEXTFILE ");
+        procedure(" CREATE TABLE IF NOT EXISTS mysparkdb.hive_surveys(\n" +
+                "        TIME_STAMP TIMESTAMP, \n" +
+                "        AGE LONG, \n" +
+                "        GENDER STRING, \n" +
+                "        TECH_COMPANY STRING, \n" +
+                "        COMMENTS STRING)\n" +
+                "    ROW FORMAT DELIMITED FIELDS TERMINATED BY 'hello'ESCAPED BY 'world' \n" +
+                "    STORED AS TEXTFILE ");
+        procedure("CREATE TABLE tablename \n" +
+                "    STORED AS PARQUET LOCATION 'some/location/incase/of/external/table' \n" +
+                "AS\n" +
+                "SELECT *\n" +
+                "    FROM source_table\n" +
+                "WHERE 1=1");
+    }
+
+
+    @Test
+    public void TestCreateTableLike() {
+        procedure("CREATE TABLE if not exists tablename LIKE db_name.table_name2 LOCATION  'hdfs_path_of_parquet_file'");
+    }
 
 
     @Test

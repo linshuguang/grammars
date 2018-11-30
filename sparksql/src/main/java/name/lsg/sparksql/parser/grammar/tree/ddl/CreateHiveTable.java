@@ -40,9 +40,8 @@ public class CreateHiveTable extends AST {
         as= true;
     }
 
-    public CreateHiveTable(AST createTableHeader,List<AST> columns){
+    public CreateHiveTable(AST createTableHeader){
         this.createTableHeader = createTableHeader ;
-        this.columns = columns;
     }
 
     @Override
@@ -56,22 +55,29 @@ public class CreateHiveTable extends AST {
         if(comment!=null){
             IndentHelper.indentKeyWord(context, "comment");
             IndentHelper.indent(context, comment);
-        }else if(partitionColumns!=null){
+        }
+        if(partitionColumns!=null){
             IndentHelper.indentKeyWord(context, "PARTITIONED", "BY");
             IndentHelper.indent(context, "(");
             IndentHelper.indent(context, partitionColumns);
             IndentHelper.indent(context, ")");
-        }else if(bucketSpec!=null){
+        }
+        if(bucketSpec!=null){
             IndentHelper.indent(context, bucketSpec);
-        }else if(skewSpec!=null){
+        }
+        if(skewSpec!=null){
             IndentHelper.indent(context, skewSpec);
-        }else if(rowFormat!=null){
+        }
+        if(rowFormat!=null){
             IndentHelper.indent(context, rowFormat);
-        }else if(createFileFormat!=null){
+        }
+        if(createFileFormat!=null){
             IndentHelper.indent(context, createFileFormat);
-        }else if(locationSpec!=null){
+        }
+        if(locationSpec!=null){
             IndentHelper.indent(context, locationSpec);
-        }else if(tableProps!=null){
+        }
+        if(tableProps!=null){
             IndentHelper.indentKeyWord(context, "TBLPROPERTIES");
             IndentHelper.indent(context, tableProps);
         }

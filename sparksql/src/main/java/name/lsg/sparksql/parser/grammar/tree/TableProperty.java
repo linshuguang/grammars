@@ -23,7 +23,7 @@ public class TableProperty extends AST {
         IndentHelper.indent(context, key);
         if(value!=null){
             if(eq){
-                IndentHelper.indent(context, IndentHelper.keyword("EQ"));
+                IndentHelper.indent(context, "=");
             }
             IndentHelper.indent(context,value);
         }

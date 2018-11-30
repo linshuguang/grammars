@@ -1,12 +1,15 @@
 package name.lsg.sparksql.parser.grammar.tree.ddl;
 
+import lombok.Data;
 import name.lsg.sparksql.parser.grammar.context.Context;
 import name.lsg.sparksql.parser.grammar.tree.AST;
+import name.lsg.sparksql.parser.grammar.tree.TablePropertyList;
 import name.lsg.sparksql.parser.util.IndentHelper;
 
 /**
  * Created by kenya on 2018/11/29.
  */
+@Data
 public class CreateDatabase extends AST{
     boolean notExists;
     AST identifier;
@@ -14,12 +17,9 @@ public class CreateDatabase extends AST{
     AST locationSpec;
     AST tablePropertyList;
 
-    public CreateDatabase(boolean notExists,AST identifier,String comment,AST locationSpec,AST tablePropertyList){
+    public CreateDatabase(boolean notExists,AST identifier){
         this.notExists = notExists;
         this.identifier = identifier;
-        this.comment = comment;
-        this.locationSpec = locationSpec;
-        this.tablePropertyList = tablePropertyList;
     }
 
     @Override
