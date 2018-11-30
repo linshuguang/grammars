@@ -24,9 +24,9 @@ public class InList extends Predicate {
     @Override
     public void indent(Context context){
         if(not){
-            IndentHelper.indent(context, IndentHelper.keyword("not"));
+            IndentHelper.indentKeyWord(context, "not");
         }
-        IndentHelper.indent(context, IndentHelper.keyword("in"));
+        IndentHelper.indentKeyWord(context, "in");
         IndentHelper.indent(context,"(");
         for(int i = 0; i < exprList.size(); i++){
             IndentHelper.indent(context, exprList.get(i));

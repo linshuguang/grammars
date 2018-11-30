@@ -31,13 +31,19 @@ public class TestParser {
 
 
     private AST run(String sql){
-        Parser parser = new Parser();
-        return parser.parse(sql);
+        return CompilerUtils.run(sql);
     }
+
 
     private AST assertNotNULL(String sql){
         AST result = run(sql);
         assert (result!=null);
+        return result;
+    }
+
+    private AST assertNULL(String sql){
+        AST result = run(sql);
+        assert (result==null);
         return result;
     }
 
@@ -48,10 +54,13 @@ public class TestParser {
         ast.indent(context);
     }
 
+
     private AST procedure(String sql){
 
-        ConsoleUtils.stdout("to run:");
-        ConsoleUtils.alert(IndentHelper.frame(sql));
+        ConsoleUtils.stdout("========================================================\n");
+        ConsoleUtils.stdout("to run:\n");
+        //ConsoleUtils.green(IndentHelper.frame(sql));
+        ConsoleUtils.green((sql));
         ConsoleUtils.stdout("\n");
 
         AST result = assertNotNULL(sql);
@@ -59,23 +68,25 @@ public class TestParser {
         indent(result,bOutput);
         String sql2 = bOutput.toString()
                 ;
-        ConsoleUtils.stdout("result:");
-        ConsoleUtils.alert(IndentHelper.frame(sql2));
+        ConsoleUtils.stdout("result:\n");
+        //ConsoleUtils.red(IndentHelper.frame(sql2));
+        ConsoleUtils.red((sql2));
         ConsoleUtils.stdout("\n");
 
         assert (CompilerUtils.identSql(sql,sql2));
 
-        ConsoleUtils.stdout("conclude:");
-        ConsoleUtils.green("succeed");
+        ConsoleUtils.stdout("conclude:\n");
+        ConsoleUtils.blue(("succeed"));
         ConsoleUtils.stdout("\n");
+
 
         return result;
     }
 
     @Test
     public void TestCase(){
-        assertNotNULL("selECt a from t");
-        assertNotNULL("select a from t");
+        procedure("selECt a from t");
+        procedure("select a from t");
     }
 
     @Test
@@ -103,7 +114,6 @@ public class TestParser {
         procedure("select from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\") as pay_date from loan_contract\n" +
                 "where from_unixtime(cast(effectivetime/1000 as bigint),\"yyyyMMdd\") between 20180901 and 20181031\n" +
                 "group by 1 order by 1");
-        //procedure("select sum(prin)*0.01 from contract where from_unixtime(cast(effectivetime/1000 ),\"yyyyMMdd\")<=20151231");
     }
 
     @Test
@@ -296,19 +306,19 @@ public class TestParser {
 
     @Test
     public void TestFirst() {
-        procedure("select \n first( (select abc) )");
-        procedure("select first( (select abc) ignore nulls)");
+        procedure("select \n first( (*) )");
+        procedure("select first( (*) ignore nulls)");
     }
 
     @Test
     public void TestLast() {
-        procedure("select \n last( (select abc) )");
-        procedure("select last( (select abc) ignore nulls)");
+        procedure("select \n last( (*) )");
+        procedure("select last( (*) ignore nulls)");
     }
 
     @Test
     public void TestPosition() {
-        procedure("select position(  abc in (select abc) )");
+        procedure("select position(  bcd in (*) )");
     }
 
 

@@ -7,20 +7,16 @@ import name.lsg.sparksql.parser.util.IndentHelper;
 /**
  * Created by kenya on 2018/11/30.
  */
-public class TruncateTable extends AST {
-
+public class RepairTable extends AST {
     AST tableIdentifier;
-    AST partitionSpec;
-    public TruncateTable(AST tableIdentifier, AST partitionSpec){
+
+    public RepairTable(AST tableIdentifier){
         this.tableIdentifier = tableIdentifier;
-        this.partitionSpec = partitionSpec;
     }
 
     @Override
     public void indent(Context context){
-        IndentHelper.indentKeyWord(context, "TRUNCATE","TABLE");
-        IndentHelper.indent(context, tableIdentifier);
-        IndentHelper.indent(context, partitionSpec);
+        IndentHelper.indentKeyWord(context,"MSCK", "REPAIR", "TABLE");
+        IndentHelper.indent(context,tableIdentifier);
     }
 }
-

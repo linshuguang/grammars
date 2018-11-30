@@ -17,10 +17,10 @@ public class POSITION extends AST {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context,IndentHelper.keyword("position"));
+        IndentHelper.indentKeyWord(context,"position");
         IndentHelper.indent(context,"(");
         IndentHelper.indent(context, substr);
-        IndentHelper.indent(context, IndentHelper.keyword("in"));
+        IndentHelper.indentKeyWord(context, "in");
         IndentHelper.indent(context, str);
         IndentHelper.indent(context,")");
     }

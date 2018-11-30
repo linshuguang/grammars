@@ -34,17 +34,20 @@ public class Parser {
         return tokens;
     }
 
-    private AST parseSelect(String code){
+    private SqlBaseParser getParser(String code){
         TokenStream tokens = getTokens(code,false);
-
         SqlBaseParser parser = new SqlBaseParser(tokens);
+        return parser;
+    }
 
+    private AST parseStatement(String code){
+        SqlBaseParser parser = getParser(code);
         SqlBaseParser.StatementContext context = parser.statement();
         return context.value;
     }
 
     public AST parse(String code){
-        return parseSelect(code);
+        return parseStatement(code);
     }
 
     private Token nextValid(SqlBaseLexer lexer){

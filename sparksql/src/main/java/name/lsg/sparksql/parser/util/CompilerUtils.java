@@ -147,4 +147,9 @@ public class CompilerUtils {
         return parser.identSQL(sql1, sql2);
     }
 
+    public static AST run(String sql){
+        Parser parser = new Parser();
+        return parser.parse(sql);
+    }
+
 }
