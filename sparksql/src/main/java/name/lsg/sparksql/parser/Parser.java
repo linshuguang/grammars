@@ -3,9 +3,12 @@ package name.lsg.sparksql.parser;
 import name.lsg.CaseInsensitiveStream;
 import name.lsg.sparksql.parser.grammar.tree.AST;
 import org.antlr.v4.runtime.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.spark.sql.catalyst.parser.SqlBaseLexer;
 import org.apache.spark.sql.catalyst.parser.SqlBaseParser;
-import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -46,13 +49,44 @@ public class Parser {
         return context.value;
     }
 
+    public List<AST> parseStatements(String code){
+        /*
+        SqlBaseParser parser = getParser(code);
+
+        //SqlBaseParser.MultipleStatementsContext context = parser.multipleStatements();
+        return context.value;
+        */
+        List<AST> astList = new ArrayList<>();
+        CharStream input = new ANTLRInputStream(code);
+        SqlBaseLexer lexer = new SqlBaseLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        //tokens.getNumberOfOnChannelTokens();
+        //System.out.println(tokens.size());
+        while(true) {
+            SqlBaseParser parser = new SqlBaseParser(tokens);
+            SqlBaseParser.SingleStatementContext context = parser.singleStatement();
+
+            astList.add(context.value);
+            if(lexer._token.getType()==Token.EOF) {
+                break;
+            }
+        }
+        return astList;
+    }
+
     public AST parse(String code){
         return parseStatement(code);
     }
 
+
+
+    private boolean invalidToken(Token token){
+
+        return token.getChannel()==1 || (token.getType() != Token.EOF && (StringUtils.isBlank(token.getText()) || token.getType()==SqlBaseLexer.WS || StringUtils.equals(token.getText(),";")));
+    }
     private Token nextValid(SqlBaseLexer lexer){
         Token token = lexer.nextToken();
-        while(token.getType() != Token.EOF && token.getType()==SqlBaseLexer.WS){
+        while(invalidToken(token)){
             token = lexer.nextToken();
         }
         return token;
@@ -80,6 +114,7 @@ public class Parser {
                 System.out.println("token1:" + token1.toString());
                 System.out.println("token2:" + token2.toString());
                 System.out.println("\n\n\n\n");
+                break;
             }
 
         }

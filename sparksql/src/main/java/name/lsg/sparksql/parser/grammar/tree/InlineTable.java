@@ -21,6 +21,7 @@ public class InlineTable extends AST {
 
     @Override
     public void indent(Context context){
+        IndentHelper.indentKeyWord(context,"VALUES");
         IndentHelper.indent(context, exprList);
         IndentHelper.indent(context, tableAlias);
     }

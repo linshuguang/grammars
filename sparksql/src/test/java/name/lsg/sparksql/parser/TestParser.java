@@ -7,6 +7,7 @@ import name.lsg.sparksql.parser.grammar.tree.AST;
 import name.lsg.sparksql.parser.util.CompilerUtils;
 import name.lsg.sparksql.parser.util.ConsoleUtils;
 import name.lsg.sparksql.parser.util.IndentHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -14,8 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,59 +30,6 @@ public class TestParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestParser.class);
 
 
-
-    private AST run(String sql){
-        return CompilerUtils.run(sql);
-    }
-
-
-    private AST assertNotNULL(String sql){
-        AST result = run(sql);
-        assert (result!=null);
-        return result;
-    }
-
-    private AST assertNULL(String sql){
-        AST result = run(sql);
-        assert (result==null);
-        return result;
-    }
-
-    private void indent(AST ast, OutputStream out){
-        ContextParam param = ContextFactory.createParam();
-        param.setOut(out);
-        Context context = ContextFactory.create(param);
-        ast.indent(context);
-    }
-
-
-    private AST procedure(String sql){
-
-        ConsoleUtils.stdout("========================================================\n");
-        ConsoleUtils.stdout("to run:\n");
-        //ConsoleUtils.green(IndentHelper.frame(sql));
-        ConsoleUtils.green((sql));
-        ConsoleUtils.stdout("\n");
-
-        AST result = assertNotNULL(sql);
-        ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
-        indent(result,bOutput);
-        String sql2 = bOutput.toString()
-                ;
-        ConsoleUtils.stdout("result:\n");
-        //ConsoleUtils.red(IndentHelper.frame(sql2));
-        ConsoleUtils.red((sql2));
-        ConsoleUtils.stdout("\n");
-
-        assert (CompilerUtils.identSql(sql,sql2));
-
-        ConsoleUtils.stdout("conclude:\n");
-        ConsoleUtils.blue(("succeed"));
-        ConsoleUtils.stdout("\n");
-
-
-        return result;
-    }
 
     @Test
     public void TestCase(){
@@ -369,56 +317,173 @@ public class TestParser {
         procedure("CREATE TABLE if not exists tablename LIKE db_name.table_name2 LOCATION  'hdfs_path_of_parquet_file'");
     }
 
-
     @Test
-    public void Test() {
-        procedure("");
-    }
-    /*
-    @Test
-    public void TestCook(){
-        AST result = assertNotNULL("select a from t  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx");
-
-        ContextParam param = ContextFactory.createParam();
-        Context context = ContextFactory.create(param);
-        result.confess(context);
-        System.out.println("indent sql: "+context.getConfess());
-        System.out.println("predicate:");
-        context.confessPredicates();
+    public void TestAnalyze() {
+        procedure("ANALYZE TABLE t1 COMPUTE STATISTICS FOR COLUMNS id, p1, p2");
     }
 
+    @Test
+    public void TestAddColumn() {
+        procedure("ALTER TABLE tablename ADD COLUMNS (newColumn newDataType comment 'ok')");
+    }
+
+    @Test
+    public void TestRenameTable() {
+        procedure("alter table d1.mobile rename to mobile");
+    }
+
+    @Test
+    public void TestSetTBLPROPERTIES() {
+        procedure("ALTER TABLE table_name SET TBLPROPERTIES ('auto.purge'='true');");
+    }
+
+    @Test
+    public void TestUnSetTBLPROPERTIES() {
+        procedure("ALTER VIEW table1 UNSET TBLPROPERTIES IF EXISTS ('key1', 'key2', 'key3')");
+    }
+
+    @Test
+    public void TestArray(){
+        procedure("create temporary view data as select * from values\n" +
+                "  (\"one\", array(11, 12, 13), array(array(111, 112, 113), array(121, 122, 123))),\n" +
+                "  (\"two\", array(21, 22, 23), array(array(211, 212, 213), array(221, 222, 223)))\n" +
+                "  as data(a, b, c)");
+    }
+
+
+
 
 
     @Test
-    public void TestSubQuery(){
-        Parser parser = new Parser();
-        String sql = "select a from t, (select a,b from foo where foo.date= '2016-01-01')  where t.date > '2016-01-01' and amount=1000 or t.date = '2016-01-02' order by Txx";
-        System.out.println("to run : "+sql);
-        AST result = parser.parse(sql);
+    public void TestSQLs() {
+        //final String CONFIG_FILE = "/sql-tests/inputs/typeCoercion";
+        final String CONFIG_FILE = "/sql-tests/inputs";
+        URL fileUrl = getClass().getResource(CONFIG_FILE);
+        File node = new File(fileUrl.getFile());
+        displayIt(node);
+    }
+
+
+    private boolean tryOn = true;
+
+    private void visit(File node){
+        try {
+            System.out.println(node.getAbsolutePath());
+            String code = complete(fileGetContent(node));
+            ConsoleUtils.stdout("+++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+            ConsoleUtils.stdout("to run:\n");
+            ConsoleUtils.green((code));
+            ConsoleUtils.stdout("\n");
+
+            List<AST> astList = CompilerUtils.runBatch(code);
+            StringBuilder sbuf = new StringBuilder();
+            for (int i = 0; i< astList.size(); i++) {
+                AST ast = astList.get(i);
+                assert (ast != null);
+                ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
+                indent(ast,bOutput);
+                String sql2 = bOutput.toString();
+                if(i<astList.size()-1 || StringUtils.equalsIgnoreCase(sql2,";")){
+                    sbuf.append(complete(sql2));
+                }
+                sbuf.append(" ");
+            }
+            ConsoleUtils.stdout("result:\n");
+            ConsoleUtils.purple(sbuf.toString());
+            ConsoleUtils.stdout("\n");
+            assert (CompilerUtils.identSql(code,sbuf.toString())==true);
+            ConsoleUtils.stdout("conclude:\n");
+            ConsoleUtils.blue(("succeed"));
+            ConsoleUtils.stdout("\n");
+            if(tryOn) {
+                System.exit(0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
+    private void displayIt(File node){
+        if(node.isDirectory()){
+            String[] subNote = node.list();
+            for(String filename : subNote){
+                displayIt(new File(node, filename));
+            }
+        }else if(!node.getAbsolutePath().endsWith("blacklist.sql")){
+            visit(node);
+        }
+    }
+
+    private String complete(String str){
+        String t = str.trim();
+        if(t.endsWith(";")){
+            return t+";";
+        }else{
+            return t;
+        }
+    }
+    private AST procedure(String sql){
+
+        ConsoleUtils.stdout("========================================================\n");
+        ConsoleUtils.stdout("to run:\n");
+        //ConsoleUtils.green(IndentHelper.frame(sql));
+        ConsoleUtils.green((sql));
+        ConsoleUtils.stdout("\n");
+
+        AST result = assertNotNULL(sql);
+        ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
+        indent(result,bOutput);
+        String sql2 = bOutput.toString();
+        ConsoleUtils.stdout("result:\n");
+        //ConsoleUtils.red(IndentHelper.frame(sql2));
+        ConsoleUtils.purple((sql2));
+        ConsoleUtils.stdout("\n");
+
+        assert (CompilerUtils.identSql(sql,sql2));
+
+        ConsoleUtils.stdout("conclude:\n");
+        ConsoleUtils.blue(("succeed"));
+        ConsoleUtils.stdout("\n");
+
+
+        return result;
+    }
+
+
+    private String fileGetContent(File node) throws Exception{
+        FileReader fr =
+                new FileReader(node);
+        int i;
+        StringBuilder out = new StringBuilder();
+        while ((i=fr.read()) != -1) {
+            out.append((char) i);
+        }
+        fr.close();
+        return out.toString();
+
+    }
+
+    private AST run(String sql){
+        return CompilerUtils.run(sql);
+    }
+
+
+    private AST assertNotNULL(String sql){
+        AST result = run(sql);
         assert (result!=null);
-
-        Context context = ContextFactory.produce();
-        result.confess(context);
-        System.out.println("cooked sql: "+context.getConfess());
-        System.out.println("predicate:");
-        context.confessPredicates();
+        return result;
     }
 
-
-
-
-    @Test
-    public void TestPredicators(){
-
-        String sql = "select rid, owner, sum(prin) from t where code = 4 and t.date='2018-05-01' and t.date='2018-05-03' and t.date='2018-05-10' group  by  rid, owner";
-
-        List<String> candidateDates = new ArrayList<>();
-        candidateDates.add("2018-05-01");
-        candidateDates.add("2018-05-02");
-        candidateDates.add("2018-05-03");
-        candidateDates.add("2018-05-04");
-        CompilerUtils.grill(sql, candidateDates);
+    private AST assertNULL(String sql){
+        AST result = run(sql);
+        assert (result==null);
+        return result;
     }
-     */
 
+    private void indent(AST ast, OutputStream out){
+        ContextParam param = ContextFactory.createParam();
+        param.setOut(out);
+        Context context = ContextFactory.create(param);
+        ast.indent(context);
+    }
 }

@@ -30,6 +30,9 @@ public class ConsoleUtils {
     public static void red(String msg){
         System.out.println(ANSI_RED + msg + ANSI_RESET);
     }
+    public static void purple(String msg){
+        System.out.println(ANSI_PURPLE + msg + ANSI_RESET);
+    }
     public static void green(String msg){
         System.out.println(ANSI_GREEN + msg + ANSI_RESET);
     }

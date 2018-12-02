@@ -11,7 +11,7 @@ import name.lsg.sparksql.parser.util.IndentHelper;
 public class TableProperty extends AST {
     AST key ;
     AST value;
-    boolean eq=false;
+    String eq;
 
     public TableProperty(AST key){
         this.key = key;
@@ -22,8 +22,8 @@ public class TableProperty extends AST {
     public void indent(Context context){
         IndentHelper.indent(context, key);
         if(value!=null){
-            if(eq){
-                IndentHelper.indent(context, "=");
+            if(eq!=null){
+                IndentHelper.indentKeyWord(context, eq);
             }
             IndentHelper.indent(context,value);
         }

@@ -95,7 +95,7 @@ public class ArithmeticBinary extends AST {
     public void indent(Context context){
 
         IndentHelper.indent(context, left);
-        IndentHelper.indent(context, IndentHelper.keyword(operator));
+        IndentHelper.indentKeyWord(context, operator);
         IndentHelper.indent(context, right);
     }
 }

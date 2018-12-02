@@ -8,7 +8,7 @@ import name.lsg.sparksql.parser.util.IndentHelper;
  * Created by kenya on 2018/11/30.
  */
 
-public class FailNativeCommand extends AST {
+public class UnsupportedHiveNativeCommands extends AST {
     String kw1;
     String kw2;
     String kw3;
@@ -23,29 +23,29 @@ public class FailNativeCommand extends AST {
         this.wildcard = wildcard;
     }
 
-    public FailNativeCommand(String kw1) {
+    public UnsupportedHiveNativeCommands(String kw1) {
         this.kw1 = kw1;
     }
 
-    public FailNativeCommand(String kw1, String kw2) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2) {
         this.kw1 = kw1;
         this.kw2 = kw2;
     }
 
-    public FailNativeCommand(String kw1, String kw2, String kw3) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2, String kw3) {
         this.kw1 = kw1;
         this.kw2 = kw2;
         this.kw3 = kw3;
     }
 
-    public FailNativeCommand(String kw1, String kw2, AST tableIdentifier, String kw3) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2, AST tableIdentifier, String kw3) {
         this.kw1 = kw1;
         this.kw2 = kw2;
         this.tableIdentifier = tableIdentifier;
         this.kw3 = kw3;
     }
 
-    public FailNativeCommand(String kw1, String kw2, AST tableIdentifier, String kw3, String kw4) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2, AST tableIdentifier, String kw3, String kw4) {
         this.kw1 = kw1;
         this.kw2 = kw2;
         this.tableIdentifier = tableIdentifier;
@@ -53,7 +53,7 @@ public class FailNativeCommand extends AST {
         this.kw4 = kw4;
     }
 
-    public FailNativeCommand(String kw1, String kw2, AST tableIdentifier, String kw3, String kw4, String kw5) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2, AST tableIdentifier, String kw3, String kw4, String kw5) {
         this.kw1 = kw1;
         this.kw2 = kw2;
         this.tableIdentifier = tableIdentifier;
@@ -62,7 +62,7 @@ public class FailNativeCommand extends AST {
         this.kw5 = kw5;
     }
 
-    public FailNativeCommand(String kw1, String kw2, AST tableIdentifier, String kw3, String kw4, String kw5, String kw6) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2, AST tableIdentifier, String kw3, String kw4, String kw5, String kw6) {
         this.kw1 = kw1;
         this.kw2 = kw2;
         this.tableIdentifier = tableIdentifier;
@@ -73,7 +73,7 @@ public class FailNativeCommand extends AST {
     }
 
 
-    public FailNativeCommand(String kw1, String kw2,AST tableIdentifier, AST partitionSpec, String kw3) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2, AST tableIdentifier, AST partitionSpec, String kw3) {
         this.kw1 = kw1;
         this.kw2 = kw2;
         this.tableIdentifier = tableIdentifier;
@@ -82,7 +82,7 @@ public class FailNativeCommand extends AST {
     }
 
 
-    public FailNativeCommand(String kw1, String kw2, AST tableIdentifier,AST partitionSpec, String kw3, String kw4) {
+    public UnsupportedHiveNativeCommands(String kw1, String kw2, AST tableIdentifier, AST partitionSpec, String kw3, String kw4) {
         this.kw1 = kw1;
         this.kw2 = kw2;
         this.tableIdentifier = tableIdentifier;

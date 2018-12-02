@@ -55,8 +55,12 @@ options {
   }
 }
 
+
+
+
 singleStatement returns [ AST value]
-    : statement EOF { $value = $statement.value; }
+    : statement  ( ';'? |EOF) { $value = $statement.value; }
+    | ';' { $value = new EmptyStatement();}
     ;
 
 singleExpression returns [ AST value]
@@ -87,7 +91,7 @@ statement returns [ AST value]
         (WITH DBPROPERTIES tablePropertyList { cd.setTablePropertyList($tablePropertyList.value);} )? #createDatabase
     | ALTER DATABASE identifier SET DBPROPERTIES tablePropertyList  {  $value = new SetDatabaseProperties($identifier.value,$tablePropertyList.value);}   #setDatabaseProperties
     | { boolean exists = false;} DROP DATABASE (IF EXISTS {exists = true;})? identifier  { DropDatabase dd = new DropDatabase(exists,$identifier.value); $value = dd;}  (appendix=(RESTRICT | CASCADE) {dd.setAppendix($appendix.text);})?      #dropDatabase
-    | createTableHeader ('(' colTypeList ')')? tableProvider {CreateTable createTable = new CreateTable($createTableHeader.value,$colTypeList.value,$tableProvider.value); $value = createTable;}
+    | {List<AST>  colTypeList = null;}createTableHeader ('(' colTypeList { colTypeList = $colTypeList.value;} ')')? tableProvider {CreateTable createTable = new CreateTable($createTableHeader.value,$tableProvider.value); createTable.setColTypeList(colTypeList); $value = createTable;}
         ((OPTIONS options=tablePropertyList { createTable.setTablePropertyList($options.value);}) |
         (PARTITIONED BY partitionColumnNames=identifierList {  createTable.setPartitionColumnNames($partitionColumnNames.value);}) |
         bucketSpec { createTable.setBucketSpec($bucketSpec.value);}|
@@ -107,7 +111,7 @@ statement returns [ AST value]
         ((AS {createTable.markAS();})? query{ createTable.setQuery($query.value);})?                                                   #createHiveTable
     | {boolean not=false;}CREATE TABLE (IF NOT EXISTS { not=true;})? target=tableIdentifier
         LIKE source=tableIdentifier {  CreateTableLike createTableLike = new CreateTableLike(not,$target.value, $source.value); $value = createTableLike;} (locationSpec {createTableLike.setLocationSpec($locationSpec.value);})?                       #createTableLike
-    | ANALYZE TABLE t=tableIdentifier p=partitionSpec? COMPUTE STATISTICS { Analyze analyze = new Analyze($t.value,$p.value); $value = analyze;}
+    | ANALYZE TABLE t=tableIdentifier { Analyze analyze = new Analyze($t.value); $value = analyze;} (p=partitionSpec { analyze.setPartitionSpec($p.value);})? COMPUTE STATISTICS
         (identifier { analyze.setIdentifier($identifier.value);} | FOR COLUMNS identifierSeq { analyze.setIdentifierSeq($identifierSeq.value);})?                      #analyze
     | ALTER TABLE tableIdentifier
         ADD COLUMNS '(' columns=colTypeList ')'  { $value = new AddTableColumns($tableIdentifier.value, $columns.value);}                      #addTableColumns
@@ -117,8 +121,8 @@ statement returns [ AST value]
         SET TBLPROPERTIES tablePropertyList   { $value = new SetTableProperties($alter.text, $tableIdentifier.value, $tablePropertyList.value);}                          #setTableProperties
     | ALTER alter=(TABLE | VIEW) tableIdentifier
         UNSET TBLPROPERTIES {boolean exists = false;} (IF EXISTS { exists =true;})? tablePropertyList { $value = new UnsetTableProperties($alter.text, $tableIdentifier.value,exists, $tablePropertyList.value); }             #unsetTableProperties
-    | ALTER TABLE tableIdentifier partitionSpec? { boolean column = false;}
-        CHANGE (COLUMN { column = true;})? identifier colType colPosition?    {  $value = new ChangeColumn($tableIdentifier.value,$partitionSpec.value, column,$identifier.value,$colType.value,$colPosition.value );}              #changeColumn
+    | ALTER TABLE tableIdentifier { AST partitionSpec =null; } (partitionSpec { partitionSpec=$partitionSpec.value;})? { boolean column = false;}
+        CHANGE (COLUMN { column = true;})? identifier colType { AST colPosition =null; } (colPosition { colPosition = $colPosition.value;})?  { ChangeColumn change = new ChangeColumn($tableIdentifier.value,$identifier.value,$colType.value);$value = change; change.setPartitionSpec(partitionSpec);change.setColumn(column);change.setColPosition(colPosition);}              #changeColumn
     | ALTER TABLE tableIdentifier (partitionSpec)?
         SET SERDE s=STRING (WITH SERDEPROPERTIES tablePropertyList)? { $value = new SetTableSerDe($tableIdentifier.value, $partitionSpec.value, $s.text, $tablePropertyList.value);}    #setTableSerDe
     | ALTER TABLE tableIdentifier (partitionSpec)?
@@ -137,14 +141,14 @@ statement returns [ AST value]
     | ALTER TABLE tableIdentifier RECOVER PARTITIONS   { $value = new RecoverPartitions($tableIdentifier.value);}                 #recoverPartitions
     | { boolean exists = false; boolean purge = false;}DROP TABLE (IF EXISTS {exists =true;})? tableIdentifier (PURGE {purge = true;})? { $value = new DropTable(exists, $tableIdentifier.value, purge);}                   #dropTable
     |{ boolean exists = false;} DROP VIEW (IF EXISTS {exists =true;})? tableIdentifier    { $value =new DropView(exists, $tableIdentifier.value);}                       #dropTable
-    |{ boolean replace = false; boolean global = false; boolean temporary=false; boolean notExists= false; String comment=null; } CREATE (OR REPLACE {replace =true;})? ((GLOBAL {global = true;})? TEMPORARY {temporary= true;})?
+    |{ AST tablePropertyList = null; AST identifierList = null; AST identifierCommentList = null; boolean replace = false; boolean global = false; boolean temporary=false; boolean notExists= false; String comment=null; } CREATE (OR REPLACE {replace =true;})? ((GLOBAL {global = true;})? TEMPORARY {temporary= true;})?
         VIEW (IF NOT EXISTS { notExists=true;})? tableIdentifier
-        identifierCommentList? (COMMENT s=STRING {comment=$s.text;})?
-        (PARTITIONED ON identifierList)?
-        (TBLPROPERTIES tablePropertyList)? AS query  { $value = new CreateView(replace,global,temporary,notExists,$tableIdentifier.value,$identifierCommentList.value,comment,$identifierList.value,$tablePropertyList.value,$query.value);}                   #createView
-    | {boolean replace = false; boolean global = false;} CREATE (OR REPLACE {replace = true;})? (GLOBAL {global = true;})? TEMPORARY VIEW
-        tableIdentifier ('(' colTypeList ')')? tableProvider
-        (OPTIONS tablePropertyList)?  { $value = new CreateTempViewUsing(replace,global,$tableIdentifier.value,$colTypeList.value,$tableProvider.value,$tablePropertyList.value);}                             #createTempViewUsing
+        (identifierCommentList {identifierCommentList=$identifierCommentList.value;})? (COMMENT s=STRING {comment=$s.text;})?
+        (PARTITIONED ON identifierList { identifierList = $identifierList.value;})?
+        (TBLPROPERTIES tablePropertyList { tablePropertyList = $tablePropertyList.value;})? AS query  { $value = new CreateView(replace,global,temporary,notExists,$tableIdentifier.value,identifierCommentList,comment,identifierList,tablePropertyList,$query.value);}                   #createView
+    | {boolean replace = false; boolean global = false; List<AST> colTypeList= null; AST tablePropertyList =null; } CREATE (OR REPLACE {replace = true;})? (GLOBAL {global = true;})? TEMPORARY VIEW
+        tableIdentifier ('(' colTypeList ')' {colTypeList = $colTypeList.value; })? tableProvider
+        (OPTIONS tablePropertyList {tablePropertyList =$tablePropertyList.value; })?  { CreateTempViewUsing createView = new CreateTempViewUsing(replace,global,$tableIdentifier.value,$tableProvider.value); $value=createView; createView.setColTypeList(colTypeList); createView.setTablePropertyList(tablePropertyList);}                             #createTempViewUsing
     | {boolean as = false;}ALTER VIEW tableIdentifier (AS {as = true;})? query  {$value = new AlterViewQuery($tableIdentifier.value,as, $query.value); }                            #alterViewQuery
     |{boolean replace = false; boolean temporary = false; boolean notExists = false;} CREATE (OR REPLACE {replace = true;})? (TEMPORARY{temporary=true;})? FUNCTION (IF NOT EXISTS{ notExists=true;})?
         qualifiedName AS className=STRING { CreateFunction createFunction = new CreateFunction(replace,temporary,notExists,$qualifiedName.value,$className.text); $value = createFunction; }
@@ -152,23 +156,23 @@ statement returns [ AST value]
     | {boolean temporary = false; boolean exists = false;}DROP TEMPORARY? FUNCTION (IF EXISTS)? qualifiedName  { $value = new DropFunction(temporary,exists,$qualifiedName.value);}            #dropFunction
     | EXPLAIN option=(LOGICAL | FORMATTED | EXTENDED | CODEGEN | COST)?
         statement   { $value = new Explain($option.text, $statement.value);}                                                   #explain
-    | SHOW TABLES (method=(FROM | IN) db=identifier)? {boolean like =false;}
-        ((LIKE {like =true;})? pattern=STRING)?  { $value = new ShowTables($method.text, $db.value,like, $pattern.text);}                                       #showTables
-    | SHOW TABLE EXTENDED (method=(FROM | IN) db=identifier)?
-        LIKE pattern=STRING partitionSpec?    { $value = new ShowTable($method.text, $db.value, $pattern.text, $partitionSpec.value);}                         #showTable
+    | SHOW TABLES {String method=null; AST db =null; String pattern = null;} (method=(FROM | IN) db=identifier { method= $method.text; db=$db.value;})? {boolean like =false;}
+        ((LIKE {like =true;})? pattern=STRING { pattern = $pattern.text;})?  { $value = new ShowTables(method,db,like, pattern);}                                       #showTables
+    | SHOW TABLE EXTENDED {String method = null; AST db = null; AST partitionSpec = null;}(method=(FROM | IN) db=identifier { method = $method.text; db = $db.value;})?
+        LIKE pattern=STRING (partitionSpec { partitionSpec = $partitionSpec.value;})?    { $value = new ShowTable(method, db, $pattern.text, partitionSpec);}                         #showTable
     | {boolean like =false;} SHOW DATABASES ((LIKE {like = true;})? pattern=STRING)?  { $value = new ShowDatabases(like ,$pattern.text);}                          #showDatabases
     | SHOW TBLPROPERTIES table=tableIdentifier
         ('(' key=tablePropertyKey ')')?   {$value = new ShowTblProperties($table.value, $key.value);}                             #showTblProperties
-    | SHOW COLUMNS tMethod=(FROM | IN) table=tableIdentifier
-        (dMethod=(FROM | IN) db=identifier)?   { $value = new ShowColumns($tMethod.text, $table.value, $dMethod.text, $db.value); }                                 #showColumns
+    | SHOW COLUMNS tMethod=(FROM | IN) table=tableIdentifier { String dMethod=null; AST db = null;}
+        (dMethod=(FROM | IN) db=identifier )?   { $value = new ShowColumns($tMethod.text, $table.value, dMethod, db); }                                 #showColumns
     | SHOW PARTITIONS tableIdentifier partitionSpec? { $value = new ShowPartitions($tableIdentifier.value, $partitionSpec.value);}                  #showPartitions
     | { ShowFunctions showFunctions = new ShowFunctions(); $value = showFunctions;} SHOW (identifier { showFunctions.setIdentifier($identifier.value);})? FUNCTIONS
         ((LIKE {showFunctions.setLike(true);})? (qualifiedName{ showFunctions.setQualifiedName($qualifiedName.value);} | pattern=STRING { showFunctions.setPattern($pattern.text);}))?  { }                    #showFunctions
     | SHOW CREATE TABLE tableIdentifier    { $value = new ShowCreateTable($tableIdentifier.value); }                            #showCreateTable
     | { boolean extend=false;} desc=(DESC | DESCRIBE) FUNCTION (EXTENDED {extend =true;})? describeFuncName { $value = new DescribeFunction($desc.text, extend, $describeFuncName.value);}           #describeFunction
     | { boolean extend=false;} desc=(DESC | DESCRIBE) DATABASE (EXTENDED {extend =true;})? identifier { $value = new DescribeDatabase($desc.text, extend, $identifier.value);}                 #describeDatabase
-    | { boolean table=false;} desc=(DESC | DESCRIBE) (TABLE{table = true;})? option=(EXTENDED | FORMATTED)?
-        tableIdentifier partitionSpec? describeColName?  { $value = new DescribeTable($desc.text, table, $option.text, $tableIdentifier.value,$partitionSpec.value,$describeColName.value);}              #describeTable
+    | { boolean table=false;String option=null;AST partitionSpec = null; AST describeColName = null;} desc=(DESC | DESCRIBE) (TABLE{table = true;})? (option=(EXTENDED | FORMATTED) {option=$option.text;})?
+        tableIdentifier (partitionSpec { partitionSpec=$partitionSpec.value;})? (describeColName { describeColName =$describeColName.value;})?  { DescribeTable desc = new DescribeTable($desc.text, table, $tableIdentifier.value); $value = desc; desc.setOption(option); desc.setPartitionSpec(partitionSpec); desc.setDescribeColName(describeColName);}              #describeTable
     | REFRESH TABLE t=tableIdentifier    { $value = new RefreshTable($t.value);}                                #refreshTable
     | REFRESH (s=STRING  { $value = new RefreshResource($s.text); } | (t=.*?  {$value = new RefreshResource($t.text);}) )                                           #refreshResource
     | { boolean lazy =false; boolean as =false;}CACHE (LAZY {lazy=true;})? TABLE tableIdentifier ((AS {as = true;})? query)?  { $value = new CacheTable(lazy,$tableIdentifier.value,as, $query.value);}                 #cacheTable
@@ -182,55 +186,56 @@ statement returns [ AST value]
     | SET ROLE s=.*? {$value = new SetRole($s.text);}                                                    #failNativeCommand
     | SET s=.*?    {$value = new SetConfiguration($s.text);}                                                      #setConfiguration
     | RESET   { $value = new ResetConfiguration();}                                                         #resetConfiguration
-    | unsupportedHiveNativeCommands .*?                                #failNativeCommand
+    | unsupportedHiveNativeCommands s=.*?    { $value = new FailNativeCommand($unsupportedHiveNativeCommands.value, $s.text);}                             #failNativeCommand
     ;
 
 unsupportedHiveNativeCommands returns [ AST value]
-    : kw1=CREATE kw2=ROLE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=DROP kw2=ROLE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=GRANT kw2=ROLE? {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=REVOKE kw2=ROLE? {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=GRANT {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=ROLE kw3=GRANT? {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=PRINCIPALS {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=ROLES {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=CURRENT kw3=ROLES {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=EXPORT kw2=TABLE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=IMPORT kw2=TABLE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=COMPACTIONS {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=CREATE kw3=TABLE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=TRANSACTIONS {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=INDEXES {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=SHOW kw2=LOCKS {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=CREATE kw2=INDEX {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=DROP kw2=INDEX {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=ALTER kw2=INDEX {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=LOCK kw2=TABLE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=LOCK kw2=DATABASE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=UNLOCK kw2=TABLE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=UNLOCK kw2=DATABASE {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=CREATE kw2=TEMPORARY kw3=MACRO {$value = new FailNativeCommand($kw1.text, $kw2.text, $kw3.text); }
-    | kw1=DROP kw2=TEMPORARY kw3=MACRO {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=CLUSTERED {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=CLUSTERED kw4=BY {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=SORTED {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=SKEWED kw4=BY {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=SKEWED {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=STORED kw5=AS kw6=DIRECTORIES {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text, $kw5.text, $kw6.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=SET kw4=SKEWED kw5=LOCATION {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text, $kw5.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=EXCHANGE kw4=PARTITION {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=ARCHIVE kw4=PARTITION {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=UNARCHIVE kw4=PARTITION {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier kw3=TOUCH {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier partitionSpec? kw3=COMPACT {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $partitionSpec.value, $kw3.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier partitionSpec? kw3=CONCATENATE {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $partitionSpec.value, $kw3.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier partitionSpec? kw3=SET kw4=FILEFORMAT {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $partitionSpec.value, $kw3.text, $kw4.text); }
-    | kw1=ALTER kw2=TABLE tableIdentifier partitionSpec? kw3=REPLACE kw4=COLUMNS {$value = new FailNativeCommand($kw1.text, $kw2.text, $tableIdentifier.value, $partitionSpec.value, $kw3.text, $kw4.text ); }
-    | kw1=START kw2=TRANSACTION {$value = new FailNativeCommand($kw1.text, $kw2.text); }
-    | kw1=COMMIT {$value = new FailNativeCommand($kw1.text); }
-    | kw1=ROLLBACK {$value = new FailNativeCommand($kw1.text); }
-    | kw1=DFS {$value = new FailNativeCommand($kw1.text); }
-    | kw1=DELETE kw2=FROM {$value = new FailNativeCommand($kw1.text, $kw2.text); }
+    : kw1=CREATE kw2=ROLE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=DROP kw2=ROLE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=GRANT {String kw2=null;} (kw2=ROLE { kw2=$kw2.text;})? {$value = new UnsupportedHiveNativeCommands($kw1.text, kw2); }
+    | kw1=REVOKE {String kw2=null;} (kw2=ROLE{ kw2=$kw2.text;})? {$value = new UnsupportedHiveNativeCommands($kw1.text, kw2); }
+    | kw1=SHOW kw2=GRANT {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=SHOW kw2=ROLE {String kw3=null;} (kw3=GRANT {kw3=$kw3.text;})? {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text,kw3); }
+    | kw1=SHOW kw2=PRINCIPALS {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=SHOW kw2=ROLES {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=SHOW kw2=CURRENT kw3=ROLES {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text,$kw3.text); }
+    | kw1=EXPORT kw2=TABLE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=IMPORT kw2=TABLE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=SHOW kw2=COMPACTIONS {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    //| kw1=SHOW kw2=CREATE kw3=TABLE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text,$kw3.text); }
+    | kw1=SHOW kw2=TRANSACTIONS {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=SHOW kw2=INDEXES {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=SHOW kw2=LOCKS {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=CREATE kw2=INDEX {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=DROP kw2=INDEX {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=ALTER kw2=INDEX {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=LOCK kw2=TABLE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=LOCK kw2=DATABASE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=UNLOCK kw2=TABLE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=UNLOCK kw2=DATABASE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=CREATE kw2=TEMPORARY kw3=MACRO {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $kw3.text); }
+    | kw1=DROP kw2=TEMPORARY kw3=MACRO {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text,$kw3.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=CLUSTERED {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=CLUSTERED kw4=BY {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=SORTED {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=SKEWED kw4=BY {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=SKEWED {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=NOT kw4=STORED kw5=AS kw6=DIRECTORIES {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text, $kw5.text, $kw6.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=SET kw4=SKEWED kw5=LOCATION {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text, $kw5.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=EXCHANGE kw4=PARTITION {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=ARCHIVE kw4=PARTITION {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=UNARCHIVE kw4=PARTITION {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier kw3=TOUCH {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, $kw3.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier {AST partitionSpec = null;} (partitionSpec {partitionSpec =$partitionSpec.value;})? kw3=COMPACT {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, partitionSpec, $kw3.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier {AST partitionSpec = null;} (partitionSpec {partitionSpec =$partitionSpec.value;})? kw3=CONCATENATE {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, partitionSpec, $kw3.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier {AST partitionSpec = null;} (partitionSpec {partitionSpec =$partitionSpec.value;})? kw3=SET kw4=FILEFORMAT {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value, partitionSpec, $kw3.text, $kw4.text); }
+    | kw1=ALTER kw2=TABLE tableIdentifier {AST partitionSpec = null;} (partitionSpec {partitionSpec =$partitionSpec.value;})? kw3=REPLACE kw4=COLUMNS {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $tableIdentifier.value,partitionSpec, $kw3.text, $kw4.text ); }
+    | kw1=START kw2=TRANSACTION {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=COMMIT {$value = new UnsupportedHiveNativeCommands($kw1.text); }
+    | kw1=ROLLBACK {$value = new UnsupportedHiveNativeCommands($kw1.text); }
+    | kw1=DFS {$value = new UnsupportedHiveNativeCommands($kw1.text); }
+    | kw1=DELETE kw2=FROM {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text); }
+    | kw1=SHOW kw2=TABLE kw3=EXTENDED {$value = new UnsupportedHiveNativeCommands($kw1.text, $kw2.text, $kw3.text); }
     ;
 
 createTableHeader returns [CreateTableHeader value]
@@ -272,11 +277,11 @@ partitionSpecLocation returns [ PartitionSpecLocation value]
 
 partitionSpec returns [ PartitionSpec value]
     @init { $value = new PartitionSpec();}
-    : PARTITION '(' partitionVal { $value.addPartition($partitionVal.value);} (',' partitionVal { $value.addPartition($partitionVal.value);})* ')'
+    : PARTITION '(' p=partitionVal { $value.addPartition($p.value);} (',' p=partitionVal { $value.addPartition($p.value);})* ')'
     ;
 
 partitionVal returns [PartitionVal value]
-    : identifier { $value = new PartitionVal($identifier.value);} (EQ constant { $value.setConstant($constant.value);})?
+    : identifier { $value = new PartitionVal($identifier.value);} (eq=EQ constant { $value.setConstant($constant.value); $value.setEq($eq.text); })?
     ;
 
 describeFuncName returns [ AST value]
@@ -312,7 +317,7 @@ tablePropertyList returns [ TablePropertyList value]
     ;
 
 tableProperty returns [TableProperty value]
-    : key=tablePropertyKey { $value =new TableProperty($key.value);}( (EQ {$value.setEq(true);})? v=tablePropertyValue {$value.setValue($v.value);})?
+    : key=tablePropertyKey { $value =new TableProperty($key.value);}( (eq=EQ {$value.setEq($eq.text);})? v=tablePropertyValue {$value.setValue($v.value);})?
     ;
 
 tablePropertyKey returns [TablePropertyKey value]
@@ -372,15 +377,16 @@ queryOrganization returns [ QueryOrganization value]
     ;
 
 multiInsertQueryBody returns [AST value]
-    : insertInto?
+    @init { AST insertInto = null; }
+    : (insertInto {insertInto =$insertInto.value;})?
       querySpecification
-      queryOrganization  {  $value = new MultiInsertQueryBody($insertInto.value,$querySpecification.value,$queryOrganization.value );}
+      queryOrganization  {  $value = new MultiInsertQueryBody(insertInto,$querySpecification.value,$queryOrganization.value );}
     ;
 
 queryTerm returns [AST value]
     :  q=queryPrimary  {$value = $q.value;}                                                                       #queryTermDefault
-    |  left=queryTerm operator=(INTERSECT | UNION | EXCEPT | SETMINUS) qf=setQuantifier? right=queryTerm
-      { $value = new JOIN($left.value,$operator.text,$right.value,$qf.value);}  #setOperation
+    |  left=queryTerm operator=(INTERSECT | UNION | EXCEPT | SETMINUS) { AST qualifier = null;} (qf=setQuantifier {qualifier = $qf.value;})? right=queryTerm
+      { SetOperation join = new SetOperation($left.value,$operator.text,$right.value); $value = join; join.setQualifier(qualifier);}  #setOperation
     ;
 
 queryPrimary returns [AST value]
@@ -544,7 +550,7 @@ identifierList returns [AST value]
 
 identifierSeq returns [List value]
     @init{ $value = new ArrayList(); }
-    : id=identifier { $value.add($id.value);} (',' identifier { $value.add($id.value);})*
+    : identifier { $value.add($identifier.value);} (',' identifier { $value.add($identifier.value);})*
     ;
 
 orderedIdentifierList returns [ OrderedIdentifierList value]
@@ -655,6 +661,7 @@ valueExpression returns [ AST value]
     | left=valueExpression operator=HAT right=valueExpression  { $value = new ArithmeticBinary($left.value,$operator.text,$right.value); }                               #arithmeticBinary
     | left=valueExpression operator=PIPE right=valueExpression   { $value = new ArithmeticBinary($left.value,$operator.text,$right.value); }                             #arithmeticBinary
     | left=valueExpression op=comparisonOperator right=valueExpression     { $value = new ArithmeticBinary($left.value,$op.text,$right.value); }                      #comparison
+    | left=valueExpression ARROW right=valueExpression     { $value = new Arrow($left.value,$right.value); }                      #comparison
     ;
 
 primaryExpression returns [ AST value]
@@ -728,7 +735,7 @@ colPosition returns [ AST value]
 dataType returns [ DataType value ]
     : complex=ARRAY '<' dataType '>'  { $value = new ARRAY($dataType.value);  }                          #complexDataType
     | complex=MAP '<' k=dataType ',' v=dataType '>'   { $value = new MAP($k.value, $v.value);}               #complexDataType
-    | complex=STRUCT  { ComplexDataType struct = new ComplexDataType(); $value=struct;}('<' (c=complexColTypeList { struct.setComplexColTypeList($c.value);})?  '>' | NEQ { struct.setNeq(new NEQ());})        #complexDataType
+    | complex=STRUCT  { ComplexDataType struct = new ComplexDataType(); $value=struct;}('<' (c=complexColTypeList { struct.setComplexColTypeList($c.value);})?  '>' | neq=NEQ { struct.setNeq($neq.text);})        #complexDataType
     | i=identifier { PrimitiveDataType pdt = new PrimitiveDataType($i.value); $value= pdt; } ('(' v=INTEGER_VALUE { pdt.addValue(new IntegerValue($v.text));  } (',' v=INTEGER_VALUE { pdt.addValue(new IntegerValue($v.text)); } )* ')')?  #primitiveDataType
     ;
 
@@ -1153,6 +1160,10 @@ BIGDECIMAL_LITERAL
     | DECIMAL_DIGITS EXPONENT? 'BD' {isValidDecimal()}?
     ;
 
+ARROW
+    : '->'
+    ;
+
 IDENTIFIER
     : (LETTER | DIGIT | '_')+
     ;
@@ -1185,6 +1196,8 @@ SIMPLE_COMMENT
 BRACKETED_EMPTY_COMMENT
     : '/**/' -> channel(HIDDEN)
     ;
+
+
 
 BRACKETED_COMMENT
     : '/*' ~[+] .*? '*/' -> channel(HIDDEN)

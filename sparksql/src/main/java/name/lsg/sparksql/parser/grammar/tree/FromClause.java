@@ -34,7 +34,7 @@ public class FromClause extends AST {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, IndentHelper.keyword("from"));
+        IndentHelper.indentKeyWord(context, "from");
         IndentHelper.indent(context, relationList);
         IndentHelper.indent(context, lateralViewList);
         IndentHelper.indent(context, pivotClause);

@@ -7,6 +7,7 @@ import name.lsg.sparksql.parser.util.IndentHelper;
 import name.lsg.sparksql.parser.util.MagicUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.OutputStream;
 import java.util.List;
 /**
  * Created by kenya on 2018/11/13.
@@ -90,8 +91,9 @@ public class AST {
 
     protected String getRawContent(AST ast){
         Context context = ContextFactory.create();
-        runConfess(context,ast);
-        return context.getConfess().trim();
+        IndentHelper.indent(context, ast);
+        OutputStream out = context.getOut();
+        return out.toString().trim();
     }
 
     protected String concat(List<AST> asts, char delimiter){

@@ -11,18 +11,18 @@ import java.util.List;
  */
 @Data
 public class ComplexDataType extends DataType {
-    List<AST> complexColTypeList = null;
-    AST neq=null;
+    List<AST> complexColTypeList;
+    String neq;
 
     @Override
     public void indent(Context context){
-        if(neq!=null){
+        if(neq==null){
             IndentHelper.indent(context,IndentHelper.keyword("STRUCT"));
             IndentHelper.indent(context,"<");
             IndentHelper.indent(context,complexColTypeList);
             IndentHelper.indent(context,">");
         }else{
-            IndentHelper.indent(context,neq);
+            IndentHelper.indentKeyWord(context,neq);
         }
     }
 

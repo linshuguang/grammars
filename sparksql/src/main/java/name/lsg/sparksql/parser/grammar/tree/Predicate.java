@@ -8,4 +8,6 @@ import lombok.Data;
 @Data
 public class Predicate extends AST {
     boolean not=false;
+    public Predicate (){}
+    public Predicate (boolean not) { this.not = not;}
 }

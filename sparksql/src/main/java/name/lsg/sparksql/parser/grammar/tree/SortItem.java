@@ -28,7 +28,10 @@ public class SortItem extends AST {
     public void indent(Context context){
         IndentHelper.indent(context, expr);
         IndentHelper.indent(context, ordering);
-        IndentHelper.indent(context, nulls);
+        if(nulls!=null) {
+            IndentHelper.indent(context,"NULLS");
+            IndentHelper.indent(context, nulls);
+        }
     }
 
 }

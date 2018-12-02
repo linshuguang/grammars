@@ -24,9 +24,8 @@ public class CreateTable extends AST{
     boolean as =false;
     AST query;
 
-    public CreateTable(AST createTableHeader, List<AST> colTypeList, AST tableProvider){
+    public CreateTable(AST createTableHeader, AST tableProvider){
         this.createTableHeader = createTableHeader;
-        this.colTypeList = colTypeList;
         this.tableProvider = tableProvider;
     }
 

@@ -23,7 +23,7 @@ public class ArithmeticUnary extends AST {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, IndentHelper.keyword(operator));
+        IndentHelper.indentKeyWord(context, operator);
         IndentHelper.indent(context, value);
     }
 

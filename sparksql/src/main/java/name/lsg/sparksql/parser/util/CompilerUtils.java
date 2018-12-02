@@ -152,4 +152,9 @@ public class CompilerUtils {
         return parser.parse(sql);
     }
 
+    public static List<AST> runBatch(String sql){
+        Parser parser = new Parser();
+        return parser.parseStatements(sql);
+    }
+
 }

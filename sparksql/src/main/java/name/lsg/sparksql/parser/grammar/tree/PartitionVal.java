@@ -10,6 +10,7 @@ import name.lsg.sparksql.parser.util.IndentHelper;
 @Data
 public class PartitionVal extends AST {
     AST identifier;
+    String eq;
     AST constant;
 
     public PartitionVal(AST identifier){
@@ -20,7 +21,7 @@ public class PartitionVal extends AST {
     public void indent(Context context){
         IndentHelper.indent(context, identifier);
         if(constant!=null) {
-            IndentHelper.indent(context, IndentHelper.keyword("eq"));
+            IndentHelper.indentKeyWord(context, eq);
             IndentHelper.indent(context, constant);
         }
     }

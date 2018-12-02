@@ -36,7 +36,7 @@ public class QualifiedName extends AST {
             sBuf.append(getRawContent(identifierList.get(0)));
             for(int i = 1; i < identifierList.size(); i++){
                 sBuf.append(".");
-                sBuf.append(identifierList.get(i));
+                sBuf.append(getRawContent(identifierList.get(i)));
             }
             IndentHelper.indent(context, sBuf.toString());
         }

@@ -18,8 +18,7 @@ public class DescribeColName extends AST {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context,"(");
-        IndentHelper.indent(context,nameParts);
-        IndentHelper.indent(context,")");
+
+        IndentHelper.indent(context,concat(nameParts,'.'));
     }
 }

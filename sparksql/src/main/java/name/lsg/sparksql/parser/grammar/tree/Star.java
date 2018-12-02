@@ -32,8 +32,8 @@ public class Star extends AST{
     @Override
     public void indent(Context context){
         if(qualifiedName!=null){
-            //String content = getRawContent(qualifiedName);
-            IndentHelper.indent(context, qualifiedName,".*");
+            String content = getRawContent(qualifiedName);
+            IndentHelper.indent(context, content+".*");
         }else {
             IndentHelper.indent(context, "*");
         }

@@ -18,9 +18,8 @@ public class Analyze extends AST {
     AST identifier;
     List<AST> identifierSeq;
 
-    public Analyze(AST tableIdentifier, AST partitionSpec){
+    public Analyze(AST tableIdentifier){
         this.tableIdentifier = tableIdentifier;
-        this.partitionSpec = partitionSpec;
     }
 
     @Override
