@@ -6,46 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02333d35-cd57-4376-b657-0c0e7e806daf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Arrow.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/EmptyStatement.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SetOperation.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ddl/FailNativeCommand.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sparksql/src/test/resources/sql-tests/inputs/a.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4" afterPath="$PROJECT_DIR$/sparksql/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/Parser.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/Parser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/context/ContextFactory.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/context/ContextFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AST.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/AST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticBinary.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticBinary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticUnary.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ArithmeticUnary.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/BoolValue.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/BoolValue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ComplexDataType.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ComplexDataType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DescribeColName.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/DescribeColName.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/FromClause.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/FromClause.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/INTERVAL.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/INTERVAL.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InQuery.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InQuery.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InlineTable.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/InlineTable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IntegerValue.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IntegerValue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IntervalValue.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/IntervalValue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Like.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Like.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NULL.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/NULL.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/PartitionVal.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/PartitionVal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Predicate.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Predicate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QualifiedName.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/QualifiedName.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SortItem.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/SortItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Star.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Star.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableProperty.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TableProperty.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ddl/CreateTable.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ddl/CreateTable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/Analyze.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/Analyze.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/ChangeColumn.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/ChangeColumn.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/CreateTempViewUsing.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/CreateTempViewUsing.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/DescribeTable.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/DescribeTable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOIN.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/join/JOIN.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/CompilerUtils.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/CompilerUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/ConsoleUtils.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/util/ConsoleUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java" afterPath="$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/FailNativeCommand.java" afterPath="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/dml/UnsupportedHiveNativeCommands.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -76,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="22" column="6" lean-forward="false" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+            <state relative-caret-position="506">
+              <caret line="23" column="11" lean-forward="false" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -106,7 +68,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="a.sql" pinned="false" current-in-tab="true">
+      <file leaf-file-name="a.sql" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sparksql/src/test/resources/sql-tests/inputs/a.sql">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -276,8 +238,8 @@
         <option value="$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/ComplexDataType.java" />
         <option value="$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java" />
         <option value="$PROJECT_DIR$/sparksql/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/sparksql/src/test/resources/sql-tests/inputs/a.sql" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -612,82 +574,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="inputs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grammars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grammars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sparksql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sql-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="inputs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="typeCoercion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grammars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grammars" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sparksql" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sql-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="inputs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="subquery" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2768,26 +2654,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TablePropertyList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/Select.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="117">
           <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="379" column="0" lean-forward="false" selection-start-line="379" selection-start-column="0" selection-end-line="379" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2800,6 +2670,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/test/resources/sql-tests/inputs/a.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sparksql/src/main/java/name/lsg/sparksql/parser/grammar/tree/TablePropertyList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/sparksql/src/main/antlr4/org/apache/spark/sql/catalyst/parser/SqlBase.g4">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -2808,18 +2694,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/sparksql/src/test/java/name/lsg/sparksql/parser/TestParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="22" column="6" lean-forward="false" selection-start-line="22" selection-start-column="6" selection-end-line="22" selection-end-column="6" />
+        <state relative-caret-position="308">
+          <caret line="379" column="0" lean-forward="false" selection-start-line="379" selection-start-column="0" selection-end-line="379" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sparksql/src/test/resources/sql-tests/inputs/a.sql">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="506">
+          <caret line="23" column="11" lean-forward="false" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
           <folding />
         </state>
       </provider>
