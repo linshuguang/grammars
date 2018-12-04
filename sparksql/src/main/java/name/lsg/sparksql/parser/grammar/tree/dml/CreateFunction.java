@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class CreateFunction extends AST {
     boolean replace = false;
-    boolean temporary = false;
+    String temporary;
     boolean notExists = false;
     AST qualifiedName;
     String className;
     List<AST> resources = new ArrayList<>();
 
-    public CreateFunction(boolean replace,boolean temporary,boolean notExists,AST qualifiedName,String className){
+    public CreateFunction(boolean replace,String temporary,boolean notExists,AST qualifiedName,String className){
         this.replace = replace;
         this.temporary = temporary;
         this.notExists = notExists;
@@ -36,8 +36,8 @@ public class CreateFunction extends AST {
         if (replace) {
             IndentHelper.indentKeyWord(context, "OR", "REPLACE");
         }
-        if (temporary) {
-            IndentHelper.indentKeyWord(context, "TEMPORARY");
+        if (temporary!=null) {
+            IndentHelper.indentKeyWord(context, temporary);
         }
         IndentHelper.indentKeyWord(context, "FUNCTION");
         if (notExists) {

@@ -33,6 +33,6 @@ public class Relation extends AST {
     @Override
     public void indent(Context context){
         IndentHelper.indent(context, relationPrimary);
-        IndentHelper.indent(context, joinRelationList);
+        IndentHelper.indentWithDelimeter(context, joinRelationList," ");
     }
 }

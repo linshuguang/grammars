@@ -354,6 +354,8 @@ public class TestParser {
 
 
 
+    private boolean tryOn = false;
+
     @Test
     public void TestSQLs() {
         //final String CONFIG_FILE = "/sql-tests/inputs/typeCoercion";
@@ -364,7 +366,7 @@ public class TestParser {
     }
 
 
-    private boolean tryOn = true;
+
 
     private void visit(File node){
         try {
@@ -383,7 +385,7 @@ public class TestParser {
                 ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
                 indent(ast,bOutput);
                 String sql2 = bOutput.toString();
-                if(i<astList.size()-1 || StringUtils.equalsIgnoreCase(sql2,";")){
+                if(!StringUtils.equalsIgnoreCase(sql2.trim(),";")){
                     sbuf.append(complete(sql2));
                 }
                 sbuf.append(" ");
@@ -403,20 +405,29 @@ public class TestParser {
             System.exit(-1);
         }
     }
+
+    private boolean isBlacked(File node){
+        String path = node.getAbsolutePath();
+        if(path.endsWith("extract.sql") || path.endsWith("blacklist.sql")){
+            return true;
+        }
+        return false;
+    }
+
     private void displayIt(File node){
         if(node.isDirectory()){
             String[] subNote = node.list();
             for(String filename : subNote){
                 displayIt(new File(node, filename));
             }
-        }else if(!node.getAbsolutePath().endsWith("blacklist.sql")){
+        }else if(!isBlacked(node)){
             visit(node);
         }
     }
 
     private String complete(String str){
         String t = str.trim();
-        if(t.endsWith(";")){
+        if(!t.endsWith(";")){
             return t+";";
         }else{
             return t;

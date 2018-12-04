@@ -25,7 +25,7 @@ public class ShowColumns extends AST {
         IndentHelper.indentKeyWord(context, "SHOW","COLUMNS");
         IndentHelper.indentKeyWord(context, tableMethod);
         IndentHelper.indent(context, table);
-        if(db!=null) {
+        if(dbMethod!=null) {
             IndentHelper.indentKeyWord(context, dbMethod);
             IndentHelper.indent(context, db);
         }

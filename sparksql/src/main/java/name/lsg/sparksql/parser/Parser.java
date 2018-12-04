@@ -96,6 +96,7 @@ public class Parser {
         SqlBaseLexer lexer1 = getLexer(sql1, false);
         SqlBaseLexer lexer2 = getLexer(sql2, false);
 
+        StringBuilder sbuf  = new StringBuilder();
         boolean yes = true;
         for (Token token2 = nextValid(lexer2);
              token2.getType() != Token.EOF;
@@ -111,12 +112,16 @@ public class Parser {
                 yes = false;
             }
             if(!yes) {
+                System.out.println("===================================================");
                 System.out.println("token1:" + token1.toString());
                 System.out.println("token2:" + token2.toString());
-                System.out.println("\n\n\n\n");
+                System.out.println("\n\nhistory:"+sbuf.toString());
+                System.out.println("===================================================\n\n\n\n");
+
                 break;
             }
-
+            sbuf.append(token1.toString());
+            sbuf.append("\n");
         }
 
         return yes;

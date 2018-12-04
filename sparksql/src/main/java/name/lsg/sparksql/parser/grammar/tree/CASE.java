@@ -17,13 +17,10 @@ public class CASE extends AST {
     AST elseExpr;
 
     public CASE(){
-        this.condExpr = null;
-        this.elseExpr = null;
     }
 
     public CASE(AST condExpr){
         this.condExpr = condExpr;
-        this.elseExpr = null;
     }
 
     public void addWhen(AST clause){
@@ -32,13 +29,14 @@ public class CASE extends AST {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, IndentHelper.keyword("case"));
+        IndentHelper.indentKeyWord(context, "case");
+        IndentHelper.indent(context, condExpr);
         IndentHelper.indentNoDelimeter(context, whenClause);
         if(elseExpr!=null){
-            IndentHelper.indent(context, IndentHelper.keyword("else"));
+            IndentHelper.indentKeyWord(context, "else");
             IndentHelper.indent(context, elseExpr);
         }
-        IndentHelper.indent(context, IndentHelper.keyword("end"));
+        IndentHelper.indentKeyWord(context, "end");
     }
 
 }

@@ -10,16 +10,10 @@ import name.lsg.sparksql.parser.util.IndentHelper;
  */
 @Data
 public class CreateTableHeader extends AST {
-    boolean temporary =false;
+    String temporary;
     boolean external = false;
     boolean notExists = false;
     AST tableIdentifier;
-    //CREATE TEMPORARY? EXTERNAL? TABLE (IF NOT EXISTS)? tableIdentifier
-
-
-    public void markTemporary(){
-        temporary = true;
-    }
 
     public void markExternal(){
         external = true;
@@ -32,8 +26,8 @@ public class CreateTableHeader extends AST {
     @Override
     public void indent(Context context){
         IndentHelper.indentKeyWord(context, "CREATE");
-        if(temporary){
-            IndentHelper.indentKeyWord(context, "TEMPORARY");
+        if(temporary!=null){
+            IndentHelper.indentKeyWord(context, temporary);
         }
         if(external){
             IndentHelper.indentKeyWord(context, "EXTERNAL");

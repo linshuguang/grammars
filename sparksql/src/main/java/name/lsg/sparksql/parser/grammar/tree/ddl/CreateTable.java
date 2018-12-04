@@ -15,7 +15,7 @@ public class CreateTable extends AST{
     AST createTableHeader;
     List<AST>  colTypeList;
     AST tableProvider;
-    AST tablePropertyList;
+    AST options;
     AST partitionColumnNames;
     AST bucketSpec;
     AST locationSpec;
@@ -43,22 +43,27 @@ public class CreateTable extends AST{
         }
         IndentHelper.indent(context, tableProvider);
 
-        if(tablePropertyList!=null){
+        if(options!=null){
             IndentHelper.indentKeyWord(context, "OPTIONS");
-            IndentHelper.indent(context, tablePropertyList);
-        }else if(partitionColumnNames!=null){
+            IndentHelper.indent(context, options);
+        }
+        if(partitionColumnNames!=null){
             IndentHelper.indentKeyWord(context, "PARTITIONED","BY");
             IndentHelper.indent(context, partitionColumnNames);
-        }else if(bucketSpec!=null){
+        }
+        if(bucketSpec!=null){
             IndentHelper.indent(context, bucketSpec);
-        }else if(locationSpec!=null){
+        }
+        if(locationSpec!=null){
             IndentHelper.indent(context, locationSpec);
-        }else if(comment!=null){
+        }
+        if(comment!=null){
             IndentHelper.indentKeyWord(context, "comment");
             IndentHelper.indent(context, comment);
-        }else if(tablePropertyList!=null){
+        }
+        if(tableProps!=null){
             IndentHelper.indentKeyWord(context, "TBLPROPERTIES");
-            IndentHelper.indent(context, tablePropertyList);
+            IndentHelper.indent(context, tableProps);
         }
         if(query!=null){
             if(as){

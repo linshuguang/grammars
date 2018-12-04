@@ -10,7 +10,7 @@ import name.lsg.sparksql.parser.util.IndentHelper;
 public class CreateView extends AST {
     boolean replace =false;
     boolean global = false;
-    boolean temporary = false;
+    String temporary ;
     boolean notExists = false;
     AST tableIdentifier;
     AST identifierCommentList;
@@ -18,7 +18,7 @@ public class CreateView extends AST {
     AST identifierList;
     AST tablePropertyList;
     AST query;
-    public CreateView(boolean replace,boolean global,boolean temporary,boolean notExists,AST tableIdentifier,AST identifierCommentList,String comment,AST identifierList,AST tablePropertyList,AST query){
+    public CreateView(boolean replace,boolean global,String temporary,boolean notExists,AST tableIdentifier,AST identifierCommentList,String comment,AST identifierList,AST tablePropertyList,AST query){
         this.replace = replace;
         this.global = global;
         this.temporary = temporary;
@@ -37,11 +37,11 @@ public class CreateView extends AST {
         if(replace) {
             IndentHelper.indentKeyWord(context, "OR","REPLACE");
         }
-        if(temporary){
+        if(temporary!=null){
             if(global){
                 IndentHelper.indentKeyWord(context, "GLOBAL");
             }
-            IndentHelper.indentKeyWord(context, "TEMPORARY");
+            IndentHelper.indentKeyWord(context, temporary);
         }
         IndentHelper.indentKeyWord(context, "VIEW");
 

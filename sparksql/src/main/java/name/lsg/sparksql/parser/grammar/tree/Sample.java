@@ -11,9 +11,6 @@ import name.lsg.sparksql.parser.util.IndentHelper;
 public class Sample extends AST {
     AST method;
 
-    public Sample(AST method){
-        this.method = method;
-    }
 
     @Override
     public void indent(Context context){

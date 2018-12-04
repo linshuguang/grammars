@@ -19,9 +19,9 @@ public class WindowSpec extends AST {
     List<AST> sortItems = new ArrayList<>();
     String sortMethod;
     AST windowFrame;
+    boolean braced = false;
 
     public WindowSpec(){
-        name = null;
     }
 
     public WindowSpec(AST name){
@@ -41,13 +41,18 @@ public class WindowSpec extends AST {
     }
 
 
+    public void markBraced(){
+        braced = true;
+    }
     @Override
     public void indent(Context context){
+
+        if(braced){
+            IndentHelper.indent(context, "(");
+        }
         if(name!=null){
             IndentHelper.indent(context, name);
-        }else{
-            IndentHelper.indent(context, "(");
-
+        }else if(partionMethod!=null){
             if(StringUtils.equalsIgnoreCase("CLUSTER",partionMethod)){
                 IndentHelper.indent(context, IndentHelper.keyword("CLUSTER"));
                 IndentHelper.indent(context, IndentHelper.keyword("BY"));
@@ -62,8 +67,9 @@ public class WindowSpec extends AST {
                 IndentHelper.indent(context, IndentHelper.keyword("BY"));
                 IndentHelper.indent(context, sortItems);
             }
-
             IndentHelper.indent(context, windowFrame);
+        }
+        if(braced){
             IndentHelper.indent(context, ")");
         }
 

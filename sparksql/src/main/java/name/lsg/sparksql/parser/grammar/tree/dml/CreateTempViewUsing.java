@@ -18,12 +18,14 @@ public class CreateTempViewUsing extends AST {
     List<AST> colTypeList;
     AST tableProvider;
     AST tablePropertyList;
+    String temporary;
 
-    public CreateTempViewUsing(boolean replace,boolean global, AST tableIdentifier,AST tableProvider){
+    public CreateTempViewUsing(boolean replace,boolean global, AST tableIdentifier,AST tableProvider, String temporary){
         this.replace = replace;
         this.global = global;
         this.tableIdentifier = tableIdentifier;
         this.tableProvider = tableProvider;
+        this.temporary = temporary;
     }
 
     @Override
@@ -35,7 +37,8 @@ public class CreateTempViewUsing extends AST {
         if(global){
             IndentHelper.indentKeyWord(context,"GLOBAL");
         }
-        IndentHelper.indentKeyWord(context,"TEMPORARY","VIEW");
+        IndentHelper.indentKeyWord(context,temporary);
+        IndentHelper.indentKeyWord(context,"VIEW");
         IndentHelper.indent(context,tableIdentifier);
         if(colTypeList!=null){
             IndentHelper.indent(context,"(");

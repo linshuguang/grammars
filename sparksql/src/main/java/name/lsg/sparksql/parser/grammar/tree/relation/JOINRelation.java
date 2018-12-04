@@ -28,7 +28,7 @@ public class JOINRelation extends NaturalJOINRelation{
     @Override
     public void indent(Context context){
         IndentHelper.indent(context, joinType);
-        IndentHelper.indent(context, IndentHelper.keyword("join"));
+        IndentHelper.indentKeyWord(context, "join");
         IndentHelper.indent(context, relationPrimary);
         IndentHelper.indent(context, joinCriteria);
     }

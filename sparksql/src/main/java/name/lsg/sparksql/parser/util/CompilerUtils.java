@@ -6,6 +6,7 @@ import name.lsg.sparksql.parser.grammar.context.ContextFactory;
 import name.lsg.sparksql.parser.grammar.tree.AST;
 import name.lsg.sparksql.parser.grammar.tree.BoolValue;
 import name.lsg.sparksql.parser.Parser;
+import name.lsg.sparksql.parser.grammar.tree.VOID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,12 +148,22 @@ public class CompilerUtils {
         return parser.identSQL(sql1, sql2);
     }
 
+
     public static AST run(String sql){
+        if(StringUtils.isBlank(sql)){
+            return new VOID();
+        }
         Parser parser = new Parser();
         return parser.parse(sql);
     }
 
     public static List<AST> runBatch(String sql){
+        if(StringUtils.isBlank(sql)){
+            List<AST> astList = new ArrayList<>();
+            astList.add(new VOID());
+            return astList;
+        }
+
         Parser parser = new Parser();
         return parser.parseStatements(sql);
     }

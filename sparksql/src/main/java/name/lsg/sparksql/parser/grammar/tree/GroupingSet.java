@@ -26,7 +26,7 @@ public class GroupingSet extends AST {
 
     @Override
     public void indent(Context context){
-        if(exprList.size()==0){
+        if(exprList.size()==0 && expr!=null){
             IndentHelper.indent(context, expr);
         }else{
             IndentHelper.indent(context, "(");

@@ -32,7 +32,6 @@ public class AddTablePartition extends AST {
         if(notExists) {
             IndentHelper.indentKeyWord(context, "IF","NOT", "EXISTS");
         }
-        IndentHelper.indent(context, tableIdentifier);
         IndentHelper.indent(context, partitionSpecLocation);
     }
 

@@ -20,6 +20,6 @@ public class INTERVAL extends AST {
     @Override
     public void indent(Context context){
         IndentHelper.indentKeyWord(context,"INTERVAL");
-        IndentHelper.indent(context,intervalFields);
+        IndentHelper.indentWithDelimeter(context,intervalFields," ");
     }
 }

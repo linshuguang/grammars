@@ -17,7 +17,7 @@ public class ComplexDataType extends DataType {
     @Override
     public void indent(Context context){
         if(neq==null){
-            IndentHelper.indent(context,IndentHelper.keyword("STRUCT"));
+            IndentHelper.indentKeyWord(context,"struct");
             IndentHelper.indent(context,"<");
             IndentHelper.indent(context,complexColTypeList);
             IndentHelper.indent(context,">");

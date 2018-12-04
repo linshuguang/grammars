@@ -61,6 +61,7 @@ public class IndentHelper {
         }
     }
 
+
     public static void indentNoDelimeter( Context context, List<AST> astList){
         if(astList!=null && astList.size()>0){
             for(int i = 0; i < astList.size(); i++ ){

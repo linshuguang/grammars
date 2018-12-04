@@ -18,10 +18,15 @@ public class GroupBy extends AST {
     String with;
     List<AST> groupingSet = new ArrayList<>();
 
+    boolean hasGroupSet = false;
+
     public void addGroupingExpression(AST value){
         this.groupingExpressions.add(value);
     }
 
+    public void markHasGroupSet(){
+        hasGroupSet = true;
+    }
 
     public void addGroupingSet(AST set){
         groupingSet.add(set);
@@ -41,8 +46,7 @@ public class GroupBy extends AST {
         if(!StringUtils.isBlank(with)){
             IndentHelper.indentKeyWord(context, "with");
             IndentHelper.indent(context, with);
-        }
-        if(groupingSet.size()>0){
+        }else if(hasGroupSet){
             IndentHelper.indentKeyWord(context, "GROUPING","sets");
             IndentHelper.indent(context, "(");
             IndentHelper.indent(context, groupingSet);

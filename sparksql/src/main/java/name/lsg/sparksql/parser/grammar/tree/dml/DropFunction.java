@@ -8,11 +8,11 @@ import name.lsg.sparksql.parser.util.IndentHelper;
  * Created by kenya on 2018/11/29.
  */
 public class DropFunction extends AST {
-    boolean temporary = false;
+    String temporary;
     boolean exists = false;
     AST qualifiedName;
 
-    public DropFunction(boolean temporary ,boolean exists,AST qualifiedName){
+    public DropFunction(String temporary ,boolean exists,AST qualifiedName){
         this.temporary = temporary;
         this.exists = exists;
         this.qualifiedName = qualifiedName;
@@ -21,8 +21,8 @@ public class DropFunction extends AST {
     @Override
     public void indent(Context context){
         IndentHelper.indentKeyWord(context,"DROP" );
-        if(temporary){
-            IndentHelper.indentKeyWord(context,"TEMPORARY" );
+        if(temporary!=null){
+            IndentHelper.indentKeyWord(context,temporary );
         }
         IndentHelper.indentKeyWord(context,"FUNCTION" );
         if(exists){

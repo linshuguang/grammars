@@ -9,7 +9,7 @@ import name.lsg.sparksql.parser.util.IndentHelper;
 public class ParenthesisAST extends AST {
     AST ast;
 
-    public ParenthesisAST(AST AST){
+    public ParenthesisAST(AST ast){
         this.ast = ast;
     }
 

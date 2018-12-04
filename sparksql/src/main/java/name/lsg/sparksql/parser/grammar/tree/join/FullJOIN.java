@@ -18,9 +18,9 @@ public class FullJOIN extends JOINType {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, IndentHelper.keyword("full"));
+        IndentHelper.indentKeyWord(context, "full");
         if(isOuter()){
-            IndentHelper.indent(context, IndentHelper.keyword("outer"));
+            IndentHelper.indentKeyWord(context, "outer");
         }
     }
 }

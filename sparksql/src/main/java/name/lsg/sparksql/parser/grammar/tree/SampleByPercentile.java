@@ -22,6 +22,6 @@ public class SampleByPercentile extends AST {
             IndentHelper.indent(context, negativeSign);
         }
         IndentHelper.indent(context, percentage);
-        IndentHelper.indent(context, IndentHelper.keyword("PERCENTLIT"));
+        IndentHelper.indentKeyWord(context, "PERCENT");
     }
 }

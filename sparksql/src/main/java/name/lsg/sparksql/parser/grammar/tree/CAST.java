@@ -17,10 +17,10 @@ public class CAST extends AST {
 
     @Override
     public void indent(Context context){
-        IndentHelper.indent(context, IndentHelper.keyword("cast"));
+        IndentHelper.indentKeyWord(context, "cast");
         IndentHelper.indent(context,"(");
         IndentHelper.indent(context,expr);
-        IndentHelper.indent(context, IndentHelper.keyword("as"));
+        IndentHelper.indentKeyWord(context,"as");
         IndentHelper.indent(context,dataType);
         IndentHelper.indent(context,")");
     }
